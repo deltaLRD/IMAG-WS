@@ -1,9 +1,9 @@
 {% extends 'base_admin.html' %}
 {% block center %}
 {% if error %}
-    <div class="alert alert-danger alert-dismissable" role="alert">
-      <strong>提示：</strong>{{ error }}
-    </div>
+<div class="alert alert-danger alert-dismissable" role="alert">
+  <strong>提示：</strong>{{ error }}
+</div>
 {% endif %}
 
 <form action="{{ url_for('admins.conf_upload_admin') }}" method="POST" enctype="multipart/form-data">
