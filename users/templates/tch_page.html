@@ -1,4 +1,5 @@
 {% extends 'base_tch.html' %}
+
 {% block head %}
 <script type="text/html" id="barDemo">
   <a class="layui-btn layui-btn-xs" lay-event="add">收录</a>
@@ -7,150 +8,175 @@
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 {% endblock %}
+
 {% block style %}
 .bg_hide{
-line-height:40px;
-display:flex;
-justify-content:space-between;
-background-color: #A9A9A9;
+    line-height:40px;
+    display:flex;
+    justify-content:space-between;
+    background-color: #A9A9A9;
 }
+
 .ghost{
-background-color: #A9A9A9;
+    background-color: #A9A9A9;
 }
+
 .containers{
-width:80%;
-margin:0 auto;
+    width:80%;
+    margin:0 auto;
 }
+
 .vis_button{
-visibility: hidden;
-display:inline;
+    visibility: hidden;
+    display:inline;
 }
+
 #save_all{
-visibility: hidden;
+    visibility: hidden;
 }
+
 li{
-line-height:40px;
-display:flex;
-justify-content:space-between;
-background-color: 'red';
+    line-height:40px;
+    display:flex;
+    justify-content:space-between;
+    background-color: 'red';
 }
 .atitle{
-font-size:40px;
-font-family:"微软雅黑";
-padding:20px 0px;
+    font-size:40px;
+    font-family:"微软雅黑";
+    padding:20px 0px;
 }
+
 .li_name{
-font-size:2vh;
-font-family:"微软雅黑";
-{# width:800px;#}
-{# margin-right:150px;#}
-align:left;
+    font-size:2vh;
+    font-family:"微软雅黑";
+    align:left;
 }
 
 #add-circle{
-background-color:#FFFFFFFF;
-border:none;
-visibility: hidden;
+    background-color:#FFFFFFFF;
+    border:none;
+    visibility: hidden;
 }
+
 .add_title{
-display:flex;
-justify-content:space-between;
+    display:flex;
+    justify-content:space-between;
 }
+
 .modal-content{
-background-color:red;
+    background-color:red;
 }
+
 {% endblock %}
+
 {% block center %}
-
-
 <div class="media">
     <div class="media-left media-middle">
         <a>
-            <img class="media-object" src="../../static/avatar/{{ tch_info.account }}.jpg" alt="{{ tch_info.account }}"
-                width="180px" height="" id="imag_id">
+            <img 
+                class="media-object" 
+                src="../../static/avatar/{{ tch_info.account }}.jpg" 
+                alt="{{ tch_info.account }}"
+                width="180px" 
+                height="" 
+                id="imag_id"
+            >
         </a>
     </div>
     <div class="media-body">
-
         <h3 class="media-heading">{{ tch_info.Eng_name }}</h3>
-
         <p><a src="http://www.njust.edu.cn/">Nanjing University of Science and Technology</a></p>
-
-
         <p>Email : {{ tch_info.email }}</p>
-
         <p id="profile">{{ tch_info.profile_c }}<a onclick="tranx();">[英文版]</a></p>
-        <button type="button" class="btn btn-info"
-            onclick="window.open('/users/tch_info/{{ tch_info.account  }}') ">编辑个人资料</button>
-
-
+        <button type="button" class="btn btn-info" onclick="window.open('/users/tch_info/{{ tch_info.account  }}') ">编辑个人资料</button>
     </div>
 </div>
 
 <hr>
-<button type="button" class="btn btn-info" onclick="bulid()">编辑个人主页</button> <button type="button" id="save_all"
-    class="btn btn-info" onclick="save_all()">保存</button>
+
+<button type="button" class="btn btn-info" onclick="bulid()">编辑个人主页</button> 
+
+<button type="button" id="save_all" class="btn btn-info" onclick="save_all()">保存</button>
+
 <div class="add_title">
     <div class="atitle" id="title_jn">部分论文</div>
-    <button class="layui-icon" id="add-circle" name="jn_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="jn_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+        &#xe61f;
+    </button>
 </div>
+
 <ul id="jn_id">
     {% for row in journal %}
     <li class="jn_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
         <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm"
-                onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button>
+
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe685;</i>
+            </button>
         </div>
     </li>
-
     {% endfor %}
 </ul>
 
 <div class="add_title">
     <div class="atitle" id="title_patent">专利</div>
-    <button class="layui-icon" id="add-circle" name="patent_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="patent_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="patent_id">
     {% for row in patent_info %}
     <li class="patent_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+
+            <button onclick="hide(this)">隐藏/显示</button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_honor">荣誉</div>
-    <button class="layui-icon" id="add-circle" name="honor_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="honor_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="honor_id">
     {% for row in honor_info %}
     <li class="honor_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
+
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+
+            <button onclick="hide(this)">隐藏/显示</button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_pro">项目</div>
-    <button class="layui-icon" id="add-circle" name="prog_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="prog_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="prog_id">
     {% for row in program %}
     <li class="prog_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
-        <div class="li_name">{{ row.display.pro_source }}, "{{ row.display.name }}" , {{ row.display.start_time }} - {{
-            row.display.deadline }} ,
+        <div class="li_name">
+            {{ row.display.pro_source }}, 
+            "{{ row.display.name }}" , 
+            {{ row.display.start_time }} - {{row.display.deadline }} ,
             {% if row.display.cost !='None' and row.display.cost !='' %}
             {{ row.display.cost }}万
             {% else %}
@@ -161,97 +187,115 @@ background-color:red;
             {% else %}
             参与
             {% endif %}
-
-
         </div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm"
-                onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe685;</i>
+            </button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_honor">社会兼职</div>
-    <button class="layui-icon" id="add-circle" name="social_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="social_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="social_id">
     {% for row in social_info %}
     <li class="social_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+            <button onclick="hide(this)">隐藏/显示</button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_course">课程</div>
-    <button class="layui-icon" id="add-circle" name="course_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="course_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="course_id">
     {% for row in course_info %}
     <li class="course_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_comp">竞赛</div>
-    <button class="layui-icon" id="add-circle" name="comp_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="comp_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="comp_id">
     {% for row in competition %}
     <li class="comp_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
-        <div class="li_name">{{ row.display.participant }}, {{ row.display.name }} {{ row.display.ranking }} , 指导老师: {{
-            row.display.teachers }} </div>
+        <div class="li_name">
+            {{ row.display.participant }}, {{ row.display.name }} {{ row.display.ranking }} , 指导老师: {{row.display.teachers }} 
+        </div>
 
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm"
-                onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>  
+            </button>
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe685;</i>
+            </button>
         </div>
     </li>
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_mono">专著</div>
-    <button class="layui-icon" id="add-circle" name="mono_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="mono_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="mono_id">
     {% for row in mono_info %}
     <li class="mono_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+            <button onclick="hide(this)">隐藏/显示</button>
         </div>
     </li>
-
     {% endfor %}
 </ul>
+
 <div class="add_title">
     <div class="atitle" id="title_soft">软著</div>
     <div onclick="firmadd()"></div>
-    <button class="layui-icon" id="add-circle" name="soft_li" style="font-size: 30px;" data-toggle="modal"
-        data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
+    <button class="layui-icon" id="add-circle" name="soft_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">&#xe61f;</button>
 </div>
+
 <ul id="soft_id">
     {% for row in soft_info %}
     <li class="soft_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display}} </div>
+        <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
-            <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i
-                    class="layui-icon">&#xe640;</i></button><button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="dele(this)">
+                <i class="layui-icon">&#xe640;</i>
+            </button>
+            <button onclick="hide(this)">隐藏/显示</button>
         </div>
     </li>
     {% endfor %}
@@ -329,7 +373,6 @@ background-color:red;
                 }
             }
             if (lastdom === undefined) lastdom = -1
-            { #console.log(lastdom)# }
             if (color === 'rgb(255, 255, 255)') {
                 ishide = 1
                 $(e).parent().parent().css('background-color', '#A9A9A9')
@@ -370,7 +413,18 @@ background-color:red;
 
 
         const api_url = { 'social_li': 'social', 'jn_li': 'journal', 'conf_li': 'conference', 'patent_li': 'patent', 'honor_li': 'honor', 'prog_li': 'program', 'course_li': 'course', 'soft_li': 'software', 'mono_li': 'monograph', 'comp_li': 'competition' }
-        const api_data = { 'social_li': '', 'jn_li': {{ journal| tojson }}, 'conf_li': 'conference', 'patent_li': 'patent', 'honor_li': 'honor', 'prog_li': { { program | tojson } }, 'course_li': 'course', 'soft_li': 'software', 'mono_li': 'monograph', 'comp_li': { { competition | tojson } }    }
+        const api_data = { 
+            'social_li': '', 
+            'jn_li': {{ journal| tojson }}, 
+            'conf_li': 'conference', 
+            'patent_li': 'patent', 
+            'honor_li': 'honor', 
+            'prog_li': {{ program | tojson }}, 
+            'course_li': 'course', 
+            'soft_li': 'software', 
+            'mono_li': 'monograph', 
+            'comp_li': {{ competition | tojson }}    
+        }
         let title;
         var add_li;
         var add_id
@@ -381,7 +435,6 @@ background-color:red;
             var button = $(event.relatedTarget) // Button that triggered the modal
             add_li = (button.attr("name"))
             add_id = (button.parent().next().attr("id"))
-            { #console.log(add_id)# }
             data_url = '/' + api_url[add_li] + '/table';
             delete_url = '/' + api_url[add_li] + '/delete';
             table.render({
@@ -400,15 +453,16 @@ background-color:red;
                     //遍历集合
                     layui.each(res.data, function (index, item) {
                         let data = api_data[add_li]
-                        { #console.log(data)# }
                         //数据中所有id组成的列表
                         let id_arrays = data.map((item) => item.id)
-                        {#//array.indexOf 此方法判断数组中是否存在某个值，如果存在，则返回数组元素的下标，否则返回-1#}
+                        {
+                            //array.indexOf 此方法判断数组中是否存在某个值，如果存在，则返回数组元素的下标，否则返回-1#}
                             if (id_arrays.indexOf(String(item.id)) > -1) {
                                 $("div[lay-id='demo'] td .layui-form-checkbox").eq(index).click();
                             }
 
-                        })
+                        }
+                    })
                 }
             })
         })
@@ -463,7 +517,6 @@ background-color:red;
             pcur_data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
-            { #console.log($(e).parent().parent().parent())# }
 
             if (layEvent === 'add') {
                 if (add_li === 'jn_li') {
@@ -471,77 +524,75 @@ background-color:red;
                     return;
                 }
                 console.log(add_id, add_li)
-                { #let mouont = $("#" + add_id).find('li').length# }
+                // { #let mouont = $("#" + add_id).find('li').length# }
                 const data_json = {
-                    account: {{ tch_info.account | tojson
-                    }}
-        },
-            id: pcur_data.id,
-            item: api_url[add_li]
-      }
-            $.ajax({
-                type: 'POST',
-                url: '/users/add',
-                data: JSON.stringify(data_json),
-                contentType: 'application/json; charset=UTF-8',
-                dataType: 'json',
-                success: function (data) {
-                    const error = data['error']
-                    if (error === 0) {
-                        $("#" + add_id).append('<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>')
-                        layer.msg(data['message'], {
-                            icon: 1,
-                            time: 1000,
-                            offset: 't',
-                        })
-                    }
-                    else {
-                        layer.msg(data['message'], {
-                            icon: 2,
-                            time: 1000,
-                            offset: 't',
-                        })
-                    }
-                }
-            })
-  }
-  else if (layEvent === 'del') { //删除
-            layer.confirm('你确认要删除吗', function (index) {
-                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                layer.close(index);
-                const data_json = {
-                    id: delete_id
+                    account: {{ tch_info.account | tojson}},
+                    id: pcur_data.id,
+                    item: api_url[add_li]
                 }
                 $.ajax({
-                    type: 'DELETE',
-                    url: delete_url,
+                    type: 'POST',
+                    url: '/users/add',
                     data: JSON.stringify(data_json),
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     success: function (data) {
-                        layer.msg(data['message'], {
-                            icon: 1,
-                            time: 1000,
-                            offset: 't',
-                        })
-                        table.reload('demo', {
-                            page: {
-                                curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
-                            }
-
-                        });
+                        const error = data['error']
+                        if (error === 0) {
+                            $("#" + add_id).append('<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>')
+                            layer.msg(data['message'], {
+                                icon: 1,
+                                time: 1000,
+                                offset: 't',
+                            })
+                        }
+                        else {
+                            layer.msg(data['message'], {
+                                icon: 2,
+                                time: 1000,
+                                offset: 't',
+                            })
+                        }
                     }
                 })
+            }
+            else if (layEvent === 'del') { //删除
+                  layer.confirm('你确认要删除吗', function (index) {
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    const data_json = {
+                        id: delete_id
+                    }
+                    $.ajax({
+                        type: 'DELETE',
+                        url: delete_url,
+                        data: JSON.stringify(data_json),
+                        contentType: 'application/json; charset=UTF-8',
+                        dataType: 'json',
+                        success: function (data) {
+                            layer.msg(data['message'], {
+                                icon: 1,
+                                time: 1000,
+                                offset: 't',
+                            })
+                            table.reload('demo', {
+                                page: {
+                                    curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
+                                }
 
-            })
-        }
-        else if (layEvent === 'edit') { //编辑
-            window.open('/competition/comp_modify_tch/' + data.pre_name + '/')
-        }
-        else if (layEvent === 'look') { //编辑
-            window.open('/competition/details_tch/' + data.id + '/')
-        }
-});
+                            });
+                        }
+                    })
+
+                })
+            }
+            else if (layEvent === 'edit') { //编辑
+                window.open('/competition/comp_modify_tch/' + data.pre_name + '/')
+            }
+            else if (layEvent === 'look') { //编辑
+                window.open('/competition/details_tch/' + data.id + '/')
+            }
+        });
 
 
 
@@ -577,18 +628,24 @@ background-color:red;
                         $.ajax({
                             type: 'POST',
                             url: '/users/order',
-                            data: JSON.stringify({ 'order_items': sortable.toArray(), 'item': api_url[items_name[i] + '_li'], 'account': {{ tch_info.account | tojson }}}),
-                    contentType: 'application/json; charset=UTF-8',
-                    dataType: 'json',
-                    success: function (data) { }
-                })
-                    console.log(sortable.toArray());
-            },
-        };
-        let sortable = Sortable.create(el, ops);
-     }
+                            data: JSON.stringify(
+                                { 
+                                    'order_items': sortable.toArray(), 
+                                    'item': api_url[items_name[i] + '_li'], 
+                                    'account': {{ tch_info.account | tojson }}
+                                }
+                            ),
+                            contentType: 'application/json; charset=UTF-8',
+                            dataType: 'json',
+                            success: function (data) { }
+                        })
+                        console.log(sortable.toArray());
+                    },
+                };
+                let sortable = Sortable.create(el, ops);
+            }
 
-     }
+        }
 
         function save_all() {
             $("#save_all").css("visibility", "hidden")
@@ -603,10 +660,10 @@ background-color:red;
         }
         var Serve1 = {
             profile_eng: {{ tch_info.profile| tojson }},
-        profile_ch: { { tch_info.profile_c | tojson } },
-        account: { { tch_info.account | tojson } },
-        home_page: { { tch_info.home_page | tojson } }
- }
+            profile_ch: {{ tch_info.profile_c | tojson }},
+            account: {{ tch_info.account | tojson }},
+            home_page: {{ tch_info.home_page | tojson }}
+        }
         function dele(e) {
             layer.confirm('你确认要删除吗', function (index) {
                 let id = $(e).parent().parent().attr('id')
@@ -637,7 +694,7 @@ background-color:red;
         tranx = function () {
             console.log(Serve1.home_page)
             if (Serve1.home_page !== null && Serve1.home_page !== ' ' && Serve1.home_page !== 'None') {
-                { #window.open('www.baidu.com');# }
+                // { #window.open('www.baidu.com');# }
                 window.open(Serve1.home_page)
             }
             else {
