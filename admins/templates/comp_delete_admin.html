@@ -1,0 +1,91 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+
+<table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"> 竞赛名 </th>
+                <th scope="col"> 指导教师 </th>
+                <th scope="col"> 修改 </th>
+                <th scope="col"> 删除 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in comp_home %}
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.name }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+{#                            {% for auth in row.summary.author  %}#}
+                            {{ row.teachers }}
+{#                            {% endfor %}#}
+                        </label>
+                    </div>
+                 </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <a class="btn btn-default" href="{{url_for("admins.comp_modify_admin",comp_name=row.name)}}">修改</a>
+{#                                <butt ass="btn btn-default" name="modify{{ row.id }}" onclick="window.location.href='{{url_for("admins.user_modify",account=row.account)}}'">修改</button>#}
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                 <a class="btn btn-default" href="{{url_for("admins.comp_delete_admin",comp_name=row.name)}}">删除</a>
+{#                                <button type="submit" class="btn btn-default">删除</button>#}
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+{#            {% for row in stu_home %}#}
+{#            <tr>#}
+{#                <td>#}
+{#                    <div class="form-group">#}
+{#                        <label class="radio-inline">#}
+{#                            {{ row.account }}#}
+{#                        </label>#}
+{#                    </div>#}
+{#                 </td>#}
+{#                <td>#}
+{#                    <div class="form-group">#}
+{#                        <label class="radio-inline">#}
+{#                            {{ row.author }}#}
+{#                        </label>#}
+{#                    </div>#}
+{#                 </td>#}
+{#                    <td>#}
+{#                        <div class="form-group">#}
+{#                            <label class="radio-inline">#}
+{#                                <button type="submit" class="btn btn-default" name="modify{{ row.id }}">修改</button>#}
+{#                            </label>#}
+{#                        </div>#}
+{#                    </td>#}
+{#                    <td>#}
+{#                        <div class="form-group">#}
+{#                            <label class="radio-inline">#}
+{#                                <button type="submit" class="btn btn-default" name="delete{{ row.id }}">删除</button>#}
+{#                            </label>#}
+{#                        </div>#}
+{#                    </td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+            </tbody>
+        </table>
+
+
+
+{% endblock %}

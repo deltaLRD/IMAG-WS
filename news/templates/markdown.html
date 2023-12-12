@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>markdown编辑器的使用--创建文档</title>
+	<link rel="stylesheet" href="./static/editor.md-master/css/editormd.css" />
+</head>
+<body>
+	<div id="articleContainer">
+		<textarea class="editormd-markdown-textarea" name="markdownText" id="origin">
+			### 关于 Editor.md**Editor.md** 是一款开源的、可嵌入的 Markdown 在线编辑器（组件），基于 CodeMirror、jQuery 和 Marked 构建。
+		</textarea>
+	    <textarea class="editormd-html-textarea" name="htmlText" id="message"></textarea>
+	</div>
+	<div >
+		<button id="mybtn">获取</button>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="./static/editor.md-master/editormd.min.js"></script>
+	<script type="text/javascript">
+	    $(function() {
+	        var editor = editormd("articleContainer", {
+	            width  : "100%",
+	            height : "500",//不能使用百分比，使用后，将根据内容自动收放
+	            watch  : false,//是否开启预览
+	            markdown: "",//markdown文本内容
+	            saveHTMLToTextarea: true,    // 是否将文本保存 HTML 到 Textarea
+	            path   : "./static/editor.md-master/lib/"//lib的路径
+	            /*//下面三个属性，当文章需要包含图片时添加
+	            imageUpload : true,//是否开启图片自动上传
+                imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],//可上传的图片格式
+                imageUploadURL : "网络地址/项目名/上传路径"//图片上传地址，如: http:localhost:8080/mylove/imageUpload.do
+                */
+	        });
+	        //由于editot.md是懒加载
+	        setTimeout(function(){
+            //获取编辑器内容
+            	console.log(editor.getMarkdown());
+        	},500);
+
+        	//绑定点击事件
+	        $("#mybtn").click(function(){
+	        	//这里没有去写后端接口了，将内容存至浏览器存储以便查看和编辑
+	        	window.localStorage.setItem("data",JSON.stringify(editor.getMarkdown()));
+	        });
+	    });
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="exampleInputEmail1">论文题目</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ jn_home.name }}" name="name" value={{ jn_home.name }}>
+      </div>
+    <div class="form-group">
+            <label for="exampleInputEmail1">作者</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="用英文逗号隔开 例如:张三,李四" name="author" value="{{ jn_home.author }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">期刊名称</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="期刊名称" name="jn_name" value={{ jn_home.jn_name }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">期刊发表日期</label>
+             <input type="text" id="test1" name="dat"  placeholder="论文发表年份" value={{ jn_home.dat }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">文章号</label>
+            <input type="text" class="form-control" placeholder="文章号" name="num" value={{ jn_home.num }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">收录情况</label><br>
+            <select class="form-control" name="employ">
+                <option>SCIE</option>
+                <option>SSCI</option>
+                <option>EI</option>
+                <option>ISTP</option>
+                <option>北大中文核心期刊</option>
+                <option>其他</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">收录号</label>
+            <input type="text" class="form-control" placeholder="收录号" name="employ_num" value={{ jn_home.employ_num }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">CCF分区</label><br>
+            <select class="form-control" name="ccf">
+                <option>A区</option>
+                <option>B区</option>
+                <option>C区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">CAS分区</label><br>
+            <select class="form-control" name="cas">
+                <option>一区</option>
+                <option>二区</option>
+                <option>三区</option>
+                <option>四区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">JCR分区</label><br>
+            <select class="form-control" name="jcr">
+                <option>一区</option>
+                <option>二区</option>
+                <option>三区</option>
+                <option>四区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">引用次数</label>
+            <input type="text" class="form-control" placeholder="引用次数" name="times" value={{ jn_home.times }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">卷</label>
+            <input type="text" class="form-control" placeholder="vol" name="vol" value={{ jn_home.vol }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">期号</label>
+            <input type="text" class="form-control" placeholder="no" name="no" value={{ jn_home.no }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">页码</label>
+            <input type="text" class="form-control" placeholder="起止页码" name="page" value={{ jn_home.page }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI号</label>
+            <input type="text" class="form-control" placeholder="DOI号" name="DOI"  value={{ jn_home.DOI }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">论文链接</label>
+            <input type="text" class="form-control" placeholder="论文链接" name="link" value={{ jn_home.link }}>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">代码链接</label>
+            <input type="text" class="form-control" placeholder="代码链接" name="code_link" value={{ jn_home.code_link }}>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">论文附件</label>
+            <input type="file" id="exampleInputFile" name="encd">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">代码附件</label>
+            <input type="file" id="exampleInputFile" name="code_encd">
+        </div>
+      <button type="button" class="btn btn-default" onclick="submit_modify_jn()">修改</button>
+</form>
+    <script>
+        function submit_modify_jn() {
+            var name=document.getElementsByName("name")
+            if(name[0].value===null||name[0].value.trim()==="") {
+                alert("请输入论文名！")
+                return ;
+            }
+            var author=document.getElementsByName("author")
+            if(author[0].value===null||author[0].value.trim()==="") {
+                alert("请输入作者！")
+                return ;
+            }
+            var conf_name=document.getElementsByName("jn_name")
+            if(conf_name[0].value===null||conf_name[0].value.trim()==="") {
+                alert("请输入期刊名称！")
+                return ;
+            }
+            var dat=document.getElementsByName("dat")
+            if(dat[0].value===null||dat[0].value.trim()==="") {
+                alert("请输入论文发表日期！")
+                return ;
+            }
+            var page=document.getElementsByName("page")
+            if(page[0].value===null||page[0].value.trim()==="") {
+                alert("请输入起始页码！")
+                return ;
+            }
+            var data = new FormData($("#formid")[0]);
+            data.append('account',{{ account_url.account|tojson }})
+            data.append('pre',{{ jn_home.name|tojson }})
+            $.ajax({
+                type: 'POST',
+                url: "/journal/jn_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        {#window.location.href=data['url']#}
+                        tiao(data['url'])
+                    }
+                    tiao('/journal/jn_home_tch/'+{{ account_url.account|tojson }} +'/'+ {{ jn_home.id |tojson}} )
+                }
+            })
+        }
+
+
+    layui.use('laydate', function() {
+          var laydate = layui.laydate;
+
+          //执行一个laydate实例
+          laydate.render({
+              elem: '#test1',
+              type: 'year'
+          });
+      })
+async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+    </script>
+{% endblock %}
+
+

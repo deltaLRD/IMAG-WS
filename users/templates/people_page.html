@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block style %}
+    .col-md-4{
+        padding:25px;
+    }
+    .col-md-6{
+        padding:25px;
+    }
+    img{
+   user-select: none;
+   -webkit-user-drag: none;
+}
+{%  endblock %}
+{% block all %}
+
+
+
+    <div class="row">
+{#        <div class="col-md-1"></div>#}
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-user" aria-hidden="true"> Faculty </span></h2>
+        </div>
+{#        <div class="col-md-10">#}
+{#            <br>#}
+{#            <hr/>#}
+{#        </div>#}
+    </div>
+  
+
+
+    <div class="row">
+{#        <div class="col-md-1"></div>#}
+        {% for row in faculty %}
+        <div class="col-md-4">
+            <div class="media">
+                <div class="media-left">
+
+                        <img class="media-object" src="./static/avatar/{{ row.account }}.jpg"  alt="{{ row.account }}" width="100px" height="120">
+
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ row.name }}</h4>
+                        <p>{{row.job_title}}</p>
+                        <a href="/users/tch_page_public/{{ row.id }}">个人主页</a>
+                        <p>
+                            <address>
+                                Email: {{ row.email |default('', boolean=True) }}
+                            </address>
+                        </p>
+                    </div>
+                </div>
+        </div>
+{#        <div class="col-md-1"></div>#}
+     {% endfor %}
+    </div>
+ <br>
+
+
+    {#    Ph.D Candidate分割线#}
+     <div class="row">
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-user" aria-hidden="true"> Ph.D Candidate </span></h2>
+        </div>
+{#        <div class="col-md-8">#}
+{#            <br>#}
+{#            <hr/>#}
+{#        </div>#}
+    </div>
+
+
+
+    <div class="row">
+        {% for row in PhD %}
+{#        <div class="col-md-1"></div>#}
+        <div class="col-md-4">
+            <div class="media">
+                <div class="media-left">
+
+                        <img class="media-object" src="./static/avatar/{{ row.account }}.jpg" alt="{{ row.account }}" width=100px" height="120px">
+
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ row.name }}</h4>
+                    
+                        <p>
+                           <address>
+                                Email: {{ row.email |default('', boolean=True) }}
+                           </address>
+                        </p>
+                    </div>
+                </div>
+        </div>
+     {% endfor %}
+    </div>
+
+<br>
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2><span class="glyphicon glyphicon-user" aria-hidden="true"> M.E Students </span></h2>
+        </div>
+{#        <div class="col-md-8">#}
+{#            <br>#}
+{#            <hr/>#}
+{#        </div>#}
+    </div>
+
+
+
+    <div class="row">
+        {% for row in ME %}
+        <div class="col-md-4">
+            <div class="media">
+                <div class="media-left">
+
+                        <img class="media-object" src="./static/avatar/{{ row.account }}.jpg" alt="{{ row.account }}" width="100px" height="110px">
+
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ row.name }}</h4>
+                        <p>
+                            <address>
+                                Email: {{ row.email |default('', boolean=True) }}
+                           </address>
+                        </p>
+                    </div>
+                </div>
+        </div>
+     {% endfor %}
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+
+    <script>
+    $(document).ready(function() {
+        document.getElementById("peo_id").className="active";
+ })
+</script>
+{% endblock %}

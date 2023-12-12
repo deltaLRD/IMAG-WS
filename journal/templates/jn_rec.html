@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block all %}
+<h1>
+Journal
+</h1>
+    <br>
+    <div class="list-group">
+    {% for row in jn %}
+    <a href="../conference/conf_home/{{ row.id }}" class="list-group-item">
+        <br>
+        <h4 class="list-group-item-heading">{{row.name}}</h4>
+            <br>
+        <p class="list-group-item-text">{{row.author}}</p>
+        <br>
+        <div class="row">
+{#          <div class="col-md-3"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 被点击次数：117</div>#}
+{#          <div class="col-md-3"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 点赞次数：1024</div>#}
+          <div class="col-md-3"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 被点击次数：10</div>
+          <div class="col-md-3"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 来源：{{ row.jn_name }}</div>
+        </div>
+    </a>
+    {% endfor %}
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("jn_rec_id").className="active";
+ })
+</script>
+{% endblock %}

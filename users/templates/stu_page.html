@@ -1,0 +1,334 @@
+{% extends 'base_stu.html' %}
+{% block style %}
+{#   .vis_button{#}
+{#    visibility: hidden;#}
+{#    display:inline;#}
+{#    }#}
+{#    #save_all{#}
+{#    visibility: hidden;#}
+{#    }#}
+{#   li{#}
+{#    line-height:40px;#}
+{#    display:flex;#}
+{#    justify-content:space-between;#}
+{#    }#}
+{#    .atitle{#}
+{#    font-size:40px;#}
+{#    font-family:"微软雅黑";#}
+{#    padding:20px 0px;#}
+{#    }#}
+{#    .li_name{#}
+{#    font-size:15px;#}
+{#    font-family:"微软雅黑";#}
+{#    }#}
+
+
+{% endblock %}
+{% block center %}
+
+    <div class="media">
+        <div class="media-left media-middle">
+            <a >
+                <img class="media-object" src="../../static/avatar/{{ stu_info.account }}.jpg"
+                     alt="{{ stu_info.account }}" width="180px" height="" id="imag_id">
+            </a>
+        </div>
+        <div class="media-body">
+
+            <h3 class="media-heading">{{ stu_info.Eng_name }}</h3>
+
+            <p><a src="http://www.njust.edu.cn/">Nanjing University of Science and Technology</a></p>
+
+
+            <p>Email : {{ stu_info.email }}</p>
+
+            <p id="profile">{{ stu_info.profile }}</p>
+{#            <button type="button" class="btn btn-info" onclick="bulid()">创建个人主页</button><button type="button"  id="save_all" class="btn btn-info" onclick="save_all()">保存</button>#}
+
+        </div>
+    </div>
+
+    <hr>
+
+
+
+{#    <ul>#}
+{#        <div class="atitle" id="title_jn">论文</div>#}
+{#            {% for row in jn_info_dict %}#}
+{#            <li class="jn_li" id="{{ row.id }}" value="{{ row['author'] }}">#}
+{#                <div class="li_name">{{ row.name}}#}
+{#            {% for auth in row['author'] %}#}
+{#                {{ auth }}#}
+{#            {% endfor %}#}
+{#                </div>#}
+{#            <div class="vis_button">#}
+{#                   <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#            </div>#}
+{#            </li>#}
+{#           {% endfor %}#}
+{#         <div class="atitle" id="title_con">会议</div>#}
+{#        {% for row  in conf_info_dict %}#}
+{#            <li class="conf_li" id="{{ row.id }}" value="{{ row['author'] }}">#}
+{#                <div class="li_name">{{ row.name }}#}
+{#                {% for auth in row['author'] %}#}
+{#                    {{ auth }}#}
+{#                {% endfor %}#}
+{#                </div>#}
+{#                <div class="vis_button">#}
+{#                     <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#                </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    <div class="atitle" id="title_patent">专利</div>#}
+{#        {% for row in patent_info %}#}
+{#            <li class="patent_li" id="{{ row.id }}" >#}
+{#                <div class="li_name">{{ row.name}} </div>#}
+{#                <div class="vis_button">#}
+{#                     <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#                </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{##}
+{##}
+{#    <div class="atitle" id="title_prog">项目</div>#}
+{#        {% for row in prog_info %}#}
+{#            <li class="prog_li" id="{{ row.id }}" >#}
+{#           <div class="li_name">{{ row.name}} </div>#}
+{#            <div class="vis_button">#}
+{#                <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#            </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{##}
+{##}
+{#    <div class="atitle" id="title_comp">竞赛</div>#}
+{#        {% for row in comp_info %}#}
+{#            <li class="comp_li" id="{{ row.id }}" >#}
+{#                 <div class="li_name">{{ row.name}} </div>#}
+{#                <div class="vis_button">#}
+{#                <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#                </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    <div class="atitle" id="title_mono">专著</div>#}
+{#        {% for row in mono_info %}#}
+{#            <li class="mono_li" id="{{ row.id }}" >#}
+{#               <div class="li_name">{{ row.name}} </div>#}
+{#                <div class="vis_button">#}
+{#                     <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#                </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    <div class="atitle" id="title_soft">软著</div>#}
+{#        {% for row in soft_info %}#}
+{#            <li class="soft_li" id="{{ row.id }}">#}
+{#                <div class="li_name">{{ row.name}} </div>#}
+{#                <div class="vis_button">#}
+{#                     <button type="button" onclick="upp(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-up"></i></button>#}
+{#                <button type="button"  onclick="loww(this)" class="layui-btn layui-btn-sm"><i class="layui-icon layui-icon-down"></i></button>#}
+{#                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>#}
+{#                <button type="button" onclick="hidd(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-close"></i></button>#}
+{#                <button type="button" onclick="showw(this)" class="layui-btn layui-btn-sm"><i class="glyphicon glyphicon-eye-open"></i></button>#}
+{#                </div>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{##}
+{#    {{ others_info }}#}
+{##}
+{#    </ul>#}
+
+{# <script>#}
+{#$(document).ready(function(){#}
+{#         const jn={{ jn_info_dict|tojson }};#}
+{#         const con= {{ conf_info_dict|tojson }};#}
+{#         const patent={{ patent_info|tojson}};#}
+{#         const comp={{ comp_info|tojson }};#}
+{#         const mono={{ mono_info|tojson }};#}
+{#         const soft={{ soft_info|tojson }};#}
+{#         const pro={{ prog_info|tojson }};#}
+{#        if(jn.length===0) $("#title_jn").remove();#}
+{#        if(con.length===0) $("#title_con").remove();#}
+{#        if(patent.length===0) $("#title_patent").remove();#}
+{#        if(comp.length===0) $("#title_comp").remove();#}
+{#        if(mono.length===0) $("#title_mono").remove();#}
+{#        if(soft.length===0) $("#title_soft").remove();#}
+{#        if(pro.length===0) $("#title_pro").remove();#}
+{#    })#}
+{##}
+{#    pagehidden={}#}
+{#    pagehidden['conf']=[]#}
+{#    pagehidden['jn']=[]#}
+{#    pagehidden['prog']=[]#}
+{#    pagehidden['soft']=[]#}
+{#    pagehidden['comp']=[]#}
+{#    pagehidden['patent']=[]#}
+{#    pagehidden['mono']=[]#}
+{#    pagehidden['honor']=[]#}
+{#    pagehidden['course']=[]#}
+{#     function hidd(e) {#}
+{#     layer.msg("隐藏成功！", {#}
+{#                icon: 1,#}
+{#                time: 1000,#}
+{#                offset: 't',#}
+{#            })#}
+{#         const target=$(e).parent().parent()#}
+{#        if(target.attr("class")==="conf_li"){#}
+{#             pagehidden['conf'].push(target.attr("id"))#}
+{#         }#}
+{#         if(target.attr("class")==="jn_li"){#}
+{#             pagehidden['jn'].push(target.attr("id"))#}
+{#         }#}
+{#         if(target.attr("class")==="prog_li"){#}
+{#             pagehidden['prog'].push(target.attr("id"))#}
+{#         }#}
+{#          if(target.attr("class")==="soft_li"){#}
+{#             pagehidden['soft'].push(target.attr("id"))#}
+{#         }#}
+{#           if(target.attr("class")==="mono_li"){#}
+{#             pagehidden['mono'].push(target.attr("id"))#}
+{#         }#}
+{#           if(target.attr("class")==="comp_li"){#}
+{#             pagehidden['comp'].push(target.attr("id"))#}
+{#         }#}
+{#         if(target.attr("class")==="patent_li"){#}
+{#             pagehidden['patent'].push(target.attr("id"))#}
+{#         }#}
+{#    }#}
+{##}
+{##}
+{# function dele(e) {#}
+{#     if($(e).parent().parent().prev().attr('class')==="atitle") $(e).parent().parent().prev().remove()#}
+{#         $(e).parent().parent().remove()#}
+{# }#}
+{##}
+{# function bulid() {#}
+{#      $("#save_all").css("visibility","visible")#}
+{#         const button =$('.vis_button')#}
+{#         for(let i=0; i<button.length; i++){#}
+{#            button[i].style.visibility = "visible";#}
+{#         }#}
+{#     }#}
+{##}
+{# function save_all() {#}
+{#     const conf_list=document.getElementsByClassName("conf_li")#}
+{#     const jn_list=document.getElementsByClassName("jn_li")#}
+{#     const prog_list=document.getElementsByClassName("prog_li")#}
+{#     const soft_list=document.getElementsByClassName("soft_li")#}
+{#     const mono_list=document.getElementsByClassName("mono_li")#}
+{#     const patent_list=document.getElementsByClassName("patent_li")#}
+{#     const comp_list=document.getElementsByClassName("comp_li")#}
+{#     const conf = [];#}
+{#     const jn=[];#}
+{#     const prog=[];#}
+{#     const soft=[];#}
+{#     const mono=[];#}
+{#     const patent=[];#}
+{#     const comp=[];#}
+{#     const honor=[];#}
+{#     const course=[];#}
+{#     for(let i=0; i<conf_list.length; i++){#}
+{#         let id=conf_list[i].id.toString()#}
+{#         let list=conf_list[i].getAttribute('value')#}
+{#         conf.push({id,list})#}
+{#     }#}
+{#     for(let i=0; i<jn_list.length; i++){#}
+{#         let id=jn_list[i].id.toString()#}
+{#         let list=jn_list[i].getAttribute('value')#}
+{#         jn.push({id,list})#}
+{#     }#}
+{#     for(let i=0;i<prog_list.length;i++){#}
+{#         prog.push(prog_list[i].id)#}
+{#     }#}
+{#     for(let i=0;i<soft_list.length;i++){#}
+{#         soft.push(soft_list[i].id)#}
+{#     }#}
+{#     for(let i=0;i<mono_list.length;i++){#}
+{#         mono.push(mono_list[i].id)#}
+{#     }#}
+{#      for(let i=0;i<patent_list.length;i++){#}
+{#         patent.push(patent_list[i].id)#}
+{#     }#}
+{#     for(let i=0;i<comp_list.length;i++){#}
+{#         comp.push(comp_list[i].id)#}
+{#     }#}
+{#     const data_json={#}
+{#        account:Serve1.account,#}
+{#         conf:conf,#}
+{#         jn:jn,#}
+{#         prog:prog,#}
+{#         soft:soft,#}
+{#         mono:mono,#}
+{#         patent:patent,#}
+{#         comp:comp,#}
+{#         course:course,#}
+{#         honor:honor,#}
+{#         hidden:pagehidden#}
+{#     }#}
+{#     $.ajax({#}
+{#        type: 'POST',#}
+{#        url: "/users/page_save",#}
+{#        data: JSON.stringify(data_json),#}
+{#        contentType: 'application/json; charset=UTF-8',#}
+{#        dataType: 'json',#}
+{#         success: function(data) {#}
+{#            layer.msg(data['message'], {#}
+{#                icon: 1,#}
+{#                time: 1000,#}
+{#                offset: 't',#}
+{#            })#}
+{#        }})#}
+{#    const button =$('.vis_button')#}
+{#         for(let i=0; i<button.length; i++){#}
+{#            button[i].style.visibility = "hidden";#}
+{#         }#}
+{#     pagehidden['conf']=[]#}
+{#    pagehidden['jn']=[]#}
+{#    pagehidden['prog']=[]#}
+{#    pagehidden['soft']=[]#}
+{#    pagehidden['comp']=[]#}
+{#    pagehidden['patent']=[]#}
+{#    pagehidden['mono']=[]#}
+{#    pagehidden['honor']=[]#}
+{#    pagehidden['course']=[]#}
+{# }#}
+{##}
+{# function upp(e) {       // 点击li元素时#}
+{#     if( $(e).parent().parent().prev().attr('class')===$(e).parent().parent().attr('class')){#}
+{#         $(e).parent().parent().prev().before($(e).parent().parent())#}
+{#     }#}
+{##}
+{#}#}
+{#function loww(e) {       // 点击li元素时#}
+{#    if( $(e).parent().parent().next().attr('class')===$(e).parent().parent().attr('class')){#}
+{#         $(e).parent().parent().next().after($(e).parent().parent())#}
+{#     }#}
+{#}#}
+{##}
+{##}
+{##}
+{#</script>#}
+{% endblock %}

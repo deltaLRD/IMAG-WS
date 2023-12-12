@@ -1,0 +1,53 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+        <form action="{{url_for('admins.soft_modify_admin',soft_name=soft_home.name)}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">软件著作</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">作者</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.author }}"
+                   name="author">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">登记号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.num }}"
+                   name="num">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">权利获得方式</label><br>
+            <select class="form-control" name="language" data-value="{{ soft_home.language }}">
+                <option>原始取得</option>
+                <option>终受取得</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" value="{{ soft_home.DOI }}" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">权利范围</label><br>
+            <select class="form-control" name="employ" data-value="{{ soft_home.limits }}">
+                <option>全部权利</option>
+                <option>部分权利</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">开发完成时间</label>
+            <input type="date" class="form-control" id="exampleInputEmail1" value="{{ soft_home.times }}"
+                   name="times">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">软件著作链接</label>
+            <input type="text" class="form-control" name="link" value="{{ soft_home.link }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">软件著作附件</label>
+            <input type="file" id="exampleInputFile" name="encd" data-value="{{ soft_home.encd }}"
+                   value=" {{ soft_home.encd }} ">
+        </div>
+        <button type="submit" class="btn btn-default">修改
+        </button>
+    </form>
+{% endblock %}

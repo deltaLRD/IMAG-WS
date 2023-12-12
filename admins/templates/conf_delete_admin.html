@@ -1,0 +1,54 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+
+<table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"> 论文题目 </th>
+                <th scope="col"> 作者 </th>
+                <th scope="col"> 修改 </th>
+                <th scope="col"> 删除 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in conf_home %}
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.name }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+{#                            {% for auth in row.summary.author  %}#}
+                            {{row.author}}
+{#                            {% endfor %}#}
+                        </label>
+                    </div>
+                 </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <a class="btn btn-default" href="{{url_for("admins.conf_modify_admin",conf_name=row.name)}}">修改</a>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                 <a class="btn btn-default" href="{{url_for("admins.conf_delete_admin",conf_name=row.name)}}">删除</a>
+
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+{% endblock %}

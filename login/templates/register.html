@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="../../users/static/css/index.css">
+<link rel="stylesheet" type="text/css" href="../../users/static/css/cropper.css">
+{% endblock %}
+{% block all %}
+     <div class="popup-wrap">
+    <div  class="s-upload-container">
+      <div class="head">
+        <span>上传图片</span>
+        <input type="button" class="btn" id="closeBtn" value="关闭" />
+      </div>
+      <div class="s-upload-main">
+        <!-- 上传图片 -->
+        <div class="top-box">
+          <span class="title">图片上传</span>
+          <div class="btn file-box">
+            选择文件
+            <input type="file" accept="image/jpg,image/jpeg,image/png" name="avatar" id="file" class="btn"  multiple="multiple">
+          </div>
+          <div class="right">预览区域</div>
+        </div>
+        <div class="s-upload-content">
+          <!-- 裁剪区域 -->
+          <div class="left-box">
+            <img src="" id="imageId" alt="" class="image">
+          </div>
+          <!-- 预览区域 -->
+          <div class="right-box">
+            <div class="previewBox"></div>
+          </div>
+        </div>
+        <div class="action bottom-box">
+          <!-- 旋转 -->
+            <div class="left">
+              <input type="button" id="btnLeft"  value="向左旋转" class="btn" onclick="rotateFn('1')">
+              <input type="button" id="btnRight" value="向右旋转" class="btn" onclick="rotateFn('2')">
+            </div>
+            <div class="right">
+              <!-- 放大、缩小、还原 -->
+              <input type="button" id="btnLarge" class="btn" value="放大">
+              <input type="button" id="btnSmall" class="btn" value="缩小" >
+              <input type="button" id="btnScale" class="btn" value="换向">
+              <input type="button" id="btnInit" class="btn" value="还原">
+              <!-- 保存 -->
+              <input type="button" id="btnSubmit" class="btn submit" value="保存修改" >
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <form id="formid" method="POST" enctype="multipart/form-data" >
+    <div class="form-group">
+        <label for="exampleInputEmail1"><span style="color:red;">*</span>账户</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="英文加数字" name="account" >
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1"><span style="color:red;">*</span>密码</label>
+        <input  type="password" class="form-control" id="exampleInputEmail2" placeholder="密码" name="password" >
+      </div>
+        <div class="media">
+                  <img id="imgBoxId" class="media-object" src="" width="100px" height="">
+                  <input type="button" class="size_btn1"  value="上传头像" />
+            </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>姓名</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="姓名" name="name" >
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>英文名</label>
+        <input type="text" class="form-control" placeholder="英文名" name="Eng_name" >
+      </div>
+        <div class="form-group">
+        <label >用户类别</label><br>
+        <label >
+          <input type="radio" name="classify" id="inlineRadio1" value="博士生导师" > 博士生导师
+        </label>
+        <label >
+          <input type="radio" name="classify" id="inlineRadio2" value="硕士生导师"> 硕士生导师
+        </label>
+            <label >
+          <input type="radio" name="classify" id="inlineRadio3" value="其他老师"> 其他老师
+        </label>
+            <label >
+          <input type="radio" name="classify" id="inlineRadio4" value="博士生"> 博士生
+        </label>
+            <label >
+          <input type="radio" name="classify" id="inlineRadio5" value="硕士生"> 硕士生
+        </label>
+      </div>
+        <div class="form-group">
+        <label >导师</label>
+         <select name="tutor" id="tut">
+                    <option value="1">唐金辉</option>
+                    <option value="2">李泽超</option>
+                    <option value="3">潘金山</option>
+                    <option value="4">舒祥波</option>
+                    <option value="5">项欣光</option>
+                    <option value="6">宋研</option>
+                    <option value="7">孙运莲</option>
+                    <option value="8">代龙泉</option>
+                    <option value="9">杜晓宇</option>
+                    <option value="10">金露</option>
+         </select>
+      </div>
+         <div class="form-group">
+        <label >指导教师</label>
+        <select name="instructor" id="tea">
+                    <option value="1">唐金辉</option>
+                    <option value="2">李泽超</option>
+                    <option value="3">潘金山</option>
+                    <option value="4">舒祥波</option>
+                    <option value="5">项欣光</option>
+                    <option value="6">宋研</option>
+                    <option value="7">孙运莲</option>
+                    <option value="8">代龙泉</option>
+                    <option value="9">杜晓宇</option>
+                    <option value="10">金露</option>
+                </select>
+      </div>
+         <div class="form-group">
+        <label for="exampleInputPassword1">入学年份</label>
+        <input type="text" id="test1" name="dat"  placeholder="入学年份"  >
+      </div>
+         <div class="form-group">
+        <label >是否毕业</label><br>
+        <label >
+          <input type="radio" name="graduated" id="inlineRadio6" value="0" >未毕业
+        </label>
+        <label >
+          <input type="radio" name="graduated" id="inlineRadio7" value="1">已毕业
+        </label>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>email</label>
+        <input type="text" class="form-control" placeholder="email" name="email" >
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>Tel</label>
+        <input type="text" class="form-control" placeholder="电话号码" name="phone" >
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">地址</label>
+        <input type="text" class="form-control" placeholder="通讯地址" name="address">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">研究方向</label>
+        <input type="text" class="form-control" placeholder="研究方向" name="direction">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>个人简介(中文版)</label>
+            <textarea type="text" class="form-control" rows="3" placeholder="个人简介(中文)" name="profile_c" ></textarea>
+      </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">个人简介(英文版)</label>
+            <textarea type="text" class="form-control" rows="3" placeholder="个人简介(英文)" name="profile_eng" ></textarea>
+      </div>
+      <button type="button" class="btn btn-default" onclick="judge()" >注册</button>
+    </form>
+
+{% endblock %}
+
+
+{% block js %}
+     <script src="../../../static/cropper.js"></script>
+<script>
+layui.use('laydate', function() {
+          var laydate = layui.laydate;
+          //执行一个laydate实例
+          laydate.render({
+              elem: '#test1',
+              type: 'year'
+          });
+      })
+     $("#file").change(function(e){
+		var sc = $("#file").get(0);
+        console.log(sc)
+		if(sc){
+			selectImg(sc)
+		}
+	})
+    var cropper_item
+    function init (cut_size) {
+        var sizeArr = [0, 0];
+        var aspectRatio = null;
+        if (cut_size) {
+            sizeArr = cut_size.split('*');
+            var w = sizeArr[0] * 1;
+            var h = sizeArr[1] * 1;
+
+            if (w > h) {
+                aspectRatio = (w / h) / 1;
+            } else {
+                aspectRatio = 1 / (h / w);
+            }
+        }
+        cropper_item=new Cropper(
+            imageId, {
+            viewMode: 1,
+            dragMode: 'none',
+            initialAspectRatio: 1/1.5,
+            preview: '.previewBox',
+            // 是否在容器上显示网格背景
+            background: true,
+            // 定义自动剪裁区域的大小
+            // autoCropArea: 1,
+            // 是否允许鼠标 缩放图片
+            zoomOnWheel: true,
+            // 是否允许改变剪裁框的大小
+            cropBoxResizable:true,
+            // 是否可以移动裁剪框
+            cropBoxMovable:true,
+            // 是否允许旋转图片
+            rotatable: true,
+        })
+
+}
+
+function closeFn (){
+	$('.popup-wrap').removeClass('on');
+	cropper_item.destroy()
+}
+$('.size_btn1').on('click',function (e){
+	init($(this).attr('value'));
+	$('.popup-wrap').addClass('on');
+});
+// 关闭弹窗
+$('#closeBtn').on('click',function(){
+	closeFn();
+});
+
+
+	// 角度
+	var deg = 0;
+	//向左旋转
+	$("#btnLeft").on("click",function () {
+		rotateFn(1)
+
+	});
+	//向右旋转
+	$("#btnRight").on("click",function () {
+		rotateFn(2)
+	});
+
+	//换向
+	var flagX = true;
+	$("#btnScale").on("click",function () {
+		if(flagX){
+            cropper_item.scaleX(-1)
+			{#$('#imageId').cropper("scaleX", -1);#}
+			flagX = false;
+		}else{
+            cropper_item.scaleX(1)
+			{#$('#imageId').cropper("scaleX", 1);#}
+			flagX = true;
+		}
+		flagX != flagX;
+	});
+
+	//复位
+	$("#btnInit").on("click",function () {
+		cropper_item.reset()
+	});
+
+
+	// 放大
+	$("#btnLarge").on("click",function () {
+        cropper_item.zoom(0.1)
+	});
+
+	// 缩小
+	$("#btnSmall").on("click",function () {
+        cropper_item.zoom(-0.1)
+	});
+
+
+	// 旋转
+	function rotateFn (type){
+		if(type ==1){
+			deg += 90;
+		} else {
+			deg -= 90;
+		}
+        console.log(cropper_item)
+		cropper_item.rotate(deg)
+	}
+
+
+	//图像上传
+	function selectImg(file) {
+		if (!file.files || !file.files[0]){
+            console.log("no")
+				return;
+		}
+        console.log(11)
+        {#console.log(file.files[0])#}
+		var reader = new FileReader();
+		reader.onload = function (evt) {
+				var replaceSrc = evt.target.result;
+
+				//更换cropper的图片
+             cropper_item.replace(replaceSrc, false);
+		}
+		reader.readAsDataURL(file.files[0]);
+	}
+    var base64url
+	//裁剪后的处理
+	$("#btnSubmit").on("click",function () {
+			if ($("#imageId").attr("src") == null ){
+				return false;
+			}else{
+					var cas = cropper_item.getCroppedCanvas();//获取被裁剪后的canvas
+					base64url = cas.toDataURL('image/png'); //转换为base64地址形式
+                {#console.log(base64url)#}
+				$('#imgBoxId').attr('src',base64url)
+				closeFn()
+			}
+	});
+
+	// base64 to file
+	function base64toFile  (dataurl)  {
+
+			const arr = dataurl.split(',');
+			const mime = arr[0].match(/:(.*?);/)[1];
+			const suffix = mime.split('/')[1];
+			const bstr = atob(arr[1]);
+			let n = bstr.length;
+			const u8arr = new Uint8Array(n);
+			while (n--) {
+				u8arr[n] = bstr.charCodeAt(n);
+			}
+			const file = new File([u8arr], `avatar`, {
+				type: mime
+			});
+
+			return file;
+	}
+
+    function judge(){
+        var name=document.getElementsByName("account")
+        if(name[0].value===null||name[0].value.trim()==="") {
+            alert("请输入账号名！")
+            return ;
+        }
+        var author=document.getElementsByName("password")
+        if(author[0].value===null||author[0].value.trim()==="") {
+            alert("请输入密码！")
+            return ;
+        }
+        var conf_name=document.getElementsByName("name")
+        if(conf_name[0].value===null||conf_name[0].value.trim()==="") {
+            alert("请输入姓名！")
+            return ;
+        }
+        var dat=document.getElementsByName("Eng_name")
+        if(dat[0].value===null||dat[0].value.trim()==="") {
+            alert("请输入英文名！")
+            return ;
+        }
+        var page=document.getElementsByName("phone")
+        if(page[0].value===null||page[0].value.trim()==="") {
+            alert("请输入电话号码！")
+            return ;
+        }
+        var email=document.getElementsByName("email")
+        if(email[0].value===null||email[0].value.trim()==="") {
+            alert("请输入邮件！")
+            return ;
+        }
+        var obj = document.getElementsByName("classify");
+        var objYN = false
+
+        for (i = 0; i < obj.length; i++) {
+                if (obj[i].checked === true) {
+                    objYN = true;
+                    break;
+                }
+        }
+        if(objYN===false){
+            alert("至少选择一个用户类别！");
+        }
+        else {
+             var data = new FormData($("#formid")[0]);
+             if(base64url){
+                var file = base64toFile(base64url)
+                 console.log(file)
+                data.append('avatar',file );
+            }
+            $.ajax({
+                type: 'POST',
+                url: "/login/register_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1500,
+                            offset: 't',
+                        })
+                        tiao("/login/login")
+                    }
+                }
+            })
+        }
+    }
+    async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+
+
+</script>
+{% endblock %}

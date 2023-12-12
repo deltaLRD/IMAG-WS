@@ -1,0 +1,84 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+     <form action="{{url_for('admins.user_modify',account=user_home.account)}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">账户</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="账户" name="account" value="{{ user_home.account }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">密码</label>
+            <input type="password" class="form-control" id="exampleInputEmail1" placeholder="密码" name="password" value="{{ user_home.password }}">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">姓名</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="姓名" name="name" value="{{ user_home.name}}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">英文名</label>
+            <input type="text" class="form-control" placeholder="英文名" name="Eng_name" value="{{ user_home.Eng_name }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">用户类别</label><br>
+            <label class="radio-inline">
+                <input type="radio" name="classify" id="inlineRadio1" value="博士生导师"> 博士生导师
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="classify" id="inlineRadio2" value="硕士生导师"> 硕士生导师
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="classify" id="inlineRadio3" value="其他老师"> 其他老师
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="classify" id="inlineRadio4" value="博士生"> 博士生
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="classify" id="inlineRadio5" value="硕士生"> 硕士生
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">email</label>
+            <input type="text" class="form-control" placeholder="email" name="email" value="{{ user_home.email }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Tel</label>
+            <input type="text" class="form-control" placeholder="电话号码" name="phone" value="{{ user_home.phone }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">地址</label>
+            <input type="text" class="form-control" placeholder="通讯地址" name="address" value="{{ user_home.address }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">研究方向</label>
+            <input type="text" class="form-control" placeholder="研究方向" name="direction" value="{{ user_home.direction }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">个人简介</label>
+            <textarea type="text" class="form-control" rows="3" placeholder="个人简介" name="profile">{{ user_home.profile }}</textarea>
+        </div>
+
+{#        <div class="form-group">#}
+{#            <label for="exampleInputFile">头像</label>#}
+{#            <input type="file" id="exampleInputFile" name="avatar">#}
+{#        </div>#}
+        <button type="submit" class="btn btn-default">修改</button>
+    </form>
+    <script >
+    var tch = "{{classify_name}}"
+    $(document).ready(function(){
+    if (tch ==="博士生导师"){
+       document.getElementById("inlineRadio1").checked = true;}
+        {#$("#inlineRadio1").attr(checked, true);}#}
+    else if( tch==="硕士生导师"){
+       document.getElementById("inlineRadio2").checked = true;}
+        {#$("#inlineRadio2").attr(checked, true);}#}
+    else if( tch==="其他老师"){
+       document.getElementById("inlineRadio3").checked = true;}
+    else if( tch==="博士生"){
+       document.getElementById("inlineRadio4").checked = true;}
+    else{
+        document.getElementById("inlineRadio5").checked = true;}
+
+    {#document.getElementById("password1").value={{tch_account1.password}}#}
+}); </script>
+{% endblock %}

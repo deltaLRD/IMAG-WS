@@ -1,0 +1,93 @@
+
+<html lang="zh-CN">
+  <head>
+      {% block head %}
+      {% endblock %}
+      <style>
+      #formid{
+       width:60%;
+        margin:0 auto;
+        margin-top: 50px;
+      }
+      </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>IMAG@NJUST</title>
+
+<link rel="stylesheet" href="../../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../static/layui-v2.6.8/layui/css/layui.css">
+    <script src="../../../static/layui-v2.6.8/layui/layui.js"></script>
+  </head>
+  <body>
+<script type="text/javascript"    src="../../../static/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="../../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<form id="formid" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label" style="color: red">*</label><label for="exampleInputEmail1" class="form-label" >文章名称</label>
+    <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"  value="{{ data.name }}" required>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">发表时间</label>
+    <input  name="dat" type="text" class="form-control" id="exampleInputPassword1" value="{{ data.dat }}">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">发表刊物</label>
+    <input  name="article"  type="text" class="form-control" id="exampleInputPassword1" value="{{ data.article }}">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">刊物缩写</label>
+    <input name="article_short"   type="text" class="form-control" id="exampleInputPassword1" value="{{ data.article_short }}">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">文章链接</label>
+    <input  name="article_link"  type="text" class="form-control" id="exampleInputPassword1" value="{{ data.article_link }}">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">代码链接</label>
+    <input  name="code_link"  type="text" class="form-control" id="exampleInputPassword1" value="{{ data.code_link }}">
+  </div>
+       <br/>
+  <button type="button" class="btn btn-primary" onclick="code_modify()">Submit</button>
+</form>
+  <script>
+      function code_modify(){
+        let data = new FormData($("#formid")[0]);
+        data.append('user',{{ data.user|tojson }})
+          data.append('id',{{ data.id|tojson }})
+        $.ajax({
+                type: 'POST',
+                url: "/code_resource/modify",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    console.log(data)
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1500,
+                            offset: 't',
+                        })
+                        tiao('/code_resource/table/'+{{ data.user|tojson }})
+
+                    }
+                }
+            })
+    }
+    async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+  </script>
+   </body>

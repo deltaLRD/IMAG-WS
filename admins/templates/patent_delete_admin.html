@@ -1,0 +1,50 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+<table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"> 软著名称 </th>
+                <th scope="col"> 专利权人 </th>
+                <th scope="col"> 修改 </th>
+                <th scope="col"> 删除 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in patent_home %}
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.name }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+{#                            {% for auth in row.summary.author  %}#}
+                            {{ row.patentee}}
+{#                            {% endfor %}#}
+                        </label>
+                    </div>
+                 </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <a class="btn btn-default" href="{{url_for("admins.patent_modify_admin",patent_name=row.name)}}">修改</a>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                 <a class="btn btn-default" href="{{url_for("admins.patent_delete_admin",patent_name=row.name)}}">删除</a>
+
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

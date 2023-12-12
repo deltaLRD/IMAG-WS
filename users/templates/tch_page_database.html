@@ -1,0 +1,253 @@
+{% extends 'base_tch.html' %}
+{% block style %}
+   .vis_button{
+    display:inline;
+    }
+   li{
+    line-height:40px;
+    display:flex;
+    justify-content:space-between;
+    }
+    .atitle{
+    font-size:40px;
+    font-family:"微软雅黑";
+    padding:20px 0px;
+    }
+    .li_name{
+    font-size:10px;
+    font-family:"微软雅黑";
+    }
+    .add_title{
+    display:flex;
+    justify-content:space-between;
+    }
+{% endblock %}
+{% block center %}
+
+
+
+
+
+
+
+
+
+
+    <div class="media">
+        <div class="media-left media-middle">
+            <a href="#">
+                <img class="media-object" src="../../static/avatar/{{ tch_info.account }}.jpg"
+                     alt="{{ tch_info.account }}" width="180px" height="" id="imag_id">
+            </a>
+        </div>
+        <div class="media-body">
+
+            <h3 class="media-heading">{{ tch_info.Eng_name }}</h3>
+
+            <p><a src="http://www.njust.edu.cn/">Nanjing University of Science and Technology</a></p>
+
+
+            <p>Email : {{ tch_info.email }}</p>
+
+            <p id="profile">{{ tch_info.profile }}<a onclick="tran();">[中文版]</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+ <div class="add_title">
+        <div class="atitle" id="title_jn">论文</div>
+        </div>
+    <ul id="jn_id">
+            {% for row in jn_info_dict %}
+            <li class="jn_li" id="{{ row.id }}" value="{{ row['author'] }}">
+                <div class="li_name">{{ row.name}}, {{ row.all_author }}, {{ row.dat }},({{ row.conf_name }}) {{ row.author }}
+                </div>
+            <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+            </div>
+            </li>
+           {% endfor %}
+    </ul>
+    <ul id="conf_id">
+        {% for row  in conf_info_dict %}
+            <li class="conf_li" id="{{ row.id }}" value="{{ row['author'] }}">
+                <div class="li_name">{{ row.name}}, {{ row.all_author }}, {{ row.dat }},({{ row.conf_name }}) {{ row.author }}
+
+                </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+     <div class="add_title">
+    <div class="atitle" id="title_patent">专利</div>
+     </div>
+    <ul id="patent_id">
+        {% for row in patent_info %}
+            <li class="patent_li" id="{{ row.id }}" >
+                <div class="li_name">{{ row.summary.name}}, {{ row.summary.patentee }},{{ row.summary.effect_dat }} </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+     <div class="add_title">
+    <div class="atitle" id="title_honor">荣誉</div>
+    </div>
+    <ul id="honor_id">
+        {% for row in honor_info %}
+            <li class="honor_li" id="{{ row.id }}" >
+                 <div class="li_name">{{ row.summary.title}} </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+     <div class="add_title">
+    <div class="atitle" id="title_pro">项目</div>
+     </div>
+    <ul id="prog_id">
+        {% for row in prog_info %}
+            <li class="prog_li" id="{{ row.id }}" >
+           <div class="li_name">{{ row.summary.name}},  {{ row.summary.start_time }} - {{ row.summary.deadline }}  , {{ row.summary.cost }}万, 主持({{ row.summary.principal }}) </div>
+            <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+            </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="add_title">
+        <div class="atitle" id="title_jn">社会兼职</div>
+    </div>
+    <ul id="social_id">
+    {% for row in social_info %}
+                <li class="social_li" id="{{ row.id }}" >
+                     <div class="li_name">{{ row.summary.title }}</div>
+                    <div class="vis_button">
+                    <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                    </div>
+                </li>
+            {% endfor %}
+    </ul>
+     <div class="add_title">
+        <div class="atitle" id="title_course">课程</div>
+     </div>
+            <ul id="course_id">
+    {% for row in course_info %}
+                <li class="course_li" id="{{ row.id }}" >
+                     <div class="li_name">{{ row.summary.name}} </div>
+                    <div class="vis_button">
+                    <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                    </div>
+                </li>
+            {% endfor %}
+    </ul>
+     <div class="add_title">
+    <div class="atitle" id="title_comp">竞赛</div>
+     </div>
+    <ul id="comp_id">
+        {% for row in comp_info %}
+            <li class="comp_li" id="{{ row.id }}" >
+                 <div class="li_name">{{ row.summary.name}}, {{ row.summary.ranking }} </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+     <div class="add_title">
+    <div class="atitle" id="title_mono">专著</div>
+     </div>
+    <ul id="mono_id">
+        {% for row in mono_info %}
+            <li class="mono_li" id="{{ row.id }}" >
+               <div class="li_name">{{ row.summary.name}} , {{ row.summary.editor }} </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+
+        {% endfor %}
+    </ul>
+    <div class="add_title">
+    <div class="atitle" id="title_soft">软著</div>
+    </div>
+    <ul id="soft_id">
+        {% for row in soft_info %}
+            <li class="soft_li" id="{{ row.id }}">
+                <div class="li_name">{{ row.summary.name}}, {{ row.summary.author }}, {{ row.summary.times }} </div>
+                <div class="vis_button">
+                <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {{ others_info }}
+
+
+
+ <script>
+    var data={{ soft_info|tojson }}
+    {#console.log(data)#}
+
+
+ function dele(e) {
+     layer.confirm('你确认要删除吗', function (index) {
+         if ($(e).parent().parent().prev().attr('class') === "atitle") $(e).parent().parent().prev().remove()
+         $(e).parent().parent().remove()
+         layer.close(index);
+         const data_json = {
+             id: $(e).parent().parent().attr('id'),
+             account: Serve1.account,
+             item: $(e).parent().parent().attr('class')
+         }
+         {#console.log(data_json)#}
+         $.ajax({
+             type: 'POST',
+             url: "/users/user_database",
+             data: JSON.stringify(data_json),
+             contentType: 'application/json; charset=UTF-8',
+             dataType: 'json',
+             success: function (data) {
+                 layer.msg(data['message'], {
+                     icon: 1,
+                     time: 1000,
+                     offset: 't',
+                 })
+             }
+         })
+
+
+     })
+ }
+
+
+ var Serve1={
+     profile_eng:{{ tch_info.profile|tojson }},
+     profile_ch:{{ tch_info.profile_c|tojson }},
+     account:{{ tch_info.account|tojson }}
+ }
+ tranx=function (){
+      pro=document.getElementById("profile")
+      temp=document.createElement("a")
+      temp.innerText="[中文版]"
+     pro.innerText=Serve1.profile_eng
+     temp.onclick=tran
+     pro.appendChild(temp)
+ }
+  tran=function (){
+        pro=document.getElementById("profile")
+        temp=document.createElement("a")
+        temp.innerText="[English Version]"
+        temp.onclick=tranx
+        pro.innerText=Serve1.profile_ch
+        pro.appendChild(temp)
+       }
+
+</script>
+{% endblock %}

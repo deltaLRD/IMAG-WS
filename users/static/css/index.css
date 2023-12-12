@@ -1,0 +1,158 @@
+body{
+  padding:50px;
+}
+.imgBox{
+  width: 300px;
+  display: block;
+  background-color: #fff;
+  min-height: 100px;
+  box-shadow: 1px 1px  2px  2px #eee inset;
+  border-radius: 4px;
+}
+.popup-wrap{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.popup-wrap.on{
+  display: flex;
+}
+
+.s-upload-container{
+  width:898px; 
+  height:586px;
+  background: #fff;
+}
+.size_btn{
+  background: #275d96;
+  color: #fff;
+  height: 50px;
+  padding: 0 30px;
+  border-radius: 6px;
+  border: 0;
+  margin-right: 15px;
+  font-size: 18px;
+}
+.s-upload-container .btn{
+  background: #275d96;
+  color: #fff;
+  border: 0;
+  line-height: 35px;
+  padding: 0px 12px;
+  border-radius: 4px;
+  font-size:14px;
+  float: left;
+  margin-left:5px;
+  cursor: pointer;
+}
+
+.s-upload-container .submit{
+  width:200px;
+  margin:0px 0px 0px 18px;
+}
+  /* 头部 */
+.s-upload-container>.head{
+  border-bottom: 1px solid #e5e5e5;
+  line-height:54px;
+  font-size:18px;
+  padding:0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 主体 */
+.s-upload-container>.s-upload-main{
+  position: relative;
+  padding: 15px 30px;
+}
+
+/* 顶部 */
+.s-upload-main>.top-box{
+  overflow: hidden;
+  margin-bottom:18px;
+}
+.s-upload-main>.top-box .file-box{
+  position: relative;
+  overflow: hidden;
+  height: 35px;
+}
+
+.s-upload-main>.top-box .file-box .btn{
+  position: absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  top:0;
+  opacity: 0;
+  width:100%;
+}
+
+.s-upload-main>.top-box .title{
+  float: left;
+  width: 100px;
+  line-height:35px;
+  font-weight: bold;
+  font-size:14px;
+}
+.s-upload-main>.top-box .right{
+  float: right;
+  line-height: 35px;
+  font-size: 14px;
+  width: 200px;
+  font-weight: bold;
+}
+/* 中间 */
+.s-upload-container .s-upload-content{
+  height:364px;
+  overflow: hidden;
+}
+.s-upload-content .left-box{
+  float: left;
+  width:620px;
+  height:364px;
+  background:#ececec;
+}
+.s-upload-content .left-box .image{
+  display:block;
+  width:100%;
+  max-width:100%;
+}
+.s-upload-content .right-box{
+  float: right;
+  background:#ececec;
+}
+
+.s-upload-content .right-box .previewBox{
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  /* 这个属性可以得到想要的效果 */
+}
+
+/* 底部 */
+.s-upload-main>.bottom-box{
+  overflow: hidden;
+  margin:30px 0 15px;
+}
+
+.s-upload-main>.bottom-box .left{
+  float: left;
+}
+
+
+.s-upload-main>.bottom-box .right{
+  float: right;
+}
+
+#uploadForm{
+  position: fixed;
+  left:1000px;
+}

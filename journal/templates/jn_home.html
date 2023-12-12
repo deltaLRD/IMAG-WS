@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block all %}
+{#<h1>#}
+{#jnerence#}
+{#</h1>#}
+    <br>
+    <div class="card">
+{#    <h2 class="card-header" align="center">{{ jn[0].paper_name }}</h2>#}
+    <h2 class="card-header" align="center">{{ jn.name }}</h2>
+    <h4 class="card-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ jn.author }}</h4>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">期刊名称</th>
+                    <th scope="col">发表日期</th>
+                    <th scope="col">会议地址</th>
+                    <th scope="col">文章号</th>
+                    <th scope="col">DOI</th>
+                    <th scope="col">卷、期号、页码</th>
+                    <th scope="col">收录情况</th>
+                    <th scope="col">收录号</th>
+                    <th scope="col">CCF分区</th>
+                    <th scope="col">CAS分区</th>
+                    <th scope="col">JCR分区</th>
+                    <th scope="col">引用次数</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+{#            {% for row in jn %}#}
+
+                <tr>
+
+                    <td> {{ jn.jn_name }}</td>
+                    <td> {{ jn.dat }}</td>
+                    <td> {{ jn.page }}</td>
+                    <td> {{ jn.address }}</td>
+                    <td> {{ jn.num }}</td>
+                    <td> {{ jn.DOI }}</td>
+                    <td> {{ jn.vol }}、{{ jn.no }}、{{ jn.page }}</td>
+                    <td> {{ jn.employ }}</td>
+                    <td> {{ jn.employ_num }}</td>
+                    <td> {{ jn.ccf }}</td>
+                    <td> {{ jn.cas }}</td>
+                    <td> {{ jn.jcr }}</td>
+                    <td> {{ jn.times }}</td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+    <p>原论文链接：<a href="{{ jn.link }}">{{ jn.link }}</a></p>
+    <p>代码链接：<a href="{{ jn.code_link }}">{{ jn.code_link }}</a></p>
+
+
+
+{#<iframe src="../static/jn_pdf/Towards Question-based Recommender Systems.pdf" type="application/pdf" width="100%" height="700px" marginheight="100px" marginwidth="100px"></iframe>#}
+
+<iframe src="../{{jn.encd}}" type="application/pdf" width="100%" height="700px" marginheight="100px" marginwidth="100px"></iframe>
+
+<script>
+    $(document).ready(function() {
+        document.getElementById("jn_id").className="active";
+ })
+</script>
+{% endblock %}

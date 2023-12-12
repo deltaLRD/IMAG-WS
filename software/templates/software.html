@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block all %}
+
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in soft_home %}
+                    <li>
+                        {{ loop.index }}.{{ row.author }}, {{ row.name }}, 登记号: {{ row.num }}.
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("soft_id").className="active";
+ })
+</script>
+{% endblock %}

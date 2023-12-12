@@ -1,0 +1,118 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">学术专著</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="学术专著" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">语种</label><br>
+            <select class="form-control" name="language">
+                <option>中文</option>
+                <option>外文</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">出版状态</label><br>
+            <select class="form-control" name="employ">
+                <option>已出版</option>
+                <option>待出版</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">ISBN</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="ISBN" name="ISBN">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">编辑</label>
+            <input type="text" class="form-control" placeholder="编辑" name="editor" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">国家或地区</label>
+            <input type="text" class="form-control" placeholder="国家或地区" name="country">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">城市</label>
+            <input type="text" class="form-control" placeholder="城市" name="city">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">起止页码</label>
+            <input type="text" class="form-control" placeholder="起止页码" name="page">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">总字数</label>
+            <input type="text" class="form-control" placeholder="总字数" name="word">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版社</label>
+            <input type="text" class="form-control" placeholder="出版社" name="press">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版日期</label>
+            <input type="date" class="form-control" placeholder="出版日期" name="dat">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" placeholder="DOI" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">学术专著链接</label>
+            <input type="text" class="form-control" placeholder="学术专著" name="link">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">学术专著附件</label>
+            <input type="file" id="exampleInputFile" name="encd">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">是否收录到个人信息库</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="1" name="adds">
+            </label>
+        </div>
+
+        <button type="button" class="btn btn-default" onclick="mono_commit_data()">上传 </button>
+    </form>
+
+    <script>
+
+
+
+        function mono_commit_data() {
+             var data = new FormData($("#formid")[0]);
+             data.append('account',{{ account_url.account|tojson }})
+            $.ajax({
+                type: 'POST',
+                url: "/monograph/mono_upload_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao(data['url'])
+                    }
+
+                }
+            })
+        }
+        async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+
+
+    </script>
+{% endblock %}

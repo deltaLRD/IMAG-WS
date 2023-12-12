@@ -1,0 +1,85 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="exampleInputEmail1">项目名</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ prog_home.name }}" name="name">
+      </div>
+
+        <div class="form-group">
+        <label for="exampleInputEmail1">负责人</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ prog_home.principal }}" name="principal">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputEmail1">项目等级</label><br>
+        <select class="form-control" name="level" data-value="{{ prog_home.level }}">
+            <option>国家级项目</option>
+            <option>省级项目</option>
+            <option>横向项目</option>
+        </select>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">项目开始时间</label>
+        <input type="date" class="form-control"  value="{{ prog_home.start_time }}" name="start_time">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">项目结束时间</label>
+        <input type="date" class="form-control" value="{{ prog_home.deadline }}" name="deadline">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">费用</label>
+        <input type="text" class="form-control" value="{{ prog_home.cost }}" name="cost">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">项目号</label>
+        <input type="text" class="form-control" value="{{ prog_home.prog_num }}" name="prog_num">
+      </div>
+           <div class="form-group">
+        <label for="exampleInputPassword1">项目来源</label>
+        <input type="text" class="form-control" value="{{ prog_home.pro_source}}" name="pro_source">
+      </div>
+       <div class="form-group">
+        <label for="exampleInputFile">申请书、合同、结题书等文件</label>
+        <input type="file" id="exampleInputFile" name="contract" multiple="multiple">
+      </div>
+      <button type="button" class="btn btn-default" onclick="firmm()">修改</button>
+</form>
+    <script>
+function  firmm(){
+     var data = new FormData($("#formid")[0]);
+     data.append('pre',{{ prog_home.name|tojson }})
+     $.ajax({
+                type: 'POST',
+                url: "/program/prog_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao('/program/prog_add_tch/'+{{ account_url.account|tojson }})
+                        {#window.location.href=('/program/prog_add_tch/'+{{ account_url.account|tojson }})#}
+                    }
+
+                }
+            })
+}
+async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block all %}
+
+  <div class="card">
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col" width="50px"  fixed="true">序号</th>
+                    <th scope="col" width="750px"  fixed="true">文章名称</th>
+                    <th scope="col" width="50px"  fixed="true">发表时间</th>
+                    <th scope="col" width="750px"  fixed="true">发表刊物</th>
+                    <th scope="col" width="250px"  fixed="true">刊物缩写</th>
+{#                    <th scope="col">文章链接</th>#}
+                    <th scope="col" width="150px"  fixed="true">代码链接</th>
+                    <th scope="col" width="150px"  fixed="true">上传人</th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+            {% for row in codes %}
+
+                <tr>
+                     <td> {{ loop.index }}</td>
+                    <td> <a href={{ row.article_link }}>{{ row.name }}</a></td>
+                    <td> {{ row.dat }}</td>
+                    <td> {{ row.article}}</td>
+                    <td> {{ row.article_short }}</td>
+{#                    <td> <a href="{{ row.article_link }}">链接</a></td>#}
+                    <td> <a href="{{ row.code_link}}">链接</a></td>
+                    <td> <a href="mailto: {{ row.email }}">{{ row.user_name }}</a></td>
+            {% endfor %}
+
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        document.getElementById("code_id").className="active";
+ })
+</script>
+
+{% endblock %}

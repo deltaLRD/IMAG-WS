@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{%  block style %}
+     .atitle{
+    font-size:40px;
+    font-family:"微软雅黑";
+    padding:20px 0px;
+    }
+    .li_name{
+    font-size:15px;
+    font-family:"微软雅黑";
+    }
+    li{
+    line-height:40px;
+    display:flex;
+    justify-content:space-between;
+    }
+    .containers{
+    width:80%;
+    margin:0 auto;
+    margin-bottom:100px;
+    }
+{%  endblock %}
+{% block center %}
+ <script type="text/javascript" src="../../../static/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet"    href= "../../../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<script src="../../../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="../../../static/layui-v2.6.8/layui/css/layui.css">
+    <script src="../../../static/layui-v2.6.8/layui/layui.js"></script>
+
+    <div class="media">
+        <div class="media-left media-middle">
+            <a href="#">
+                <img class="media-object" src="../../static/avatar/{{ tch_info.account }}.jpg"
+                     alt="{{ tch_info.account }}" width="180px" height="" id="imag_id">
+            </a>
+        </div>
+        <div class="media-body">
+            <h3 class="media-heading">{{ tch_info.Eng_name }}</h3>
+
+            <p><a src="http://www.njust.edu.cn/">Nanjing University of Science and Technology</a></p>
+
+
+            <p>Email : {{ tch_info.email }}</p>
+
+             <p id="profile">{{ tch_info.profile }}<a onclick="tran();">[中文版]</a></p>
+
+        </div>
+    </div>
+
+
+    <hr>
+    <ul>
+        {% if journal|length >0 %}
+        <div class="atitle" id="title_jn">部分论文</div>
+    {% endif %}
+            {% for row in journal %}
+             {% if row.ishide==0 %}
+            <li class="jn_li" id="{{ row.display.id }}" value="{{ row['author'] }}">
+                <div class="li_name">{{ row.display}}
+
+                </div>
+            </li>
+            {% endif %}
+           {% endfor %}
+    {% if patent_info|length >0 %}
+    <div class="atitle" id="title_patent">专利</div>
+    {% endif %}
+        {% for row in patent_info %}
+            <li class="patent_li"  id="{{ row.id }}">
+                <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+    {% if honor_info|length >0 %}
+<div class="atitle" id="title_honor">荣誉</div>
+    {% endif %}
+        {% for row in honor_info %}
+            <li class="honor_li"  id="{{ row.id }}">
+                 <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+    {%  if program|length >0%}
+    <div class="atitle" id="title_pro">项目</div>
+    {% endif %}
+        {% for row in program %}
+            <li class="prog_li" id="{{ row.id }}">
+           <div class="li_name">{{ row.display.pro_source }}, "{{ row.display.name }}" , {{ row.display.start_time }} - {{ row.display.deadline }} ,
+               {% if row.display.cost !='None' and row.display.cost !='' %}
+                   {{ row.display.cost }}万
+               {% else %}
+                    {{ row.display.fund }}万（直接经费）
+               {% endif %}
+                {% if tch_info.name== row.display.principal %}
+                    {{  row.display.role }}
+                {% else %}
+                    参与
+                {% endif %}
+                 </div>
+            </li>
+        {% endfor %}
+    {% if social_info|length >0%}
+    <div class="atitle" id="title_social">社会兼职</div>
+    {% endif %}
+        {% for row in social_info %}
+            <li class="social_li" id="{{ row.id }}" >
+           <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+    {% if course_info|length >0 %}
+<div class="atitle" id="title_course">课程</div>
+    {% endif %}
+        {% for row in course_info %}
+            <li class="course_li"  id="{{ row.id }}">
+                 <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+    {% if competition|length >0 %}
+    <div class="atitle" id="title_comp">竞赛</div>
+    {% endif %}
+        {% for row in competition %}
+            <li class="comp_li" id="{{ row.display.id }}" >
+                 <div class="li_name">{{ row.display.participant  }}, {{ row.display.name }}  {{ row.display.ranking }} , 指导老师:  {{ row.display.teachers }}  </div>
+            </li>
+        {% endfor %}
+    {% if mono_info |length >0 %}
+    <div class="atitle" id="title_mono">专著</div>
+    {% endif %}
+        {% for row in mono_info %}
+            <li class="mono_li"  id="{{ row.id }}">
+               <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+    {% if soft_info|length >0 %}
+    <div class="atitle" id="title_soft">软著</div>
+    {%  endif %}
+        {% for row in soft_info %}
+            <li class="soft_li" id="{{ row.id }}">
+                <div class="li_name">{{  row.display}} </div>
+            </li>
+        {% endfor %}
+
+    {{ others_info }}
+
+    </ul>
+<script>
+     var Serve1={
+     profile_eng:{{ tch_info.profile|tojson }},
+     profile_ch:{{ tch_info.profile_c|tojson }},
+     account:{{ tch_info.account|tojson }}
+ }
+    tranx=function (){
+      pro=document.getElementById("profile")
+      temp=document.createElement("a")
+      temp.innerText="[中文版]"
+     pro.innerText=Serve1.profile_eng
+     temp.onclick=tran
+     pro.appendChild(temp)
+ }
+  tran=function (){
+        pro=document.getElementById("profile")
+        temp=document.createElement("a")
+        temp.innerText="[English Version]"
+        temp.onclick=tranx
+        pro.innerText=Serve1.profile_ch
+        pro.appendChild(temp)
+       }
+</script>
+{% endblock %}

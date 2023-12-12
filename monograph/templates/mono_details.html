@@ -1,0 +1,54 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+    <div class="card">
+{#    <h2 class="card-header" align="center">{{ Conf[0].paper_name }}</h2>#}
+    <h2 class="card-header" align="center">{{ mono.name }}</h2>
+    <h4 class="card-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ mono.editor  }}</h4>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+
+                    <th scope="col">专著名</th>
+                    <th scope="col">国家</th>
+                    <th scope="col">编辑</th>
+                    <th scope="col">起始页码</th>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">出版日期</th>
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+{#            {% for row in conf %}#}
+
+                <tr>
+
+                    <td> {{ mono.name }}</td>
+                    <td> {{ mono.country}}</td>
+                    <td> {{ mono.editor  }}</td>
+                    <td> {{ mono.page }}</td>
+                    <td> {{ mono.ISBN}}</td>
+                    <td> {{ mono.dat }}</td>
+
+
+
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+</script>
+
+
+{% endblock %}

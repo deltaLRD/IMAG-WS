@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block all %}
+
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in patent_home %}
+                    <li>
+                        {{ loop.index }}. {{ row.name }}, 授权公告号：{{ row.patent_num }} , 授权时间：{{ row.effect_dat }}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("pat_id").className="active";
+ })
+</script>
+{% endblock %}

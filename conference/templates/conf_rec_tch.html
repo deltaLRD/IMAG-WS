@@ -1,0 +1,31 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+<h1>
+Conference
+</h1>
+    <br>
+    <form action="{{ url_for('conference.conf_rec_tch', account=tch_info.account) }}" method="POST" enctype="multipart/form-data">
+    <div class="list-group">
+    {% for row in conf %}
+    <a href="../../../conference/conf_home_tch/{{ tch_info.account }}/{{ row.id }}" class="list-group-item">
+        <br>
+        <h4 class="list-group-item-heading">{{row.name}}</h4>
+            <br>
+        <p class="list-group-item-text">{{row.author}}</p>
+        <br>
+        <div class="row">
+{#          <div class="col-md-3"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 被点击次数：117</div>#}
+{#          <div class="col-md-3"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> 点赞次数：1024</div>#}
+          <div class="col-md-3"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 被点击次数：10</div>
+          <div class="col-md-3"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 来源：{{ row.conf_name }}</div>
+        </div>
+    </a>
+    {% endfor %}
+    </div>
+    </form>
+{#<script>#}
+{#    $(document).ready(function() {#}
+{#        document.getElementById("conf_rec_tch_id").className="active";#}
+{# })#}
+{#</script>#}
+{% endblock %}

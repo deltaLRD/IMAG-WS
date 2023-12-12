@@ -1,0 +1,63 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+
+
+<form action="/admins/issue" method="POST" enctype="multipart/form-data">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"> 问 题 </th>
+                <th scope="col"> 时 间 </th>
+
+                <th scope="col"> 是否解决 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in issue %}
+            <tr>
+
+
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.issue }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.time }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.solve }}
+                        </label>
+                    </div>
+                 </td>
+                    <td>
+                        <div class="form-group">
+
+{#                            <label class="radio-inline">#}
+{#                                <input type="checkbox" name="examine{{ row.id }}"  value="0"> 否#}
+{#                            </label>#}
+                            <label class="radio-inline">
+                                <input type="checkbox" name="issue{{ row.id }}"  value="1">
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="issue"  value="未解决" disabled style="display: none">
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+
+{% endblock %}

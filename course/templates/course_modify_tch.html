@@ -1,0 +1,64 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">课程名</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ course_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">授课教师</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ course_home.teacher }}"
+                   name="teacher">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">授课内容</label>
+            <input type="text" class="form-control" value="{{ course_home.content }}" name="content">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">相关主页</label>
+            <input type="text" class="form-control" value="{{ course_home.page }}" name="page">
+        </div>
+        <button type="button" class="btn btn-default" onclick="course_submit()">修改</button>
+    </form>
+    <script>
+
+        function course_submit() {
+            var data = new FormData($("#formid")[0]);
+            data.append('account',{{ account_url.account|tojson }})
+            data.append('pre',{{ course_home.name|tojson }})
+            $.ajax({
+                type: 'POST',
+                url: "/course/course_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao('/course/details_tch/'+ {{ course_home.id|tojson }}+'/'+{{ account_url.account|tojson }})
+
+                    }
+
+                }
+            })
+        }
+        async function tiao(url){
+            setTimeout(() => {
+                window.location.href=url
+            }, 1000);
+        }
+
+    </script>
+{% endblock %}

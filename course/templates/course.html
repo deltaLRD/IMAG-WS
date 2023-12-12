@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block all %}
+<h1>
+Course
+</h1>
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in course_home %}
+                    <li>
+                        {{ row.summary }}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends 'base_tch.html' %}
+{% block style %}
+    .layui-table-cell.laytable-cell-1-0-1{
+        display:table-cell;
+        vertical-align: middle;
+        height:auto;
+        overflow:visible;
+        text-overflow:inherit;
+        white-space:normal;
+    }
+    .breadcrumb-container{
+        display:flex;
+    justify-content:space-between;
+    }
+    ol.breadcrumb{
+    background-color:#FFFFFF;
+    display:inline;
+
+    }
+    form.form-inline.my-2.my-lg-0{
+    display:inline;
+    margin-right:10px;
+    }
+.modal-body{
+
+    text-align: center;
+    }
+{% endblock %}
+{% block head %}
+    <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="add">收录</a>
+  <a class="layui-btn layui-btn-xs" lay-event="look">查看</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+{% endblock %}
+{% block all %}
+    <div class="breadcrumb-container">
+  <ol class="breadcrumb">
+      <span class="glyphicon glyphicon-home"></span>
+    <li class="breadcrumb-item"><a href={{"/users/tch_page/" +user_account.account}}>个人主页</a></li>
+       <li class="breadcrumb-item active" aria-current="page">DATABASE</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ name }}</li>
+  </ol>
+
+      <form class="form-inline my-2 my-lg-0">
+        <label>
+          <select id="selector" name="search_item" lay-verify="" >
+        <option value="title_search" selected>标题</option>
+        <option value="author_search" >作者</option>
+      </select>
+      </label>
+          <input name="word_" id="search_input"    class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" >
+      <button class="btn btn-primary"  id= "search_button"  onclick="searchfor()"  type="button" >Search</button>
+    </form>
+
+</div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="checkbox"  name="author"  value="第一作者">第一作者
+          <input type="checkbox"  name="author"  value="第二作者">共同一作
+          <input type="checkbox"  name="author"  value="通讯作者">通讯作者
+          <input type="checkbox" name="author"  value="其他作者">其他作者
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confim()">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <table id="demo" lay-filter="test"></table>
+  <script>
+  function searchfor() {
+       table.reload('demo',{
+        	        page: {
+        	          curr: 1 //重新从第 1 页开始
+        	        }
+        	        ,where: {
+        	          item:  $("#selector").val(),
+                      content: $("#search_input").val()
+        	        }
+        	      });
+  }
+   var table=layui.table;
+     table.render({
+        elem: '#demo'
+        ,toolbar: '#toolbarDemo',
+         height: 520,
+         cellMinWidth: 80,
+        url: "/journal/jn_add_tch_back"
+        , cols: [[ //标题栏
+            {field: 'index', title: 'ID', align: 'center', width: '5%'}
+            , {field: 'name', title: '期刊论文', width: '75%'},
+            {fixed: 'right', width:'20%', align: 'center', toolbar: '#barDemo'}
+        ]],
+        page:true
+    })
+{#$('#exampleModal').on('show.bs.modal', function (event) {#}
+{#  var button = $(event.relatedTarget) // Button that triggered the modal#}
+{#    id=button.attr("id")#}
+{#  var recipient = button.data('whatever') // Extract info from data-* attributes#}
+{#  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).#}
+{#  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.#}
+{#  var modal = $(this)#}
+{#  modal.find('.modal-title').text('New message to ' + recipient)#}
+{#  modal.find('.modal-body input').val(recipient)#}
+
+var delete_id
+table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  var data = obj.data; //获得当前行数据
+   delete_id=data.id
+  var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+  var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+  if(layEvent === 'add'){
+    $("#exampleModal").modal()
+  }
+  else if(layEvent === 'del') { //删除
+      layer.confirm('你确认要删除吗', function (index) {
+          obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+          layer.close(index);
+          const data_json = {
+              id: delete_id
+          }
+          $.ajax({
+              type: 'POST',
+              url: "/journal/jn_delete",
+              data: JSON.stringify(data_json),
+              contentType: 'application/json; charset=UTF-8',
+              dataType: 'json',
+              success: function (data) {
+
+                  layer.msg(data['message'], {
+                      icon: 1,
+                      time: 1000,
+                      offset: 't',
+                  })
+                  console.log($(".layui-laypage-em").next().html())
+                  table.reload('demo', {
+                      page: {
+                          curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
+                      }
+
+                  });
+              }
+          })
+
+      })
+  }
+
+
+  else if(layEvent === 'edit'){ //编辑
+    window.open('/journal/jn_modify_tch/'+data.conf_name+'/'+{{ user_account.account|tojson }})
+  }
+  else if(layEvent === 'look'){ //查看
+    window.open('/journal/jn_home_tch/'+ {{ user_account.account|tojson }}+'/'+data.id)
+  }
+});
+
+
+
+function  confim() {
+
+    let res=[]
+    var select = document.getElementsByName('author');
+    for(var i=0;i<select.length;i++){
+        if(select[i].checked===true) res.push(1);
+        else res.push(0)
+    }
+    const data_json={
+        account:{{ user_account.account|tojson }},
+        id:delete_id,
+        select:res,
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: "/journal/jn_add/",
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            layer.msg(data['message'], {
+                icon: 1,
+                time: 1000,
+                offset: 't',
+            })
+        }})
+}
+
+
+
+      </script>
+
+{% endblock %}
+

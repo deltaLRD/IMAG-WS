@@ -1,0 +1,46 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+         <div class="form-group">
+            <label for="exampleInputEmail1">参与者</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="参与者" name="name" value="{{ social_home.name }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">社会、学会及学术兼职</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="社会、学会及学术兼职" name="title" value="{{ social_home.title }}">
+        </div>
+        <button type="button" class="btn btn-default" onclick="firmm()">修改</button>
+    </form>
+    <script>
+    function  firmm(){
+     var data = new FormData($("#formid")[0]);
+     data.append('pre',{{ social_home.summary|tojson }})
+     $.ajax({
+                type: 'POST',
+                url: "/social/social_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        window.location.href=('/social/social_add_tch/'+{{ account_url.account|tojson }})
+                    }
+
+                }
+            })
+}
+    </script>
+{% endblock %}

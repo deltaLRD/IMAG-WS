@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block all %}
+<h1>
+Monograph
+</h1>
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in mono_home %}
+                    <li>
+                        {{ row.summary }}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("pub_id").className="active";
+ })
+</script>
+{% endblock %}

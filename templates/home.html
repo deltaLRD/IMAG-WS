@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block all %}
+
+    <h1>IMAG@NJUST</h1>
+    <p>
+    <h4>Welcome to Intelligent Media Analysis Group (IMAG) in School of Computer Science, Nanjing University of Science and Technology. Our team focuses on analyzing the big media and aims to develop frontier technologies to address the analysis, understanding and management tasks of the big multimedia data. Besides, we also pay attention to the real-world applications, such as multimedia retrieval, face recognition and recommendation. For more information about our work, please refer to the publication page.
+    </h4>
+    </p>
+    <h2>Last News</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in all_news %}
+                    <li>
+                        <a href={{  "/news/"+ row.id|string }}> {{ row.title }}</a>
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("cl_id").className="active";
+ })
+
+
+
+
+</script>
+{% endblock %}

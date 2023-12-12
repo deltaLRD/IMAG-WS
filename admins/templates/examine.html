@@ -1,0 +1,59 @@
+{% extends 'base_admin.html' %}
+{% block all %}
+
+
+<form action="/admins/examine" method="POST" enctype="multipart/form-data">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+{#                <th scope="col"> # </th>#}
+                <th scope="col"> 账 户 </th>
+{#                <th scope="col"> 密 码 </th>#}
+                <th scope="col"> 类 别 </th>
+                <th scope="col"> 是否审批 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in exm_account %}
+            <tr>
+{#                <td>#}
+{#                    {{ row.id }}#}
+{#                </td>#}
+
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.account }}
+                        </label>
+                    </div>
+                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.classify }}
+                        </label>
+                    </div>
+                 </td>
+                    <td>
+                        <div class="form-group">
+
+{#                            <label class="radio-inline">#}
+{#                                <input type="checkbox" name="examine{{ row.id }}"  value="0"> 否#}
+{#                            </label>#}
+                            <label class="radio-inline">
+                                <input type="checkbox" name="examine{{ row.id }}"  value="1">
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="examine"  value="0" disabled style="display: none">
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+        <button type="submit" class="btn btn-default">审批</button>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base_stu.html' %}
+{% block style %}
+.modal-body{
+    text-align: center
+    }
+    .breadcrumb-container{
+        display:flex;
+    justify-content:space-between;
+    }
+    ol.breadcrumb{
+    background-color:#FFFFFF;
+    display:inline;
+
+    }
+    .form-inline.my-2.my-lg-0{
+    display:inline;
+    margin-right:10px;
+    }
+    .table{
+    table-layout:fixed;
+    word-break:break-all;
+    }
+    th.table-index{
+
+    width:20px;
+
+    text-align:center;
+    }
+    th.table-button{
+
+    width:20px;
+    align:center;
+    }
+    th.table-name{
+
+    width:150px;
+    text-align:center;
+    }
+    td{
+    text-align:center;
+    }
+
+    button.btn.btn-primary{
+    margin-right:3px
+
+    }
+
+{% endblock %}
+{% block all %}
+
+
+  <div class="breadcrumb-container">
+  <ol class="breadcrumb">
+      <span class="glyphicon glyphicon-home"></span>
+    <li class="breadcrumb-item"><a href={{"/users/stu_page/" +user_account.account}}>个人主页</a></li>
+       <li class="breadcrumb-item active" aria-current="page">DATABASE</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ name }}</li>
+  </ol>
+<form action="{{ url_for('conference.conf_add_stu',account=user_account.account) }}" class="form-inline my-2 my-lg-0">
+      <input name="word_" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={{ search_word }}>
+      <button class="btn btn-primary" type="submit" >Search</button>
+    </form>
+
+</div>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="table-index">序号</th>
+      <th scope="col" class="table-name">会议论文</th>
+      <th scope="col" class="table-button"></th>
+    </tr>
+  </thead>
+  <tbody>
+     {% for row in conf_home %}
+     <tr>
+      <td >{{ loop.index }}</td>
+      <td>{{ row.name }}</td>
+      <td><button id={{ row.id }} type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">添加</button></td>
+    </tr>
+     {% endfor %}
+  </tbody>
+</table>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <input type="checkbox"  name="author"  value="第一作者">第一作者
+          <input type="checkbox"  name="author"  value="第二作者">共同一作
+          <input type="checkbox"  name="author"  value="通讯作者">通讯作者
+          <input type="checkbox" name="author"  value="其他作者">其他作者
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confim()">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{#    <a id="geturl" href="{{ url_for('conference.conf_add') }}"></a>#}
+{#     <a id="search" href="{{ url_for('conference.search') }}"></a>#}
+
+  <script>function _submit(e) {
+      const search=($(e).prev().val())
+      const url_p=document.getElementById("search").href
+      const data_json={
+          search:search,
+          item:{{ name|tojson }},
+          account:{{ user_account.account|tojson }}
+      }
+      console.log(data_json)
+       $.ajax({
+        type: 'POST',
+        url: url_p,
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            console.log(data)
+        }})
+  }
+
+  let id;
+$('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+    id=button.attr("id")
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('New message to ' + recipient)
+  modal.find('.modal-body input').val(recipient)
+})
+
+function  confim() {
+    let res=[]
+    var select = document.getElementsByName('author');
+    for(var i=0;i<select.length;i++){
+        if(select[i].checked===true) res.push(1);
+        else res.push(0)
+    }
+    const data_json={
+        account:{{ user_account.account|tojson }},
+        id:id,
+        select:res,
+    }
+    var url_p = document.getElementById("geturl").href
+    $.ajax({
+        type: 'POST',
+        url: url_p,
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            layer.msg(data['message'], {
+                icon: 1,
+                time: 1000,
+                offset: 't',
+            })
+        }})
+}
+
+
+
+      </script>
+
+{% endblock %}

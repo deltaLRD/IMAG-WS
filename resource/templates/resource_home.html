@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block all %}
+<h2>
+Introduction
+</h2>
+<br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+        {{ resource_home.introduction }}
+{#            <ol>#}
+{#                {% for row in all_resource %}#}
+{#                    {% if row.classes == "encd" %}#}
+{#                    <li>#}
+{#                        {{ row.name }},<a href="./{{ resource.encd }}">{{ row.link }}</a>#}
+{#                    </li>#}
+{#                    <br>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </ol>#}
+        </div>
+    </div>
+    <h2>
+Download
+</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <a href="../{{ resource_home.encd }}">{{ resource_home.name }}</a>
+        </div>
+    </div>
+
+    <h2>
+Citation
+</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ resource_home.citation }}
+        </div>
+    </div>
+
+
+{% endblock %}

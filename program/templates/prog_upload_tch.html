@@ -1,0 +1,403 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+
+
+    <form id="formid" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="exampleInputEmail1"><span style="color:red;">*</span>项目名称</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="项目名称" name="name" required>
+      </div>
+
+        <div class="form-group">
+        <label for="exampleInputEmail1"><span style="color:red;">*</span>负责人</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="负责人" name="principal" required>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputEmail1">项目级别</label><br>
+        <select class="form-control" name="level">
+            <option>国家级项目</option>
+            <option>省级项目</option>
+            <option>横向项目</option>
+        </select>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>项目开始时间</label>
+        <input type="date" class="form-control" placeholder="开始时间" name="start_time" required>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">项目截止时间</label>
+        <input type="date" class="form-control" placeholder="项目截止时间" name="deadline">
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1"><span style="color:red;">*</span>项目费用</label>
+        <input type="text" class="form-control" placeholder="项目费用,例如：20" name="cost" required>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputPassword1">项目号</label>
+        <input type="text" class="form-control" placeholder="项目号" name="prog_num">
+      </div>
+           <div class="form-group">
+        <label for="exampleInputPassword1">项目来源</label>
+        <input type="text" class="form-control" placeholder="项目来源" name="pro_source">
+      </div>
+         <div class="form-group">
+        <label for="exampleInputFile">申请书</label>
+              <button type="button" class="layui-btn " id="application">选择文件</button>
+             <button type="button" class="layui-btn " id="applicationup">上传</button>
+{#        <input type="file" id="exampleInputFile" name="application" >#}
+              <div class="layui-upload">
+
+  <div class="layui-upload-list" style="max-width: 1000px;">
+    <table class="layui-table">
+      <colgroup>
+        <col>
+        <col width="150">
+        <col width="260">
+        <col width="150">
+      </colgroup>
+      <thead>
+        <tr><th>文件名</th>
+        <th>大小</th>
+        <th>上传进度</th>
+        <th>操作</th>
+      </tr></thead>
+      <tbody id="demoList2"></tbody>
+    </table>
+  </div>
+</div>
+      </div>
+
+         <div class="form-group">
+        <label for="exampleInputFile">结题书</label><button type="button" class="layui-btn " id="jieti">选择文件</button>
+              <button type="button" class="layui-btn " id="jietiup">上传</button>
+{#        <input type="file" id="exampleInputFile" name="Conclusion_book" >#}
+              <div class="layui-upload">
+
+  <div class="layui-upload-list" style="max-width: 1000px;">
+    <table class="layui-table">
+      <colgroup>
+        <col>
+        <col width="150">
+        <col width="260">
+        <col width="150">
+      </colgroup>
+      <thead>
+        <tr><th>文件名</th>
+        <th>大小</th>
+        <th>上传进度</th>
+        <th>操作</th>
+      </tr></thead>
+      <tbody id="jietilist"></tbody>
+    </table>
+  </div>
+</div>
+      </div>
+
+         <div class="form-group">
+        <label for="exampleInputFile">合同等文件</label>
+{#        <input type="file" id="exampleInputFile" name="contract" multiple="multiple">#}
+              <button type="button" class="layui-btn " id="testList">选择文件</button>
+              <button type="button" class="layui-btn " id="up">上传</button>
+              <div class="layui-upload">
+
+  <div class="layui-upload-list" style="max-width: 1000px;">
+    <table class="layui-table">
+      <colgroup>
+        <col>
+        <col width="150">
+        <col width="260">
+        <col width="150">
+      </colgroup>
+      <thead>
+        <tr><th>文件名</th>
+        <th>大小</th>
+        <th>上传进度</th>
+        <th>操作</th>
+      </tr></thead>
+      <tbody id="demoList"></tbody>
+    </table>
+  </div>
+</div>
+      </div>
+        <div class="form-group">
+        <label for="exampleInputFile"><span style="color:red;">*</span>是否收录到个人信息库</label>
+            <input type="checkbox"  value="1" name="adds" id="adds"  style="width: 15px; height: 15px;"/>
+      </div>
+
+      <button id="confirm" type="button" class="btn btn-default" onclick="firmm()">上传</button>
+</form>
+<script>
+    function guid() {
+    let now = new Date().getTime();
+    let str = `xxxxxxxx-xxxx-${now}-yxxx`;
+    return str.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0;
+        var v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16)
+    })
+}
+    var subcon=guid()
+    function  firmm(){
+     var data = new FormData($("#formid")[0]);
+    if($('#adds').prop('checked')===false){
+        data.append('adds',0)
+    }
+     data.append('account',{{ account_url.account|tojson }})
+    data.append('subcon',subcon)
+     $.ajax({
+                type: 'POST',
+                url: "/program/prog_upload_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        console.log(data)
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                    }
+                    tiao(data['url'])
+                }
+            })
+}
+async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+layui.use(['upload', 'element', 'layer'], function(){
+  let $ = layui.jquery
+  ,upload = layui.upload
+  ,element = layui.element
+  ,layer = layui.layer;
+let uploadListIns = upload.render({
+    elem: '#testList'
+    ,elemList: $('#demoList') //列表元素对象
+    ,url: '/program/prog_upload_file/'+subcon //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+    ,accept: 'file'
+    ,multiple: true
+    ,number: 0
+    ,auto: false
+    ,bindAction: '#up'
+    ,choose: function(obj){
+
+      let that = this;
+      let files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+      //读取本地文件
+      obj.preview(function(index, file, result){
+        var tr = $(['<tr id="upload-'+ index +'">'
+          ,'<td>'+ file.name +'</td>'
+          ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+          ,'<td><div class="layui-progress" lay-filter="progress-demo-'+ index +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+          ,'<td>'
+            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+          ,'</td>'
+        ,'</tr>'].join(''));
+
+        //单个重传
+        tr.find('.demo-reload').on('click', function(){
+            {#console.log(file)#}
+          obj.upload(index, file);
+        });
+
+        //删除
+        tr.find('.demo-delete').on('click', function(){
+          delete files[index]; //删除对应的文件
+          tr.remove();
+          uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+        });
+
+        that.elemList.append(tr);
+        element.render('progress'); //渲染新加的进度条组件
+      });
+    }
+    ,done: function(res, index, upload){ //成功的回调
+
+
+      var that = this;
+      //if(res.code == 0){ //上传成功
+        var tr = that.elemList.find('tr#upload-'+ index)
+        ,tds = tr.children();
+        tds.eq(3).html(''); //清空操作
+        delete this.files[index]; //删除文件队列已经上传成功的文件
+        {#console.log(res)#}
+        return;
+      //}
+      this.error(index, upload);
+    }
+    ,allDone: function(obj){ //多文件上传完毕后的状态回调
+      {#console.log(obj)#}
+    }
+    ,error: function(index, upload){ //错误回调
+      var that = this;
+      var tr = that.elemList.find('tr#upload-'+ index)
+      ,tds = tr.children();
+      tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+    }
+    ,progress: function(n, elem, e, index){ //注意：index 参数为 layui 2.6.6 新增
+      element.progress('progress-demo-'+ index, n + '%'); //执行进度条。n 即为返回的进度百分比
+    }
+  })
+});
+
+layui.use(['upload', 'element', 'layer'], function() {
+    let $ = layui.jquery
+        , upload = layui.upload
+        , element = layui.element
+        , layer = layui.layer;
+
+    let uploadListIns3 = upload.render({
+        elem: '#jieti'
+        , elemList: $('#jietilist') //列表元素对象
+        , url: '/program/prog_upload_file/'+subcon //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+        , accept: 'file'
+        , multiple: false
+        , number: 1
+        , auto: false
+        , bindAction: '#jietiup'
+        , choose: function (obj) {
+            var that = this;
+            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+            //读取本地文件
+            obj.preview(function (index, file, result) {
+                var tr = $(['<tr id="upload-' + index + '">'
+                    , '<td>' + file.name + '</td>'
+                    , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                    , '<td><div class="layui-progress" lay-filter="progress-demo-' + index + '"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+                    , '<td>'
+                    , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                    , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                    , '</td>'
+                    , '</tr>'].join(''));
+
+                //单个重传
+                tr.find('.demo-reload').on('click', function () {
+                    obj.upload(index, file);
+                });
+
+                //删除
+                tr.find('.demo-delete').on('click', function () {
+                    delete files[index]; //删除对应的文件
+                    tr.remove();
+                    uploadListIns3.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                });
+
+                if (that.elemList.children().length === 0) that.elemList.append(tr);
+                else alert("只能上传一个文件！")
+                element.render('progress'); //渲染新加的进度条组件
+            });
+        }
+        , done: function (res, index, upload) { //成功的回调
+            var that = this;
+            //if(res.code == 0){ //上传成功
+            var tr = that.elemList.find('tr#upload-' + index)
+                , tds = tr.children();
+            tds.eq(3).html(''); //清空操作
+            delete this.files[index]; //删除文件队列已经上传成功的文件
+            return;
+            //}
+            this.error(index, upload);
+        }
+        , allDone: function (obj) { //多文件上传完毕后的状态回调
+
+        }
+        , error: function (index, upload) { //错误回调
+            var that = this;
+            var tr = that.elemList.find('tr#upload-' + index)
+                , tds = tr.children();
+            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+        }
+        , progress: function (n, elem, e, index) { //注意：index 参数为 layui 2.6.6 新增
+            element.progress('progress-demo-' + index, n + '%'); //执行进度条。n 即为返回的进度百分比
+
+        }
+    })
+})
+layui.use(['upload', 'element', 'layer'], function() {
+    let $ = layui.jquery
+        , upload = layui.upload
+        , element = layui.element
+        , layer = layui.layer;
+    let uploadListIns2 = upload.render({
+    elem: '#application'
+    ,elemList: $('#demoList2') //列表元素对象
+    ,url: '/program/prog_upload_file/'+subcon//此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+    ,accept: 'file'
+    ,multiple: false
+    ,number: 1
+    ,auto: false
+    ,bindAction: '#applicationup'
+    ,choose: function(obj){
+      var that = this;
+      var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+      //读取本地文件
+      obj.preview(function(index, file, result){
+        var tr = $(['<tr id="upload-'+ index +'">'
+          ,'<td>'+ file.name +'</td>'
+          ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+          ,'<td><div class="layui-progress" lay-filter="progress-demo-'+ index +'"><div class="layui-progress-bar" lay-percent=""></div></div></td>'
+          ,'<td>'
+            ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+            ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+          ,'</td>'
+        ,'</tr>'].join(''));
+
+        //单个重传
+        tr.find('.demo-reload').on('click', function(){
+          obj.upload(index, file);
+        });
+
+        //删除
+        tr.find('.demo-delete').on('click', function(){
+          delete files[index]; //删除对应的文件
+          tr.remove();
+          uploadListIns2.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+        });
+        {#console.log(that.elemList.children())#}
+        if(that.elemList.children().length===0)  that.elemList.append(tr);
+        else alert("只能上传一个文件！")
+        element.render('progress'); //渲染新加的进度条组件
+      });
+    }
+    ,done: function(res, index, upload){ //成功的回调
+      var that = this;
+      //if(res.code == 0){ //上传成功
+        var tr = that.elemList.find('tr#upload-'+ index)
+        ,tds = tr.children();
+        tds.eq(3).html(''); //清空操作
+        delete this.files[index]; //删除文件队列已经上传成功的文件
+        return;
+      //}
+      this.error(index, upload);
+    }
+    ,allDone: function(obj){ //多文件上传完毕后的状态回调
+      {#console.log(obj)#}
+    }
+    ,error: function(index, upload){ //错误回调
+      var that = this;
+      var tr = that.elemList.find('tr#upload-'+ index)
+      ,tds = tr.children();
+      tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+    }
+    ,progress: function(n, elem, e, index){ //注意：index 参数为 layui 2.6.6 新增
+        {#console.log(2)#}
+      element.progress('progress-demo-'+ index, n + '%'); //执行进度条。n 即为返回的进度百分比
+    }
+  })
+
+})
+</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+
+    <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">课程名</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="课程名" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">授课教师</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="授课教师" name="teacher">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">授课内容</label>
+            <input type="text" class="form-control" placeholder="授课内容" name="content">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">相关主页</label>
+            <input type="text" class="form-control" placeholder="相关主页" name="page">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">是否添加</label>
+            <label class="checkbox-inline">
+                <input type="checkbox"  value="1" name="adds" id="adds">
+            </label>
+        </div>
+        <button type="button" class="btn btn-default" onclick="firmm()">上传</button>
+    </form>
+    <script>
+function  firmm(){
+     var data = new FormData($("#formid")[0]);
+    if($('#adds').prop('checked')===false){
+        data.append('adds',0)
+    }
+     data.append('account',{{ account_url.account|tojson }})
+     $.ajax({
+                type: 'POST',
+                url: "/course/course_upload_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                    }
+                    {#window.location.href=data['url']#}
+                }
+            })
+}
+</script>
+{% endblock %}

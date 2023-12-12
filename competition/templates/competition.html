@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block all %}
+
+  <div class="card">
+    <h2 class="card-header" align="center">{{ comp.name }}</h2>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">序号</th>
+                    <th scope="col">获奖名称</th>
+                    <th scope="col">获奖时间</th>
+                    <th scope="col">参与人员</th>
+                    <th scope="col">获奖等级</th>
+                    <th scope="col">指导教师</th>
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+            {% for row in comp %}
+
+                <tr>
+                     <td> {{ loop.index }}</td>
+                    <td> {{ row.name }}</td>
+                    <td> {{ row.year }}</td>
+                    <td> {{ row.participant}}</td>
+                    <td> {{ row.ranking }}</td>
+                    <td> {{ row.teachers}}</td>
+
+            {% endfor %}
+
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("com_id").className="active";
+ })
+</script>
+
+{% endblock %}

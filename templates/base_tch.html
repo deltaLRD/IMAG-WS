@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    {% block head %}
+    {% endblock %}
+<style>
+    {% block style %}
+    {% endblock %}
+</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IMAG@NJUST</title>
+    <link rel="stylesheet" href="../../../../static/layui-v2.6.8/layui/css/layui.css">
+    <script src="../../../../static/layui-v2.6.8/layui/layui.js"></script>
+    <link rel="stylesheet" href="../../../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+</head>
+<body>
+<script type="text/javascript"    src="../../../static/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script src="../../../../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" >IMAG@NJUST</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+{#            <li ><a href="{{ url_for('code_resource.upload_front',account=account_url.account) }}">论文代码导入</a></li>#}
+                <li ><a href="{{ url_for('code_resource.table',account=account_url.account) }}">论文代码管理</a></li>
+            </ul>
+{#            <ul class="nav navbar-nav">#}
+{#                <li class="dropdown">#}
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"#}
+{#                       aria-expanded="false">数据库<span class="caret"></span></a>#}
+{#                    <ul class="dropdown-menu">#}
+{#                        <li><a id="con_1">会议论文</a></li>#}
+{#                        <li><a id="jr_1">期刊论文</a></li>#}
+{#                        <li><a id="pt_1">专利</a></li>#}
+{#                        <li><a id="sf_1">软著</a></li>#}
+{#                        <li><a id="mo_1">专著</a></li>#}
+{#                        <li><a id="pr_1">项目</a></li>#}
+{#                        <li><a id="co_1">课程</a></li>#}
+{#                        <li><a  id="so_1">社会兼职</a></li>#}
+{#                        <li><a id="com_1">竞赛</a></li>#}
+{#                        <li><a id="ho_1">荣誉</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#                <li class="dropdown">#}
+{#                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"#}
+{#                       aria-expanded="false">上传<span class="caret"></span></a>#}
+{#                    <ul class="dropdown-menu">#}
+{#                        <li><a  id="con_id">会议论文</a></li>#}
+{#                        <li><a  id="jr_id">期刊论文</a></li>#}
+{#                        <li><a  id="pt_id">专利</a></li>#}
+{#                        <li><a  id="sf_id">软著</a></li>#}
+{#                        <li><a  id="mo_id">专著</a></li>#}
+{#                        <li><a  id="pr_id">项目</a></li>#}
+{#                        <li><a  id="ho_id">荣誉</a></li>#}
+{#                        <li><a  id="co_id">课程</a></li>#}
+{#                        <li><a  id="so_id">社会兼职</a></li>#}
+{#                        <li><a  id="com_id">竞赛</a></li>#}
+{#                        <li><a  id="new_id">新闻</a></li>#}
+{#                        <li><a  id="res_id">资源</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#            </ul>#}
+            <ul class="nav navbar-nav navbar-right">
+                {#          <li><img src="../users{{ users.avatar }}" alt="{{ users.nickname }}" class="img-circle" width="40px" height="40px" style="padding-top: 5px"></li>#}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+{#                        <li><a id="mn_1">我的信息库</a></li>#}
+{#                         <li><a id="mn_2">我的个人主页</a></li>#}
+                        <li><a href="/users/tch_info/{{ account_url.account }}" id="mn_3">修改资料</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ url_for('login.logout') }}">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-sm-4">
+            {% block sidebar %}{% endblock %}
+        </div>
+    </div>
+</div>
+<div class="containers">
+{#    <div class="row">#}
+{#        <div class="col-md-1"></div>#}
+{#        <div class="col-md-8">#}
+            {% block center %}{% endblock %}
+{#        </div>#}
+{#        <div class="col-md-1"></div>#}
+{#    </div>#}
+</div>
+{% block all %}{% endblock %}
+
+
+
+<script  type="text/javascript" charset="utf-8">
+
+var Server = {
+        account_url:{{  account_url .account|tojson }}
+    };
+        let account=Server.account_url;
+         {#document.getElementById("mn_1").href=("/users/tch_page_database/"+account);#}
+        document.getElementById("mn_2").href=("/users/tch_page/"+account);
+        document.getElementById("mn_3").href=("/users/tch_info/"+account);
+        document.getElementById("con_id").href=("/conference/conf_upload_tch/"+account);
+        document.getElementById("jr_id").href=("/journal/jn_upload_tch/"+account);
+        document.getElementById("pt_id").href=("/patent/patent_upload_tch/"+account);
+        document.getElementById("sf_id").href=("/software/soft_upload_tch/"+account);
+        document.getElementById("mo_id").href=("/monograph/mono_upload_tch/"+account);
+        document.getElementById("pr_id").href=("/program/prog_upload_tch/"+account);
+        document.getElementById("ho_id").href= ("/honor/honor_upload_tch/"+account);
+        document.getElementById("co_id").href=("/course/course_upload_tch/"+account);
+        document.getElementById("com_id").href=("/competition/comp_upload_tch/"+account);
+        document.getElementById("so_id").href=("/social/social_upload_tch/"+account);
+        document.getElementById("new_id").href=("/news/news_upload_tch/"+account);
+        document.getElementById("res_id").href=("/resource/resource_upload_tch/"+account);
+        document.getElementById("con_1").href=("/conference/conf_add_tch/"+account);
+        document.getElementById("jr_1").href=("/journal/jn_add_tch/"+account);
+        document.getElementById("pt_1").href=("/patent/patent_add_tch/"+account);
+        document.getElementById("sf_1").href=("/software/soft_add_tch/"+account);
+        document.getElementById("mo_1").href=("/monograph/mono_add_tch/"+account);
+        document.getElementById("pr_1").href=("/program/prog_add_tch/"+account);
+        document.getElementById("so_1").href=("/social/social_add_tch/"+account);
+        document.getElementById("co_1").href=("/course/course_add_tch/"+account);
+        document.getElementById("com_1").href=("/competition/comp_add_tch/"+account);
+        document.getElementById("ho_1").href=("/honor/honor_add_tch/"+account);
+        {#document.getElementById("conf_rec_tch_id").href=("/conference/conf_rec_tch/"+account);#}
+        {#document.getElementById("jn_rec_tch_id").href=("/journal/jn_rec_tch/"+account);#}
+</script>
+</body>
+</html>

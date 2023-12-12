@@ -1,0 +1,52 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+    <div class="card">
+{#    <h2 class="card-header" align="center">{{ Conf[0].paper_name }}</h2>#}
+    <h2 class="card-header" align="center">{{ soft.name }}</h2>
+    <h4 class="card-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ soft.author  }}</h4>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+
+                    <th scope="col">软著名</th>
+                    <th scope="col">作者</th>
+                    <th scope="col">开发完成时间</th>
+                    <th scope="col">链接</th>
+                    <th scope="col">DOI</th>
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+{#            {% for row in conf %}#}
+
+                <tr>
+
+                    <td> {{ soft.name }}</td>
+                    <td> {{ soft.author   }}</td>
+                    <td> {{ soft.times }}</td>
+                    <td> {{ soft.link }}</td>
+                    <td> {{ soft.DOI }}</td>
+
+
+
+
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+</script>
+
+
+{% endblock %}

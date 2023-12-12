@@ -1,0 +1,131 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+<form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1"><span style="color:red;">*</span>专利名</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="专利名" name="name" value="{{ patent_home.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1"><span style="color:red;">*</span>专利权人</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="专利权人" name="patentee" value="{{ patent_home.patentee }}" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">专利国家</label><br>
+            <select class="form-control" name="country">
+                <option>中国专利</option>
+                <option>美国专利</option>
+                <option>欧洲专利</option>
+                <option>WIPO专利</option>
+                <option>日本专利</option>
+                <option>其他国家专利</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">专利类别</label><br>
+            <select class="form-control" name="level">
+                <option>发明专利</option>
+                <option>实用新型</option>
+                <option>外观设计</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1"><span style="color:red;">*</span>申请（专利）号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="申请（专利）号" name="application_num" value="{{ patent_home.application_num }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">公开（公告）号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="公开（公告）号" name="patent_num" value="{{ patent_home.patent_num }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">IPC号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="IPC号" name="IPC_num" value="{{ patent_home.IPC_num }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">CPC号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="CPC号" name="CPC_num" value="{{ patent_home.CPC_num }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">申请日期</label>
+            <input type="date" class="form-control" placeholder="申请日期" name="application_dat" value="{{ patent_home.application_dat }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">生效日期</label>
+            <input type="date" class="form-control" placeholder="生效日期" name="effect_dat" value="{{ patent_home.effect_dat }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" placeholder="DOI" name="DOI" value="{{ patent_home.DOI }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">专利链接</label>
+            <input type="text" class="form-control" placeholder="专利链接" name="link" value="{{ patent_home.link }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">专利附件</label>
+            <input type="file" id="exampleInputFile" name="encd" value="{{ patent_home.encd }}">
+        </div>
+        <button type="button" class="btn btn-default" onclick="submit_patent_modify()">修改</button>
+    </form>
+    <script>
+
+        function submit_patent_modify() {
+            var name=document.getElementsByName("name")
+        if(name[0].value===null||name[0].value.trim()==="") {
+            alert("请输入专利名！")
+            return ;
+        }
+        var author=document.getElementsByName("patentee")
+        if(author[0].value===null||author[0].value.trim()==="") {
+            alert("请输入专利权人！")
+            return ;
+        }
+        var conf_name=document.getElementsByName("application_num")
+        if(conf_name[0].value===null||conf_name[0].value.trim()==="") {
+            alert("请输入专利号！")
+            return ;
+        }
+        var data = new FormData($("#formid")[0]);
+        data.append('account',{{ account_url.account|tojson }})
+        data.append('pre',{{ patent_home.name|tojson }})
+            console.log(data)
+         $.ajax({
+                type: 'POST',
+                url: "/patent/patent_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao('/patent/details_tch/'+ {{ patent_home.id|tojson }}+'/'+{{ account_url.account|tojson }})
+
+                    }
+
+                }
+            })
+
+
+
+        }
+
+async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+    </script>
+{% endblock %}

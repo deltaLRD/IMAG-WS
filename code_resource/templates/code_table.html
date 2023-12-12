@@ -1,0 +1,108 @@
+{% if account_url.classify=='教师' %}
+{% extends 'base_tch.html' %}
+{% else %}
+{% extends 'base_stu.html' %}
+{% endif %}
+{% block style %}
+    .containers{
+    width:90%;
+{#    min-width:1000px;#}
+    margin:0 auto;
+    }
+{% endblock %}
+{% block center %}
+
+  <table id="demo" lay-filter="test"></table>
+
+</form>
+     <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+    <script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add">上传</button>
+  </div>
+</script>
+<script>
+    var table=layui.table;
+     table.render({
+        elem: '#demo'
+        ,toolbar: '#toolbarDemo',
+         height: 620,
+         width:1500,
+         cellMinWidth: 80,
+        url: "/code_resource/table_back/{{ account_url.account }}"
+        , cols: [[ //标题栏
+            {field: 'id', title: 'ID', align: 'center', width: '5%'}
+            , {field: 'name', title: '文章名称', width: '20%'},
+             {field: 'article', title: '发表刊物', width: '10%'},
+             {field: 'dat', title: '发表时间', width: '5%'},
+             {field: 'article_link', title: '文章链接', width: '15%'},
+             {field: 'article_short', title: '刊物缩写', width: '15%'},
+             {field: 'code_link', title: '代码链接', width: '20%'},
+            {fixed: 'right', width:'10%', align: 'center', toolbar: '#barDemo'}
+        ]],
+        page:true
+    })
+    table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  var data = obj.data; //获得当前行数据
+   delete_id=data.id
+  var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+  var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+
+  if(layEvent === 'del') { //删除
+      layer.confirm('你确认要删除吗', function (index) {
+          obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+          layer.close(index);
+          const data_json = {
+              id: delete_id
+          }
+          $.ajax({
+              type: 'POST',
+              url: "/code_resource/delete",
+              data: JSON.stringify(data_json),
+              contentType: 'application/json; charset=UTF-8',
+              dataType: 'json',
+              success: function (data) {
+
+                  layer.msg(data['msg'], {
+                      icon: 1,
+                      time: 1000,
+                      offset: 't',
+                  })
+                  {#console.log(1)#}
+                  {#console.log($(".layui-laypage-em").next().html() )#}
+                  table.reload('demo', {
+                      page: {
+
+                          curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
+                      }
+
+                  });
+
+
+              }
+          })
+
+      })
+  }
+  else if(layEvent === 'edit'){ //编辑
+    window.open("/code_resource/detail/"+delete_id)
+  }
+
+
+
+
+});
+table.on('toolbar(test)', function(obj){
+  var checkStatus = table.checkStatus(obj.config.id);
+  switch(obj.event){
+    case 'add':
+      location.href='/code_resource/upload/{{ account_url.account }}'
+  }
+});
+</script>
+
+{% endblock %}

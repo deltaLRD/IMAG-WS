@@ -1,0 +1,46 @@
+{% extends 'base_admin.html' %}
+{% block all %}
+{% if error %}
+    <div class="alert alert-danger alert-dismissable" role="alert">
+    <strong>提示：</strong>{{ error }}
+    </div>
+{% endif %}
+
+    <form action="{{url_for('admins.resource_modify_admin',resource_name=resource_home.name)}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">数据资源</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ resource_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">类型</label>
+            <select class="form-control" name="classes" data-value="{{ resource_home.classes }}">
+            <option value="link">链接</option>
+            <option value="encd">附件</option>
+        </select>
+{#            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ resource_home.link }}"#}
+{#                   name="link">#}
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">链接</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ resource_home.link }}"
+                   name="link">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">简介</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ resource_home.introduction }}"
+                   name="introduction">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">引用</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ resource_home.citation }}"
+                   name="citation">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">附件</label>
+            <input type="file" id="exampleInputFile" name="encd" data-value="{{ resource_home.encd }}"
+                   value=" {{ resource_home.encd }} ">
+        </div>
+        <button type="submit" class="btn btn-default">修改
+        </button>
+    </form>
+{% endblock %}

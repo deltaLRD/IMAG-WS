@@ -1,0 +1,94 @@
+{% extends 'base_admin.html' %}
+{% block head %}
+    <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="add">前移</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">后移</a>
+</script>
+{% endblock %}
+{% block all %}
+     <button type="button" class="btn btn-info" onclick="confir()">保存</button>
+<table id="demo" lay-filter="test"></table>
+
+    <script>
+
+    var table=layui.table;
+     table.render({
+        elem: '#demo'
+        ,toolbar: '#toolbarDemo',
+         height: 520,
+         cellMinWidth: 80,
+        url: "/admins/sort_people/api"
+        , cols: [[ //标题栏
+            {field: 'index', title: 'ID', align: 'center', width: '5%'}
+            , {field: 'name', title: '账号名', width: '50%'},
+            {field: 'author', title: '姓名', width: '30%'},
+            {fixed: 'right', width:'15%', align: 'center', toolbar: '#barDemo'}
+        ]],
+        page:true
+    })
+
+
+      var delete_id
+table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+  var data = obj.data; //获得当前行数据
+   delete_id=data.id
+     var tbData = table.cache.demo;
+  var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+  var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+  if(layEvent === 'add'){
+      if(tr.index()!==0){
+           let tem = tbData[tr.index()];
+           let tem2 = tbData[tr.prev().index()];
+        // 将本身插入到目标tr之前
+          tr.prev()[0].before(tr[0])
+        // 上移之后，数据交换
+        tbData[tr.index()] = tem;
+        tbData[tr.next().index()] = tem2;
+      }
+      else{
+          layer.msg("已经是最顶部了")
+      }
+
+  }
+  else if(layEvent === 'edit'){ //编辑
+      if(tr.index()!==tbData.length-1){
+           let tem = tbData[tr.index()];
+           let tem2 = tbData[tr.next().index()];
+        // 将本身插入到目标tr之前
+          tr.next()[0].after(tr[0])
+        // 上移之后，数据交换
+        tbData[tr.index()] = tem;
+        tbData[tr.next().index()] = tem2;
+      }
+      else{
+          layer.msg("已经是最底部了")
+      }
+  }
+});
+     function confir() {
+         var tbData = table.cache.demo;
+         let sort=[]
+        for(let i=0;i<tbData.length;i++){
+            sort.push(tbData[i].id)
+        }
+        const data_json={
+            faculty:sort
+        }
+         $.ajax({
+        type: 'POST',
+        url: "/admins/sort_people_back",
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            layer.msg(data['message'], {
+                icon: 1,
+                time: 1000,
+                offset: 't',
+            })
+        }})
+    }
+
+    </script>
+{% endblock %}

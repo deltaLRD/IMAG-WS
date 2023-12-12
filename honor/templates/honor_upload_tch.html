@@ -1,0 +1,22 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+
+    <form action="{{ url_for('honor.honor_upload_tch', account=tch_info.account)}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">获得人</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="荣誉称号获得者" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">荣誉称号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="荣誉称号" name="title">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">是否收录到个人信息库</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="1" name="adds">
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">上传
+        </button>
+    </form>
+{% endblock %}

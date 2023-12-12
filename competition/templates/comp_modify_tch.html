@@ -1,0 +1,64 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+     <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">竞赛</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ comp_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">指导教师</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ comp_home.teachers }}"
+                   name="teachers">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">参与人员</label>
+            <input type="text" class="form-control" value="{{ comp_home.participant }}" name="participant">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">获得奖项或排名</label>
+            <input type="text" class="form-control" value="{{ comp_home.ranking }}" name="ranking">
+        </div>
+        <button type="button" class="btn btn-default" onclick="sub_mit()">修改 </button>
+    </form>
+    <script>
+        function sub_mit() {
+            var data = new FormData($("#formid")[0]);
+            data.append('account',{{ account_url.account|tojson }})
+            data.append('pre',{{ comp_home.name |tojson}})
+            $.ajax({
+                type: 'POST',
+                url: "/competition/comp_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1500,
+                            offset: 't',
+                        })
+                        tiao(data['url'])
+
+                    }
+
+                }
+            })
+        }
+        async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+
+
+    </script>
+{% endblock %}

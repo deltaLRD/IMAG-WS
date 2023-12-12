@@ -1,0 +1,61 @@
+{% extends 'base_tch.html' %}
+{% block style %}
+    .box{
+        text-align:center;
+        display:table-cell;
+        width:800px;
+        height:600px;
+        }
+    {% endblock %}
+{% block center %}
+
+    <div class="card">
+    <h2 class="card-header" align="center">{{ patent.name }}</h2>
+    <br/>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">专利名称</th>
+                    <th scope="col">专利权人</th>
+                    <th scope="col">申请（专利）号</th>
+                    <th scope="col">专利类别</th>
+                    <th scope="col">专利链接</th>
+                    <th scope="col">DOI</th>
+                    <th scope="col">申请日期</th>
+                    <th scope="col">IPC号</th>
+                    <th scope="col">CPC号</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <td> {{ patent.name }}</td>
+                    <td> {{ patent.patentee }}</td>
+                    <td> {{ patent.application_num }}</td>
+                    <td> {{ patent.level }}</td>
+                    <td> {{ patent.link }}</td>
+                    <td> {{ patent.DOI }}</td>
+                    <td> {{ patent.application_dat }}</td>
+                    <td> {{ patent.IPC_num }}</td>
+                    <td> {{ patent.CPC_num }}</td>
+                </tr>
+            </tbody>
+        </table>
+         {% if patent.src!='' %}
+            <div class="box">
+            <img src={{ patent.src }} >
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<script>
+
+</script>
+
+
+{% endblock %}

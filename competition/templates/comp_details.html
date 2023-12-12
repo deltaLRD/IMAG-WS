@@ -1,0 +1,47 @@
+{% extends 'base_tch.html' %}
+{% block style %}
+    .box{
+        text-align:center;
+        display:table-cell;
+        width:800px;
+        height:600px;
+        }
+    {% endblock %}
+{% block center %}
+
+    <div class="card">
+    <h2 class="card-header" align="center">{{ comp.name }}</h2>
+        <br/>
+    <div class="card-body">
+        <table class="table table-hover table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">获奖名称</th>
+                    <th scope="col">获奖时间</th>
+                    <th scope="col">参与人员</th>
+                    <th scope="col">获奖等级</th>
+                    <th scope="col">指导教师</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> {{ comp.name }}</td>
+                    <td> {{ comp.year }}</td>
+                    <td> {{ comp.participant}}</td>
+                    <td> {{ comp.ranking }}</td>
+                    <td> {{ comp.teachers}}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% if comp.src!='' %}
+            <div class="box">
+            <img src={{ comp.src }} >
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+<script>
+</script>
+{% endblock %}

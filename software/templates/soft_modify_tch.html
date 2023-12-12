@@ -1,0 +1,91 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+        <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">软件著作</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">作者</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.author }}"
+                   name="author">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">登记号</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ soft_home.num }}"
+                   name="num">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">权利获得方式</label><br>
+            <select class="form-control" name="way" data-value="{{ soft_home.language }}">
+                <option>原始取得</option>
+                <option>终受取得</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" value="{{ soft_home.DOI }}" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">权利范围</label><br>
+            <select class="form-control" name="limits" data-value="{{ soft_home.limits }}">
+                <option>全部权利</option>
+                <option>部分权利</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">开发完成时间</label>
+            <input type="date" class="form-control" id="exampleInputEmail1" value="{{ soft_home.times }}"
+                   name="times">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">软件著作链接</label>
+            <input type="text" class="form-control" name="link" value="{{ soft_home.link }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">软件著作附件</label>
+            <input type="file" id="exampleInputFile" name="encd" data-value="{{ soft_home.encd }}"
+                   value=" {{ soft_home.encd }} ">
+        </div>
+        <button type="button" class="btn btn-default" onclick="submit_soft_modify()">修改</button>
+    </form>
+    <script>
+        function submit_soft_modify() {
+            var data = new FormData($("#formid")[0]);
+            data.append('account',{{ account_url.account|tojson }})
+            data.append('pre',{{ soft_home.name|tojson }})
+            $.ajax({
+                type: 'POST',
+                url: "/software/soft_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao('/software/details_tch/'+ {{ soft_home.id|tojson }}+'/'+{{ account_url.account|tojson }})
+
+                    }
+
+                }
+            })
+        }
+        async function tiao(url){
+            setTimeout(() => {
+                window.location.href=url
+            }, 1000);
+        }
+    </script>
+{% endblock %}

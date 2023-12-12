@@ -1,0 +1,119 @@
+{% extends 'base_stu.html' %}
+{% block style %}
+.modal-body{
+    text-align: center
+    }
+    .breadcrumb-container{
+        display:flex;
+    justify-content:space-between;
+    }
+    ol.breadcrumb{
+    background-color:#FFFFFF;
+    display:inline;
+
+    }
+    form.form-inline.my-2.my-lg-0{
+    display:inline;
+    margin-right:10px;
+    }
+    .table{
+    table-layout:fixed;
+    word-break:break-all;
+    }
+    th.table-index{
+
+    width:20px;
+
+    text-align:center;
+    }
+    th.table-button{
+
+    width:20px;
+    align:center;
+    }
+    th.table-name{
+
+    width:150px;
+    text-align:center;
+    }
+    td{
+    text-align:center;
+    }
+
+    button.btn.btn-primary{
+    margin-left:3px
+
+    }
+
+{% endblock %}
+{% block all %}
+
+
+  <div class="breadcrumb-container">
+  <ol class="breadcrumb">
+      <span class="glyphicon glyphicon-home"></span>
+    <li class="breadcrumb-item"><a href={{"/users/stu_page/" +user_account.account}}>个人主页</a></li>
+       <li class="breadcrumb-item active" aria-current="page">DATABASE</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ name }}</li>
+  </ol>
+<form action="{{ url_for('monograph.mono_add_stu',account=user_account.account) }}" class="form-inline my-2 my-lg-0">
+      <input name="word_" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={{ search_word }}>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
+</div>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col" class="table-index">序号</th>
+      <th scope="col" class="table-name">专著</th>
+      <th scope="col" class="table-button"></th>
+    </tr>
+  </thead>
+  <tbody>
+     {% for row in mono_home %}
+     <tr>
+      <td >{{ loop.index }}</td>
+      <td>{{ row.name }}</td>
+      <td><button id={{ row.id }} type="button"  onclick="firm(this)" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">添加</button></td>
+    </tr>
+     {% endfor %}
+  </tbody>
+</table>
+
+    <a id="geturl" href="{{ url_for('monograph.mono_add') }}"></a>
+  <script>function firm(e) {
+      const id=$(e).attr('id')
+    const data_json={
+        account:{{ user_account.account|tojson }},
+        id:id
+    }
+    const url_p = document.getElementById("geturl").href
+    $.ajax({
+        type: 'POST',
+        url: url_p,
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            const error=data['error'];
+            if(error===0){
+                 layer.msg(data['message'], {
+                icon: 1,
+                time: 1000,
+                offset: 't',
+            })}
+            else{
+                layer.msg(data['message'], {
+                icon: 2,
+                time: 1000,
+                offset: 't',
+            })}
+        }})
+  }
+
+
+
+      </script>
+
+{% endblock %}

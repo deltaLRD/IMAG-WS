@@ -1,0 +1,11 @@
+version: '3'
+services:
+  internal_backend:
+    build: .
+    container_name: IMAG_Internal_backend
+    env_file:
+      - ./.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - 5000:5000

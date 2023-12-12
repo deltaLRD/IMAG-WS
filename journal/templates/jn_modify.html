@@ -1,0 +1,173 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+
+
+
+    <form action="/journal/jn_modify" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">论文题目</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ jn_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">作者</label>
+            <table id="author">
+                <tbody>
+                <tr>
+                    <td><label for="exampleInputEmail1">作者1</label></td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[1] }}"
+                               name="last_name1">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[0] }}"
+                               name="first_name1">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="exampleInputEmail1">作者2</label></td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[3] }}"
+                               name="last_name2">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[2] }}"
+                               name="first_name2">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="exampleInputEmail1">作者3</label></td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[5] }}"
+                               name="last_name3">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[4] }}"
+                               name="first_name3">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="exampleInputEmail1">作者4</label></td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[7] }}"
+                               name="last_name4">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[6] }}"
+                               name="first_name4">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="exampleInputEmail1">作者5</label></td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[9] }}"
+                               name="last_name5">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value="{{ author[8] }}"
+                               name="first_name5">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">期刊名称</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ jn_home.jn_name }}"
+                   name="jn_name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">期刊发表日期</label>
+            <input type="date" class="form-control" value="{{ jn_home.dat }}" name="dat">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">文章号</label>
+            <input type="text" class="form-control" value="{{ jn_home.num }}" name="num">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">收录情况</label><br>
+            <select class="form-control" name="employ" data-value="{{ jn_home.employ }}">
+                <option>SCIE</option>
+                <option>SSCI</option>
+                <option>EI</option>
+                <option>ISTP</option>
+                <option>北大中文核心期刊</option>
+                <option>其他</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">收录号</label>
+            <input type="text" class="form-control" value="{{ jn_home.employ_num }}" name="employ_num">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">CCF分区</label><br>
+            <select class="form-control" name="ccf" data-value="{{ jn_home.ccf }}">
+                <option>A区</option>
+                <option>B区</option>
+                <option>C区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">CAS分区</label><br>
+            <select class="form-control" name="cas" data-value="{{ jn_home.cas }}">
+                <option>一区</option>
+                <option>二区</option>
+                <option>三区</option>
+                <option>四区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">JCR分区</label><br>
+            <select class="form-control" name="jcr" data-value="{{ jn_home.jcr }}">
+                <option>一区</option>
+                <option>二区</option>
+                <option>三区</option>
+                <option>四区</option>
+                <option>无</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">引用次数</label>
+            <input type="text" class="form-control" name="times" value="{{ jn_home.times }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">卷</label>
+            <input type="text" class="form-control" name="vol" value="{{ jn_home.vol }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">期号</label>
+            <input type="text" class="form-control" name="no" value="{{ jn_home.no }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">页码</label>
+            <input type="text" class="form-control" value="{{ jn_home.page }}" name="page">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI号</label>
+            <input type="text" class="form-control" value="{{ jn_home.DOI }}" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">论文链接</label>
+            <input type="text" class="form-control" name="link" value="{{ jn_home.link }}">
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">代码链接</label>
+            <input type="text" class="form-control" value="{{ jn_home.code_link }}" name="code_link">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">论文附件</label>
+            <input type="file" id="exampleInputFile" name="encd" data-value="{{ jn_home.encd }}"
+                   value=" {{ jn_home.encd }} ">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">代码附件</label>
+            <input type="file" id="exampleInputFile" name="code_encd" data-value="{{ jn_home.code_encd }}"
+                   value="{{ jn_home.code_encd }}">
+        </div>
+        <button type="submit" class="btn btn-default">修改
+        </button>
+    </form>
+
+{% endblock %}

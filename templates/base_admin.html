@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+
+</body>
+</html><!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>IMAG@NJUST</title>
+<link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+              <a class="navbar-brand" href="{{ url_for('home') }}">IMAG@NJUST</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+{#                <li class="active"><a href="/">HOME</a></li>#}
+                {#          <li><a href="{{ url_for('conference.conf_res') }}">推荐</a></li>#}
+                {#          <li><a href="{{ url_for('conference.conf_classify') }}">发现</a></li>#}
+{#                <li><a href="/">PEOPLE</a></li>#}
+{#                <li><a href="/">NEWS</a></li>#}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">上传<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('admins.conf_upload_admin') }}">CONFERENCES</a></li>
+                        <li><a href="{{ url_for('admins.jn_upload_admin') }}">JOURNALS</a></li>
+                        <li><a href="{{ url_for('admins.mono_upload_admin') }}">MONOGRAPHS</a></li>
+                        <li><a href="{{ url_for('admins.patent_upload_admin') }}">PATENTS</a></li>
+                        <li><a href="{{ url_for('admins.soft_upload_admin') }}">COPYRIGHTS</a></li>
+                        <li><a href="{{ url_for('admins.prog_upload_admin') }}">PROJECTS</a></li>
+                        <li><a href="{{ url_for('admins.comp_upload_admin') }}">COMPETITIONS</a></li>
+                        <li><a href="{{ url_for('admins.course_upload_admin') }}">COURSES</a></li>
+                        <li><a href="{{ url_for('admins.honor_upload_admin') }}">HONOR</a></li>
+                        <li><a href="{{ url_for('admins.news_upload_admin') }}">NEWS</a></li>
+                        <li><a href="{{ url_for('admins.resource_upload_admin') }}">RESOURCES</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">修改<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('admins.conf_delete_admin',conf_name='delete%--%') }}">CONFERENCES</a></li>
+                        <li><a href="{{ url_for('admins.jn_delete_admin',jn_name='delete%--%') }}">JOURNALS</a></li>
+                        <li><a href="{{ url_for('admins.mono_delete_admin',mono_name='delete%--%') }}">MONOGRAPHS</a></li>
+                        <li><a href="{{ url_for('admins.patent_delete_admin',patent_name='delete%--%') }}">PATENTS</a></li>
+                        <li><a href="{{ url_for('admins.soft_delete_admin',soft_name='delete%--%') }}">COPYRIGHTS</a></li>
+                        <li><a href="{{ url_for('admins.prog_delete_admin',prog_name='delete%--%') }}">PROJECTS</a></li>
+                        <li><a href="{{ url_for('admins.comp_delete_admin',comp_name='delete%--%') }}">COMPETITIONS</a></li>
+                        <li><a href="{{ url_for('admins.course_delete_admin',course_name='delete%--%') }}">COURSES</a></li>
+                        <li><a href="{{ url_for('admins.honor_delete_admin',honor_title_name='delete%--%') }}">HONOR</a></li>
+                        <li><a href="{{ url_for('admins.news_delete_admin',news_title_publisher='delete%--%') }}">NEWS</a></li>
+                      <li><a href="{{ url_for('admins.resource_delete_admin',resource_name='delete%--%') }}">RESOURCES</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">用户管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('admins.examine') }}">审批</a></li>
+                        <li><a href="{{ url_for('admins.user_add') }}">增加帐号</a></li>
+                        <li><a href="{{ url_for('admins.user_delete',account='delete%--%') }}">修改账号</a></li>
+                        <li><a href="{{ url_for('admins.sort_people') }}">角色排序</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">个人中心<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">设置</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{{ url_for('login.logout') }}">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-sm-4">
+            {% block sidebar %}{% endblock %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            {% block center %}{% endblock %}
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+{% block all %}{% endblock %}
+
+
+</body>
+</html>

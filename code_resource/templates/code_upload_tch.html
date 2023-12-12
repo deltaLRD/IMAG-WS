@@ -1,0 +1,79 @@
+{% if account_url.classify=='教师' %}
+{% extends 'base_tch.html' %}
+{% else %}
+{% extends 'base_stu.html' %}
+{% endif %}
+{% block style %}
+    .containers{
+    width:60%;
+    margin:0 auto;
+    }
+{% endblock %}
+{% block center %}
+
+   <form id="formid" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label" style="color: red">*</label><label for="exampleInputEmail1" class="form-label" >文章名称</label>
+    <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">发表时间</label>
+    <input  name="dat" type="text" class="form-control" id="exampleInputPassword1">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">发表刊物</label>
+    <input  name="article"  type="text" class="form-control" id="exampleInputPassword1">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">刊物缩写</label>
+    <input name="article_short"   type="text" class="form-control" id="exampleInputPassword1">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">文章链接</label>
+    <input  name="article_link"  type="text" class="form-control" id="exampleInputPassword1">
+  </div>
+       <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">代码链接</label>
+    <input  name="code_link"  type="text" class="form-control" id="exampleInputPassword1">
+  </div>
+       <br/>
+  <button type="button" class="btn btn-primary" onclick="code_submit()">Submit</button>
+</form>
+<script>
+    function code_submit(){
+        let data = new FormData($("#formid")[0]);
+        data.append('user',{{ account_url.account|tojson }})
+        $.ajax({
+                type: 'POST',
+                url: "/code_resource/upload",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1500,
+                            offset: 't',
+                        })
+                        tiao('/code_resource/table/'+{{ account_url.account|tojson }})
+
+                    }
+                }
+            })
+    }
+    async function tiao(url){
+                setTimeout(() => {
+                    window.location.href=url
+                }, 1000);
+        }
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block style %}
+    li{
+
+    }
+{% endblock %}
+{% block all %}
+
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in conf_home %}
+                    <li>
+                        [{{ loop.index }}] {{ row.author }}. {{ row.name }}. {{ row.conf_name }}{{ row.jn_name }}. {{ row.page }} ({{ row.dat }})
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("conf_id").className="active";
+ })
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+    <form action="{{url_for('admins.news_modify_admin',news_title_publisher=news_home.title+','+news_home.publisher)}}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">新闻标题</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ news_home.title }}" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">发布人</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ news_home.publisher }}" name="publisher" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">分类</label>
+            <input type="text" class="form-control" value="{{ news_home.classify }}" name="classify">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">内容</label>
+            <input type="text" class="form-control" value="{{ news_home.content }}" name="content">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">发布时间</label>
+            <input type="date" class="form-control" value="{{ news_home.dat }}" name="dat">
+        </div>
+        <button type="submit" class="btn btn-default">修改
+        </button>
+    </form>
+{% endblock %}

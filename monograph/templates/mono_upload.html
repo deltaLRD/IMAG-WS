@@ -1,0 +1,77 @@
+{% extends 'base_admin.html' %}
+{% block center %}
+
+    {% if error %}
+        <div class="alert alert-danger alert-dismissable" role="alert">
+            <strong>提示：</strong>{{ error }}
+        </div>
+    {% endif %}
+
+    <form action="/monograph/mono_upload" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">学术专著</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="学术专著" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">语种</label><br>
+            <select class="form-control" name="language">
+                <option>中文</option>
+                <option>外文</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">出版状态</label><br>
+            <select class="form-control" name="employ">
+                <option>已出版</option>
+                <option>待出版</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">ISBN</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="ISBN" name="ISBN">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">编辑</label>
+            <input type="text" class="form-control" placeholder="编辑" name="editor">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">国家或地区</label>
+            <input type="text" class="form-control" placeholder="国家或地区" name="country">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">城市</label>
+            <input type="text" class="form-control" placeholder="城市" name="city">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">起止页码</label>
+            <input type="text" class="form-control" placeholder="起止页码" name="page">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">总字数</label>
+            <input type="text" class="form-control" placeholder="总字数" name="word">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版社</label>
+            <input type="text" class="form-control" placeholder="出版社" name="press">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版日期</label>
+            <input type="date" class="form-control" placeholder="出版日期" name="dat">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" placeholder="DOI" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">学术专著链接</label>
+            <input type="text" class="form-control" placeholder="学术专著" name="link">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">学术专著附件</label>
+            <input type="file" id="exampleInputFile" name="encd">
+        </div>
+        <button type="submit" class="btn btn-default">上传
+        </button>
+    </form>
+
+{% endblock %}

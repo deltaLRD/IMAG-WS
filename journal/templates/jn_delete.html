@@ -1,0 +1,52 @@
+{% extends 'base_admin.html' %}
+{% block all %}
+
+
+<form action="/journal/jn_delete" method="POST" enctype="multipart/form-data">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col"> 论文名 </th>
+                <th scope="col"> 作者 </th>
+                <th scope="col"> 修改 </th>
+                <th scope="col"> 删除 </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in jn_home %}
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            {{ row.summary }}
+                        </label>
+                    </div>
+                 </td>
+{#                <td>#}
+{#                    <div class="form-group">#}
+{#                        <label class="radio-inline">#}
+{#                            {{ row.author }}#}
+{#                        </label>#}
+{#                    </div>#}
+{#                 </td>#}
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <button type="submit" class="btn btn-default" name="modify{{ row.id }}">修改</button>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label class="radio-inline">
+                                <button type="submit" class="btn btn-default" name="delete{{ row.id }}">删除</button>
+                            </label>
+                        </div>
+                    </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+{% endblock %}

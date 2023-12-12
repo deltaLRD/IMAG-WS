@@ -1,0 +1,111 @@
+{% extends 'base_tch.html' %}
+{% block center %}
+    <form id="formid" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputEmail1">学术专著</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ mono_home.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">语种</label><br>
+            <select class="form-control" name="language" data-value="{{ mono_home.language }}">
+                <option>中文</option>
+                <option>外文</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">出版状态</label><br>
+            <select class="form-control" name="employ" data-value="{{ mono_home.employ }}">
+                <option>已出版</option>
+                <option>待出版</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">ISBN</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" value="{{ mono_home.ISBN }}"
+                   name="ISBN">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">编辑</label>
+            <input type="text" class="form-control" value="{{ mono_home.editor }}" name="editor">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">国家或地区</label>
+            <input type="text" class="form-control" value="{{ mono_home.country }}" name="country">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">城市</label>
+            <input type="text" class="form-control" value="{{ mono_home.city }}" name="city">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">起止页码</label>
+            <input type="text" class="form-control" value="{{ mono_home.page }}" name="page">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">总字数</label>
+            <input type="text" class="form-control" value="{{ mono_home.word }}" name="word">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版社</label>
+            <input type="text" class="form-control" value="{{ mono_home.press }}" name="press">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">出版日期</label>
+            <input type="date" class="form-control" value="{{ mono_home.dat }}" name="dat">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">DOI</label>
+            <input type="text" class="form-control" value="{{ mono_home.DOI }}" name="DOI">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">学术专著链接</label>
+            <input type="text" class="form-control" name="link" value="{{ mono_home.link }}">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">学术专著附件</label>
+            <input type="file" id="exampleInputFile" name="encd" data-value="{{ mono_home.encd }}"
+                   value=" {{ mono_home.encd }} ">
+        </div>
+        <button type="button" class="btn btn-default" onclick="submit_mono_modify()">修改</button>
+    </form>
+    <script>
+        function submit_mono_modify() {
+             var data = new FormData($("#formid")[0]);
+            data.append('account',{{ account_url.account|tojson }})
+            data.append('pre',{{ mono_home.name|tojson }})
+            $.ajax({
+                type: 'POST',
+                url: "/monograph/mono_modify_back",
+                data: data,
+                dataType: 'json',
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                    if (data['error'] === 1) {
+                        layer.msg(data['msg'], {
+                            icon: 2,
+                            time: 1000,
+                            offset: 't',
+                        });
+                    } else {
+                        layer.msg(data['msg'], {
+                            icon: 1,
+                            time: 1000,
+                            offset: 't',
+                        })
+                        tiao('/monograph/details_tch/'+ {{ mono_home.id|tojson }}+'/'+{{ account_url.account|tojson }})
+
+                    }
+
+                }
+            })
+        }
+        async function tiao(url){
+            setTimeout(() => {
+                window.location.href=url
+            }, 1000);
+        }
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block all %}
+
+<br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in all_news %}
+                    <li>
+                        {{ row.title }}{{ row.content|safe }}
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("new_id").className="active";
+ })
+</script>
+{% endblock %}

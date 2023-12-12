@@ -1,0 +1,8 @@
+ssh -L 80:10.10.109.100:80 -L 12345:10.10.109.100:5432 10901007@202.119.84.34 -p 10022 
+ssh ws@10.10.109.100
+lsof -i:5000
+kill -9 pid
+sudo nginx -s stop
+sudo service nginx start
+uwsgi uwsgi_config.ini
+ssh -L 80:10.10.109.100:80 -L 12345:10.10.109.100:5432 hj@202.119.84.34  -p 10901 

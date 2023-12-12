@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block all %}
+    
+
+<h1>欢迎登录！</h1>
+    <br>
+    <br>
+
+
+<form class="form-horizontal" ENCTYPE="multipart/form-data">
+    <div class="form-group">
+        <label class="col-sm-2">帐号:</label>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" name="account" placeholder="请输入帐号" required>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">密码:</label>
+        <div class="col-sm-5">
+            <input type="password" class="form-control" name="password" placeholder="请输入密码" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <button type="button" onclick="login()" class="btn btn-primary">登录</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+{% block js %}
+ <script>
+ /* 捕捉Enter事件 */
+$(document).keydown(function(event) {
+	 event = event ; //window.event,是为了兼容IE
+	 {#event.preventDefault();#}
+	//按下了回车键
+	if (event.keyCode == 13) {
+		// 进行登录的操作，与点登录铵钮一样
+		login();
+	}
+	//如果是多个按钮，如ctrl+回车键时
+	/*if ( event.keyCode ==13 && event.ctrlKey ) {
+	    on_click();
+	 }*/
+});
+
+    function login(){
+
+        const name=document.getElementsByName("account")[0].value.trim();
+        const password=document.getElementsByName("password")[0].value.trim();
+        const data_json={
+            account:name,
+            password:password
+        }
+        if(name==="") {
+            layer.msg("请输入账号！", {
+                            icon: 2,
+                            time: 1000,
+                            offset:'t',
+                });
+            return;
+        }
+        if(password==="") {
+            layer.msg("请输入密码！", {
+                            icon: 2,
+                            time: 1000,
+                            offset:'t',
+                });
+            return;
+        }
+         $.ajax({
+        type: 'POST',
+        url: '/login/login_back',
+        data: JSON.stringify(data_json),
+        contentType: 'application/json; charset=UTF-8',
+        dataType: 'json',
+         success: function(data) {
+            if(data['error']===1){
+                layer.msg(data['message'], {
+                            icon: 2,
+                            time: 500,
+                            offset:'t',
+                });
+            }
+            else{
+                layer.msg(data['message'], {
+                            icon: 1,
+                            time: 500,
+                            offset:'t',
+                }, function(){
+                    if(data['classify']==='学生') window.location.href="/users/stu_page/"+name;
+                    else window.location.href="/users/tch_page/"+name;
+                });
+            }
+        }})
+    }
+
+    </script>
+{% endblock %}
+

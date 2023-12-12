@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block all %}
+
+<br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in all_resource %}
+                    {% if row.classes == "encd" %}
+                    <li>
+                        <a href="./resource_home/{{ row.id }}">{{ row.name }}</a>
+                    </li>
+                    <br>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    <h2>
+Links
+</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in all_resource %}
+                    {% if row.classes == "link" %}
+                    <li>
+                        <a href="{{ row.link }}">{{ row.name }}</a>
+                    </li>
+                    <br>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function() {
+        document.getElementById("rsu_id").className="active";
+ });
+
+</script>
+{% endblock %}

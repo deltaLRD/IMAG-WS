@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block all %}
+
+    <br>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <ol>
+                {% for row in jn_home %}
+                    <li>
+                        {{ row.name }}， {{ row.author }}， {{ row.dat }} ({{ row.jn_name }})
+                    </li>
+                    <br>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        document.getElementById("jor_id").className="active";
+ })
+</script>
+{% endblock %}
