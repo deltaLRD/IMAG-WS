@@ -15,7 +15,8 @@ from login.views import save_avatar
 from resource.views import save_resource
 from flask import make_response
 from .models import Admin
-host='http://10.10.109.100'
+host = os.environ.get("HOST", "http://10.10.109.100")
+# host='http://10.10.109.100'
 admins_bp = Blueprint('admins', import_name='admins')
 admins_bp.template_folder = './templates'
 admins_bp.static_folder = './static'

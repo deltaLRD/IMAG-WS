@@ -19,7 +19,7 @@ class Admin(object):
     def getAll(self):
         sessions = DBSession()
         info = sessions.query(self.dbname).order_by(self.dbname.id).all()
-        
+        # print(info)
         res = [dict(model) for model in info]
         sessions.close()
         return {'data': res, 'len': len(res)}
