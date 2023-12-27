@@ -339,7 +339,7 @@ def getOthers(display, all, db):
             ishide = 1
         data.append({'display': dict(data_item), 'id': item, 'ishide': ishide})
     sessions.close()
-    print(data)
+    # print(data)
     return data
 
 
@@ -422,6 +422,7 @@ def preprocessing_data(model,data_item):
             res+=str(data_item.cost)+'万,'
         else:
             res+=str(data_item.fund)+'万 (直接经费),'
+            
         res+="主持("+str(data_item.principal)+')'
         return res
     
