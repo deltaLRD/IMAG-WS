@@ -29,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" >IMAG@NJUST</a>
+            <a class="navbar-brand " id="root-link" >IMAG@NJUST</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -151,4 +151,9 @@ document.getElementById("ho_1").href=("/honor/honor_add_tch/"+account);
 {#document.getElementById("jn_rec_tch_id").href=("/journal/jn_rec_tch/"+account);#}
 </script>
 </body>
+
+<script>
+let rootLink=document.getElementById("root-link");
+rootLink.href=window.location.origin+'/';
+</script>
 </html>
