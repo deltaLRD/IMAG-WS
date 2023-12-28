@@ -18,6 +18,7 @@ from resource.views import resource_bp
 from social.views import social_bp
 from software.views import software_bp
 from users.views import users_bp
+from log.views import log_record_bp
 from flask_cors import CORS
 import markdown
 
@@ -51,6 +52,7 @@ app.register_blueprint(others_bp, url_prefix='/others')
 app.register_blueprint(resource_bp, url_prefix='/resource')
 app.register_blueprint(social_bp, url_prefix='/social')
 app.register_blueprint(code_resource_bp, url_prefix='/code_resource')
+app.register_blueprint(log_record_bp)
 print(db_full_url)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_full_url
 

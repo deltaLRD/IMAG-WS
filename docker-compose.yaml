@@ -9,3 +9,8 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - 5000:5000
+  hj_ws_front:
+    image: deltalrd/hj_ws_front
+    container_name: hj_ws_front
+    ports:
+      - 8000:8000

@@ -186,7 +186,7 @@ def hide():
                      'program': 'prog', 'social': 'social', 'software': 'soft', 'honor': 'honor', 'monograph': 'mono'}
     sessions = DBSession()
     data = request.json
-    print(data)
+    # print(data)
     account = data['account']
     name = data['name']
     id = data['id']
@@ -195,7 +195,6 @@ def hide():
     tch = sessions.query(Tch).filter(Tch.account == account).first()
     display = eval(tch.display)
     updata = display[display_items[name]]
-    print(display)
     if ishide == 1:
         if str(id) in updata:
             updata.remove(str(id))
@@ -206,10 +205,11 @@ def hide():
         updata.insert(idindex + 1, str(id))
     display[display_items[name]] = updata
     tch.display = str(display)
-    print(display)
+    # print(display)
     sessions.commit()
     sessions.close()
     return {}
+
 
 
 # # 隐藏
@@ -339,6 +339,7 @@ def getOthers(display, all, db):
             ishide = 1
         data.append({'display': dict(data_item), 'id': item, 'ishide': ishide})
     sessions.close()
+    # print(data)
     return data
 
 
@@ -350,43 +351,266 @@ def tch_page(account):
     display = eval(tch_info.display)
     jn_info_dict = getJournal(display['jn'], eval(tch_info.journal))
     patent_info = getOthers(display['patent'], eval(tch_info.patent), Patent)
-    # for item in patent_info_items:
-    #     patent = sessions.query(Patent).filter(Patent.id == int(item)).first()
-    #     dat = datetime.datetime.strftime(patent.effect_dat, "%Y-%m-%d")
-    #     display_item = patent.patentee + ': ' + patent.name + ', 专利号：' + patent.application_num
-    #     patent_info.append({'display': display_item, 'id': item})
     prog_info = getOthers(display['prog'], eval(tch_info.program), Prog)
     mono_info = getOthers(display['mono'], eval(tch_info.monograph), Mono)
-    # for item in mono_info_items:
-    #     mono = sessions.query(Mono).filter(Mono.id == int(item)).first()
-    #     display_item = mono.name + ', ' + mono.editor
-    #     mono_info.append({'display': display_item, 'id': item})
     soft_info = getOthers(display['soft'], eval(tch_info.software), Soft)
-    # for item in soft_info_items:
-    #     soft = sessions.query(Soft).filter(Soft.id == int(item)).first()
-    #     times = datetime.datetime.strftime(soft.times, "%Y-%m-%d")
-    #     display_item = soft.name + ', ' + soft.author + ', ' + times
-    #     soft_info.append({'display': display_item, 'id': item})
     comp_info = getOthers(display['comp'], eval(tch_info.competition), Comp)
     honor_info = getOthers(display['honor'], eval(tch_info.honor), Honor)
-    # for item in honor_info_items:
-    #     honor = sessions.query(Honor).filter(Honor.id == int(item)).first()
-    #     display_item = honor.title
-    #     honor_info.append({'display': display_item, 'id': item})
     course_info = getOthers(display['course'], eval(tch_info.course), Course)
-    # for item in course_info_items:
-    #     course = sessions.query(Course).filter(Course.id == int(item)).first()
-    #     display_item = course.name
-    #     course_info.append({'display': display_item, 'id': item})
     social_info = getOthers(display['social'], eval(tch_info.social), Socialwork)
-    # for item in social_info_items:
-    #     social = sessions.query(Socialwork).filter(Socialwork.id == int(item)).first()
-    #     display_item = social.title
-    #     social_info.append({'display': display_item, 'id': item})
     return render_template('tch_page.html', tch_info=tch_info, journal=jn_info_dict, social_info=social_info,
                            patent_info=patent_info, program=prog_info, mono_info=mono_info, soft_info=soft_info,
                            competition=comp_info, honor_info=honor_info, course_info=course_info, account_url=tch_info)
 
+##################### wj_add
+@users_bp.route('/tch_page/<account>/visible',methods=('GET','POST'))
+def tch_page_visisble(account):
+    display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
+                    'program': 'prog', 'social': 'social', 'software': 'soft', 'honor': 'honor', 'monograph': 'mono'}
+    model_mp={'patent':Patent,'prog':Prog,'mono':Mono,'soft':Soft,'comp':Comp,'honor':Honor,'course':Course,'social':Socialwork}
+
+    req=request.json
+    page=req['page']
+    limit=req['limit']
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    display=eval(tch_info.display)
+    if item_type=='journal' or item_type=='conference':
+        res=get_journal_by_page(display[display_items[item_type]],eval(getattr(tch_info,item_type)),page,limit)
+    else:    
+        model=model_mp[display_items[item_type]]
+        res=get_others_by_page(display[display_items[item_type]],eval(getattr(tch_info,item_type)),page,limit,model)
+    return res
+
+def get_others_by_page(display,all,page,limit,model):
+    session=DBSession()
+    data=[]
+    for id in all:
+        # print(id)
+        data_item=session.query(model).filter(model.id==int(id)).first()
+        display_content=preprocessing_data(model,data_item)
+        if data_item is None:
+            continue
+        is_hide=False
+        if str(id) not in display:
+            is_hide=True
+        data.append({'display': display_content, 'id': id, 'ishide': is_hide})
+    session.close()
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(data)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    data_page=data[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":data_page
+    }
+    return res
+
+def preprocessing_data(model,data_item):
+    
+    if model == Patent:
+        res=str(data_item.name)+','+str(data_item.patentee)+','+str(data_item.patent_num)+','+str(data_item.application_time)
+        return res
+    elif model == Prog:
+        res = str(data_item.pro_source)+', \"'+str(data_item.name)+'\",'+ str(data_item.start_time)+' - '+str(data_item.deadline)
+        if data_item.cost is not None:
+            res+=str(data_item.cost)+'万,'
+        else:
+            res+=str(data_item.fund)+'万 (直接经费),'
+            
+        res+="主持("+str(data_item.principal)+')'
+        return res
+    
+    elif model == Mono:
+        pass
+    elif model == Soft:
+        res=str(data_item.name)+','+str(data_item.author)
+        return res
+    elif model == Comp:
+        res=str(data_item.participant)+','+str(data_item.name)+str(data_item.ranking)+' , 指导老师：'+str(data_item.teachers)
+        return res
+    elif model == Honor:
+        pass
+    elif model == Course:
+        pass
+    elif model == Socialwork:
+        pass
+    elif model==Jn:
+        res=str(data_item.name) + ', ' + str(data_item.author) + ', ' + '(' + str(data_item.jn_name) + ')'
+        return res
+    elif model==Conf:
+        res=str(data_item.name) + ', ' + str(data_item.author) + ', ' + '(' + str(data_item.conf_name) + ')'
+        return res
+        
+    
+def get_journal_by_page(display,all,page,limit):
+    db_dic = {'j': Jn, 'c': Conf} # model映射
+    dis_name = {'j': 'jn_name', 'c': 'conf_name'}
+    jn_info_dict = []
+    sessions = DBSession()
+    for id, author_list in all.items():
+        ishide = 0
+        if id not in display:
+            ishide = 1
+        journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
+        if journal is None:
+            continue
+        journal = dict(journal)
+        author = ""
+        for it in author_list:
+            author += it
+            author += ' '
+        display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[
+            dis_name[id[0]]] + ') ' + author.rstrip(' ')
+        jn_info_dict.append({'display': display_item, 'id': id, 'ishide': ishide})
+    sessions.close()
+    # 分页逻辑
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(jn_info_dict)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    jn_info_dict_page=jn_info_dict[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":jn_info_dict_page
+    }
+    return res
+
+
+@users_bp.route('/display',methods=('GET','POST'))
+def display():
+    display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
+                    'program': 'prog', 'social': 'social', 'software': 'soft', 'honor': 'honor', 'monograph': 'mono'}
+    session =DBSession()
+    req=request.json
+    account=req['account']
+    name=req['name']
+    id=req['id']
+    is_hide=req['ishide']
+    tch=session.query(Tch).filter(Tch.account==account).first()
+    # print("===========wj_debug===========")
+    display=eval(tch.display)# 用户的全部display预设
+    # print("display:{}".format(display))
+    item_display=display[display_items[name]] # 目前种类的display预设
+    # print("item_display:{}".format(item_display))
+    items=eval(getattr(tch,name)) # 目前修改种类的预设
+    # print("items:{}".format(items))
+    items_list=None
+    if name=='journal' or name=='conference':
+        items_list=list(items.keys()) # 目前修改种类的键列表，为了做有序化
+    else:
+        items_list=items
+    # print("items_list:{}".format(items_list))
+    last_display_index=len(items_list)-1 # 寻找最后一个显示的元素的index
+    for index,value in enumerate(items_list):
+        if value not in item_display:
+            last_display_index=max(0,index-1)
+            break
+    # print("last_display_index:{}".format(last_display_index))
+    if is_hide==1:
+        if str(id) in item_display:
+            item_display.remove(str(id))
+        items_list.remove(str(id))
+        items_list.insert(last_display_index,str(id))
+        # print("items_list:{}".format(items_list))
+        updated_items=None
+        if name=='conference' or name=='journal':
+            updated_items={}
+            for val in items_list:
+                updated_items[val]=items[val]
+        else:
+            updated_items=list(items_list)
+    else:
+        item_display.append(str(id))
+        items_list.remove(str(id))
+        items_list.insert(last_display_index+1,str(id))
+        # print("items_list:{}".format(items_list))
+        updated_items=None
+        if name=='conference' or name=='journal':
+            updated_items={}
+            for val in items_list:
+                updated_items[val]=items[val]
+        else:
+            updated_items=list(items_list)
+    # print("updated_items:{}".format(updated_items))
+    # print("=============wj_debug_end=============")
+    display[display_items[name]]=item_display
+    setattr(tch,name,str(updated_items))
+    tch.display=str(display)
+    session.commit()
+    session.close()
+    return {}
+
+@users_bp.route('/search',methods=(['POST']))
+def search():
+    req=request.json
+    display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
+                    'program': 'prog', 'social': 'social', 'software': 'soft', 'honor': 'honor', 'monograph': 'mono'}
+    content=req['content']
+    item=req['item']
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    print("content:{}".format(content))
+    print('item:{}'.format(item))
+    print('account:{}'.format(account))
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item))
+    display=eval(tch_info.display)
+    type_items=display[display_items[item]]
+    print("items:{}".format(items))
+    model_mp={'journal':Jn,'conference':Conf,'patent':Patent,'program':Prog,'monograph':Mono,'software':Soft,'competition':Comp,'honor':Honor,'course':Course,'social':Socialwork}
+    res=[]
+    if(item=='journal'):
+        search_journals=session.query(Jn).filter(Jn.name.like('%'+content+'%')).all()
+        search_conference=session.query(Conf).filter(Conf.name.like('%'+content+'%')).all()
+        for journal in search_journals:
+            if 'j'+str(journal.id) in items:
+                display_item=preprocessing_data(Jn,journal)
+                ishide=1
+                if 'j'+str(journal.id) in type_items:
+                    ishide=0
+                res.append({'display': display_item, 'id': 'j'+str(journal.id), 'ishide': ishide})
+        for conference in search_conference:
+            if 'c'+str(conference.id) in items:
+                display_item=preprocessing_data(Conf,conference)
+                ishide=1
+                if 'c'+str(conference.id) in type_items:
+                    ishide=0
+                res.append({'display': display_item, 'id': 'c'+str(conference.id), 'ishide': ishide})
+    else:
+        search_items=session.query(model_mp[item]).filter(model_mp[item].name.like('%'+content+'%')).all()  
+        for search_item in search_items:
+            if str(search_item.id) in items:
+                display_item=preprocessing_data(model_mp[item],search_item)
+                ishide=1
+                if str(search_item) in type_items:
+                    ishide=0
+                res.append({'display': display_item, 'id': str(search_item.id), 'ishide': ishide})
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(res)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    final_res=res[start_index:end_index]
+    result={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":final_res
+    }
+    return result
+
+############################
 
 # 用户添加论文主页后端
 @users_bp.route('/add', methods=('GET', 'POST'))
@@ -402,8 +626,14 @@ def add():
     response = dict()
     user = dict(session.query(Tch).join(Account, Account.account == Tch.account).filter(Tch.account == account).first())
     up_data = eval(user[item])
+    up_data_copy=None
     display = eval(user['display'])
+    # print("=================wj_debug================")
+    # print("up_data:{}".format(up_data))
+    # print("display:{}".format(display))
+    # print("=================wj_debug================")
     if item == 'journal':
+        up_data_copy={}
         if (str(id)) in up_data:
             response['error'] = 1
             response['message'] = "已存在!"
@@ -415,22 +645,26 @@ def add():
             for i in range(4):
                 if list[i] == 1:
                     jn_list.append(arr[i])
-            print(display[display_items[item]])
-            print(up_data)
-            up_data[str(id)] = jn_list
+
+            up_data_copy[str(id)]=jn_list
+            for key,values in up_data.items():
+                up_data_copy[key]=values
             display[display_items[item]].append(str(id))
-            print(display[display_items[item]])
-            print(up_data)
+
     else:
+        up_data_copy=[]
         if str(id) in up_data:
             response['error'] = 1
-            response['message'] = "已存在!"
+            response['message'] = "已存在"
             return json.dumps(response, ensure_ascii=False)
         else:
-            up_data.append(str(id))
+            up_data_copy.append(str(id))
+            for id in up_data:
+                up_data_copy.append(id)
             display[display_items[item]].append(str(id))
+            
     session.query(Tch).filter(Tch.account == account).update(
-        {item: str(up_data), 'display': str(display)})
+        {item: str(up_data_copy), 'display': str(display)})
     session.commit()
 
     # list = user[item]
@@ -614,13 +848,23 @@ def order():
     item = data['item']
     order_items = data['order_items']
     pre = eval(dict(sessions.query(Tch).filter(Tch.account == account).first())[item])
-    print(pre)
     if item == 'journal':
         order_items_dic = dict()
         for id in order_items:
             order_items_dic[id] = pre[id]
+        for id in pre:
+            if id not in order_items_dic:
+                order_items_dic[id]=pre[id]
         order_items = order_items_dic
         print(order_items)
+    else:
+        commit_items=[]
+        for id in order_items:
+            commit_items.append(id)
+        for id in pre:
+            if id not in commit_items:
+                commit_items.append(id)          
+        order_items=commit_items  
     sessions.query(Tch).filter(Tch.account == account).update({item: str(order_items)})
     sessions.commit()
     sessions.close()

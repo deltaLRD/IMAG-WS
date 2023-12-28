@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, String, create_engine, Integer, Text, DATE,BOOLEAN
+from sqlalchemy import Column, DateTime, String, create_engine, Integer, Text, DATE,BOOLEAN, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import time
@@ -570,6 +570,33 @@ class Code(Base):
 
     def __getitem__(self, item):
         return self.__getattribute__(item)
+    
+class LogRecord(Base):
+    __tablename__ = "log_record"
+    id = Column(Integer, autoincrement=True, primary_key=True, unique=True, nullable=False) # 日志id
+    resource_name = Column(Text, nullable=False) # 被操作资源名称
+    username = Column(Text, nullable=False) # 操作执行者用户名
+    data = Column(Text, nullable=False) # 数据
+    create_time = Column(DateTime, nullable=False, server_default=func.now())
+    
+    def __init__(self, data):
+        self.username = "unkown"
+        self.resource_name = "unkown"
+        self.data = "none"
+        # self.create_time = datetime.datetime.now()
+        if "username" in data:
+            self.username = data['username']
+        if "resource_name" in data:
+            self.resource_name = data["resource_name"]
+        if "data" in data:
+            self.data = data["data"]
+    
+    def keys(self):
+        return ['id', 'resource_name', "username", "data", "create_time"]
+
+    def __getitem__(self, item):
+        return self.__getattribute__(item)
+
 
 # 创建表
 def createTable():
