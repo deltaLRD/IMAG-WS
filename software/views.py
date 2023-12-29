@@ -11,6 +11,7 @@ from sqlalchemy.cyextension.processors import str_to_date
 from conference.views import search_res
 from libs.db import DBSession, Tch, Stu, Account, Patent, Soft
 from file_save.file_Save import save_File
+from admins.models import Admin
 software_bp = Blueprint('software', import_name='software')
 software_bp.template_folder = './templates'
 software_bp.static_folder = './static'
@@ -272,5 +273,27 @@ def soft_delete():
     response['message'] = "删除成功"
     return json.dumps(response, ensure_ascii=False)
 
-
+# 软著收录界面
+@software_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
+    softwares=Admin(Soft,'software').getAll()['data']
+    response_items = []
+    for software in softwares:
+        response_items.append(software)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 

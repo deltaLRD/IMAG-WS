@@ -295,4 +295,29 @@ def patent_modify_back():
     sessions.close()
     return json.dumps(response, ensure_ascii=False)
 
+# 专利收录界面
+@patent_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
+    patents=Admin(Patent,'patent').getAll()['data']
+    response_items = []
+    for patent in patents:
+        patent['effect_dat']=str(patent['effect_dat'])
+        # print(patent['effect_dat'])
+        response_items.append(patent)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 

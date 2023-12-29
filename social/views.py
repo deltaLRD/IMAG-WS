@@ -1,6 +1,7 @@
 import json
 from flask import Blueprint, request, render_template
 from libs.db import DBSession, Tch, Honor, Socialwork, Account, Stu
+from admins.models import Admin
 social_bp = Blueprint('social', import_name='social')
 social_bp.template_folder = './templates'
 social_bp.static_folder = './static'
@@ -195,4 +196,25 @@ def social_modify_back():
     sessions.close()
     return json.dumps(response, ensure_ascii=False)
 
-
+@social_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
+    socials=Admin(Socialwork,'socialwork').getAll()['data']
+    response_items = []
+    for social in socials:
+        response_items.append(social)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res

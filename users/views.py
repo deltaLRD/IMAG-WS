@@ -467,7 +467,7 @@ def get_journal_by_page(display,all,page,limit):
             author += ' '
         display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[
             dis_name[id[0]]] + ') ' + author.rstrip(' ')
-        jn_info_dict.append({'display': display_item, 'id': id, 'ishide': ishide})
+        jn_info_dict.append({ 'id': id, 'display': display_item, 'author':author.rstrip(''),'ishide': ishide})
     sessions.close()
     # 分页逻辑
     start_index=(page-1)*limit

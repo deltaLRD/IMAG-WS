@@ -12,7 +12,7 @@ from sqlalchemy.cyextension.processors import str_to_date
 from file_save.file_Save import save_File
 from conference.views import search_res
 from libs.db import DBSession, Tch, Stu, Account, Patent, Mono
-
+from admins.models import Admin
 monograph_bp = Blueprint('monograph', import_name='monograph')
 monograph_bp.template_folder = './templates'
 monograph_bp.static_folder = './static'
@@ -284,3 +284,27 @@ def mono_delete():
     return json.dumps(response, ensure_ascii=False)
 
 
+
+# 专著收录界面
+@monograph_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    page = int(request.args.get('page'))
+    limit = int(request.args.get('limit'))
+    monographs=Admin(Mono,'monograph').getAll()['data']
+    response_items = []
+    for monograph in monographs:
+        response_items.append(monograph)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
