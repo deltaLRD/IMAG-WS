@@ -198,11 +198,21 @@ def social_modify_back():
 
 @social_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
-    socials=Admin(Socialwork,'socialwork').getAll()['data']
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
+    socials=Admin(Socialwork,'social').getAll()['data']
     response_items = []
     for social in socials:
+        if str(social['id']) in items:
+            social['is_added']=True
+        else:
+            social['is_added']=False
         response_items.append(social)
         
     start_index=(page-1)*limit

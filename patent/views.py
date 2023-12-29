@@ -298,13 +298,21 @@ def patent_modify_back():
 # 专利收录界面
 @patent_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     patents=Admin(Patent,'patent').getAll()['data']
     response_items = []
     for patent in patents:
-        patent['effect_dat']=str(patent['effect_dat'])
-        # print(patent['effect_dat'])
+        if str(patent['id']) in items:
+            patent['is_added']=True
+        else:
+            patent['is_added']=False
         response_items.append(patent)
         
     start_index=(page-1)*limit

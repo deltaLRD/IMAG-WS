@@ -276,11 +276,21 @@ def soft_delete():
 # 软著收录界面
 @software_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     softwares=Admin(Soft,'software').getAll()['data']
     response_items = []
     for software in softwares:
+        if str(software['id']) in items:
+            software['is_added']=True
+        else:
+            software['is_added']=False
         response_items.append(software)
         
     start_index=(page-1)*limit

@@ -674,20 +674,12 @@ li{
             page: true,
             done: function (res, curr, count) {
                 //遍历集合
-                /*layui.each(res.data, function (index, item) {
-                    let data = res.data;
-                    console.log(data);
-                    let checkboxElems = $('#demo').next().find('.layui-table-body .layui-form-checkbox');
-                    console.log(checkboxElems);
-                    // 遍历数据行，根据is_added属性设置复选框选中状态
-                    for (var i = 0; i < data.length; i++) {
-                        var row = data[i];
-                        var checkboxElem = checkboxElems.eq(i);
-                        if (row.is_added) {
-                            checkboxElem.addClass('layui-form-checked');
-                        }
+                layui.each(res.data, function (index, item) {
+                    if(item.is_added){
+                        $("div[lay-id='demo'] td .layui-form-checkbox").eq(index).click();
+
                     }
-                });*/
+                });
             }
         })
     });

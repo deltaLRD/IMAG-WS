@@ -49,12 +49,23 @@ def program():
 # 项目收录界面
 @program_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     programs=Admin(Prog,'program').getAll()['data']
     response_items = []
     for program in programs:
+        if str(program['id']) in items:
+            program['is_added']=True
+        else:
+            program['is_added']=False
         response_items.append(program)
+        
     start_index=(page-1)*limit
     end_index=start_index+limit
     total_items=len(response_items)

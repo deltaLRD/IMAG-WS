@@ -253,11 +253,21 @@ def course_delete():
 # 课程收录界面
 @course_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     courses=Admin(Course,'course').getAll()['data']
     response_items = []
     for course in courses:
+        if str(course['id']) in items:
+            course['is_added']=True
+        else:
+            course['is_added']=False
         response_items.append(course)
         
     start_index=(page-1)*limit

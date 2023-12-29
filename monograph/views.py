@@ -288,11 +288,21 @@ def mono_delete():
 # 专著收录界面
 @monograph_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     monographs=Admin(Mono,'monograph').getAll()['data']
     response_items = []
     for monograph in monographs:
+        if str(monograph['id']) in items:
+            monograph['is_added']=True
+        else:
+            monograph['is_added']=False
         response_items.append(monograph)
         
     start_index=(page-1)*limit
