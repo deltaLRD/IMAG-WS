@@ -585,23 +585,27 @@ li{
 
     let add_cols_mp={//表格显示配置，每个列表是一个表格，其中每个对象是一个列,title是列名，field是值
         'journal':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'display_name',  title: '名称',align: 'center', width: '70%' },
             { fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo' },
         ],
         'patent':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'name',  title: '名称',align: 'center', width: '50%' },
             { field: 'effect_dat',title:'生效日期',align:'center'},
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'honor':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'title',  title: '名称', align: 'center', width: '60%' },
             { field: 'name',  title: '作者', align: 'center', width: '10%' },
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'program':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'pro_source',title:'资助',align:'center',width:'30%'},
             { field: 'name',  title: '名称', align: 'center',width: '35%' },
@@ -609,18 +613,21 @@ li{
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'social':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'title',title: '名称', align: 'center', width: '60%' },
             { field: 'name', title: '人物', align: 'center', width: '20%' },
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'course':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'name',  title: '课程名',align: 'center', width: '50%' },
             { field: 'teacher',title:'教师',align:'center',width:'15'},
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'competition':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'name',  title: '比赛名',align: 'center', width: '30%' },
             { field: 'ranking',  title: '奖项',align: 'center', width: '15%' },
@@ -629,12 +636,14 @@ li{
             { fixed: 'right', title: '操作' ,align: 'center', toolbar: '#barDemo' },
         ],
         'monograph':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'name',  title: '名称',align: 'center', width: '70%' },
             { field: 'editor', title: '作者', align:'center',width: '10%' },
             { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
         ],
         'software':[
+            { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
             { field: 'name', title: '名称', align: 'center', width: '50%' },
             { field: 'author',title: '作者',align: 'center', width:'20%'},
@@ -655,24 +664,30 @@ li{
             height: 600,
             width: 1500,
             url: data_url,
+            method:'POST',
+            where:{
+                type: api_url[add_li],
+                account: {{ tch_info.account | tojson }},
+            },
+            contentType: 'application/json; charset=UTF-8',
             cols: [add_cols_mp[api_url[add_li]]],
             page: true,
             done: function (res, curr, count) {
                 //遍历集合
-                layui.each(
-                    res.data, 
-                    function (index, item) {
-                        let data = api_data[add_li]
-                        //数据中所有id组成的列表
-                        let id_arrays = data.map((item) => item.id)
-                        
-                        //array.indexOf 此方法判断数组中是否存在某个值，如果存在，则返回数组元素的下标，否则返回-1#}
-                        if (id_arrays.indexOf(String(item.id)) > -1) {
-                            $("div[lay-id='demo'] td .layui-form-checkbox").eq(index).click();
+                /*layui.each(res.data, function (index, item) {
+                    let data = res.data;
+                    console.log(data);
+                    let checkboxElems = $('#demo').next().find('.layui-table-body .layui-form-checkbox');
+                    console.log(checkboxElems);
+                    // 遍历数据行，根据is_added属性设置复选框选中状态
+                    for (var i = 0; i < data.length; i++) {
+                        var row = data[i];
+                        var checkboxElem = checkboxElems.eq(i);
+                        if (row.is_added) {
+                            checkboxElem.addClass('layui-form-checked');
                         }
-
                     }
-                )
+                });*/
             }
         })
     });

@@ -90,11 +90,23 @@ def competition_add_page(account):
 # 比赛收录界面
 @competition_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    page = int(request.args.get('page'))
-    limit = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     competitions=Admin(Comp,'competition').getAll()['data']
     response_items = []
+    print(f'items:{items}')
     for competition in competitions:
+        print(competition['id'])
+        if str(competition['id']) in items:
+            competition['is_added']=True
+        else:
+            competition['is_added']=False
         response_items.append(competition)
         
     start_index=(page-1)*limit
