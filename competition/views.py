@@ -100,9 +100,7 @@ def table():
     items=eval(getattr(tch_info,item_type))
     competitions=Admin(Comp,'competition').getAll()['data']
     response_items = []
-    print(f'items:{items}')
     for competition in competitions:
-        print(competition['id'])
         if str(competition['id']) in items:
             competition['is_added']=True
         else:

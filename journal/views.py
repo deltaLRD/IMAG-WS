@@ -153,33 +153,51 @@ def jn_home_tch(account, id):
 
 @journal_bp.route('/table', methods=('GET', 'POST'))
 def table():
-    curpage = int(request.args.get('page'))
-    pagesize = int(request.args.get('limit'))
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
     confs = Admin(Conf, 'conference').getAll()['data']
-    print(confs)
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     journals = Admin(Jn, 'journal').getAll()['data']
     response_items = []
-    index = 1
-    for con in confs:
-        display_name = con['name'] + ', ' + con['author'] + ', ' + '(' + con['conf_name'] + ') '
-        id = 'c' + str(con['id'])
-        # id = str(index)
-        # index += 1
-        response_items.append({'id': id, 'display_name': display_name})
-    for jn in journals:
-        display_name = jn['name'] + ', ' + jn['author'] + ', ' + '(' + jn['jn_name'] + ') '
-        id = 'j' + str(jn['id'])
-        # id = str(index)
-        # index += 1
-        response_items.append({'id': id, 'display_name': display_name})
-    lenth = len(response_items)
-    response = dict()
-    response['code'] = 0
-    response['data'] = response_items[
-                       min((curpage - 1), math.ceil(lenth / pagesize) - 1) * pagesize:min((curpage) * pagesize, lenth)]
-    response['msg'] = ""
-    response['count'] = lenth
-    return json.dumps(response, ensure_ascii=False)
+    for conf in confs:
+        if 'c'+str(conf['id']) in items:
+            conf['is_added']=True
+        else:
+            conf['is_added']=False
+        
+        conf['display_name']=str(conf['name'])+' ,('+str(conf['conf_name'])+')'
+        conf['id']='c'+str(conf['id'])
+        response_items.append(conf)
+        
+    for journal in journals:
+        if 'j'+str(journal['id']) in items:
+            journal['is_added']=True
+        else:
+            journal['is_added']=False
+            
+        journal['display_name']=str(journal['name'])+' ,('+str(journal['jn_name'])+')'
+        journal['id']='j'+str(journal['id'])
+        response_items.append(journal)
+    
+
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 
 
 # 论文详情
