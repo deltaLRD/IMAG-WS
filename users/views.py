@@ -321,7 +321,7 @@ def getJournal(display_jn, all_jn):
             author += ' '
         display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[
             dis_name[id[0]]] + ') ' + author.rstrip(' ')
-        jn_info_dict.append({'display': display_item, 'id': id, 'ishide': ishide})
+        jn_info_dict.append({'display_name': display_item, 'id': id, 'is_hide': ishide})
     sessions.close()
     return jn_info_dict
 
@@ -337,7 +337,10 @@ def getOthers(display, all, db):
         ishide = 0
         if str(item) not in display:
             ishide = 1
-        data.append({'display': dict(data_item), 'id': item, 'ishide': ishide})
+        display_item=preprocess_data(db,data_item)
+        display_item['is_hide']=ishide
+        # data.append({'display': dict(data_item), 'id': item, 'ishide': ishide})
+        data.append(display_item)
     sessions.close()
     # print(data)
     return data
@@ -383,91 +386,29 @@ def tch_page_visisble(account):
         res=get_others_by_page(display[display_items[item_type]],eval(getattr(tch_info,item_type)),page,limit,model)
     return res
 
-def get_others_by_page(display,all,page,limit,model):
-    session=DBSession()
-    data=[]
-    for id in all:
-        # print(id)
-        data_item=session.query(model).filter(model.id==int(id)).first()
-        display_content=preprocessing_data(model,data_item)
-        if data_item is None:
-            continue
-        is_hide=False
-        if str(id) not in display:
-            is_hide=True
-        data.append({'display': display_content, 'id': id, 'ishide': is_hide})
-    session.close()
-    start_index=(page-1)*limit
-    end_index=start_index+limit
-    total_items=len(data)
-    start_index=min(start_index,total_items)
-    end_index=min(end_index,total_items)
-    data_page=data[start_index:end_index]
-    res={
-        "code":0,
-        "msg":"",
-        "count":total_items,
-        "data":data_page
-    }
-    return res
-
-def preprocessing_data(model,data_item):
-    
-    if model == Patent:
-        res=str(data_item.name)+','+str(data_item.patentee)+','+str(data_item.patent_num)+','+str(data_item.application_time)
-        return res
-    elif model == Prog:
-        res = str(data_item.pro_source)+', \"'+str(data_item.name)+'\",'+ str(data_item.start_time)+' - '+str(data_item.deadline)
-        if data_item.cost is not None:
-            res+=str(data_item.cost)+'万,'
-        else:
-            res+=str(data_item.fund)+'万 (直接经费),'
-            
-        res+="主持("+str(data_item.principal)+')'
-        return res
-    
-    elif model == Mono:
-        pass
-    elif model == Soft:
-        res=str(data_item.name)+','+str(data_item.author)
-        return res
-    elif model == Comp:
-        res=str(data_item.participant)+','+str(data_item.name)+str(data_item.ranking)+' , 指导老师：'+str(data_item.teachers)
-        return res
-    elif model == Honor:
-        pass
-    elif model == Course:
-        pass
-    elif model == Socialwork:
-        pass
-    elif model==Jn:
-        res=str(data_item.name) + ', ' + str(data_item.author) + ', ' + '(' + str(data_item.jn_name) + ')'
-        return res
-    elif model==Conf:
-        res=str(data_item.name) + ', ' + str(data_item.author) + ', ' + '(' + str(data_item.conf_name) + ')'
-        return res
-        
-    
 def get_journal_by_page(display,all,page,limit):
     db_dic = {'j': Jn, 'c': Conf} # model映射
     dis_name = {'j': 'jn_name', 'c': 'conf_name'}
     jn_info_dict = []
     sessions = DBSession()
     for id, author_list in all.items():
-        ishide = 0
+        is_hide = 0
         if id not in display:
-            ishide = 1
+            is_hide = 1
         journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
         if journal is None:
+            # todo 找不到报错
             continue
         journal = dict(journal)
         author = ""
         for it in author_list:
             author += it
             author += ' '
-        display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[
-            dis_name[id[0]]] + ') ' + author.rstrip(' ')
-        jn_info_dict.append({ 'id': id, 'display': display_item, 'author':author.rstrip(''),'ishide': ishide})
+        display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[dis_name[id[0]]] + ') ' + author.rstrip(' ')
+        journal['display_name']=display_item
+        journal['is_hide']=is_hide
+        journal['id']=id
+        jn_info_dict.append(journal)
     sessions.close()
     # 分页逻辑
     start_index=(page-1)*limit
@@ -483,6 +424,76 @@ def get_journal_by_page(display,all,page,limit):
         "data":jn_info_dict_page
     }
     return res
+
+def get_others_by_page(display,all,page,limit,model):
+    session=DBSession()
+    data=[]
+    for id in all:
+        # print(id)
+        data_item=session.query(model).filter(model.id==int(id)).first()
+        if data_item is None:
+            #Todo 添加报错
+            continue
+        is_hide=False
+        if str(id) not in display:
+            is_hide=True
+        # data.append({'display': display_content, 'id': id, 'ishide': is_hide})
+        display_content=preprocess_data(model,data_item)
+        display_content['is_hide']=is_hide
+        data.append(display_content)
+    session.close()
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(data)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    data_page=data[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":data_page
+    }
+    return res
+
+def preprocess_data(model,data_item):
+    res=dict(data_item)
+    if model == Patent:
+        res['display_name']=str(res['name'])+','+str(res['patentee'])+','+str(res['patent_num'])+','+str(res['application_dat'])
+    
+    elif model == Prog:
+        res['display_name']= str(res['pro_source'])+', \"'+str(res['name'])+'\",'+ str(res['start_time'])+' - '+str(res['deadline'])
+        if data_item.cost is not None:
+            res['display_name']=res['display_name']+str(res['cost'])+'万,'
+        else:
+            res['display_name']=res['display_name']+str(res['fund'])+'万 (直接经费),'
+        res['display_name']=res['display_name']+"主持("+str(res['principal'])+')'
+        
+    elif model == Mono:
+        res['display_name']=str(res['name'])+','+str(res['employ'])+','+str(res['editor'])
+    
+    elif model == Soft:
+        res['display_name']=str(res['name'])+','+str(res['author'])
+    
+    elif model == Comp:
+        res['display_name']=str(res['participant'])+','+str(res['name'])+str(res['ranking'])+' , 指导老师：'+str(res['teachers'])
+    
+    elif model == Honor:
+        res['display_name']=str(res['name'])+','+str(res['title'])
+    
+    elif model == Course:
+        res['display_name']=str(res['teacher'])+','+str(res['name'])
+    
+    elif model == Socialwork:
+        res['display_name']=str(res['name'])+','+str(res['title'])
+    
+    elif model==Jn:
+        res['display_name']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['jn_name']) + ')'
+    
+    elif model==Conf:
+        res['display_name']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['conf_name']) + ')'
+    return res
+    
 
 
 @users_bp.route('/display',methods=('GET','POST'))
@@ -540,8 +551,6 @@ def display():
                 updated_items[val]=items[val]
         else:
             updated_items=list(items_list)
-    # print("updated_items:{}".format(updated_items))
-    # print("=============wj_debug_end=============")
     display[display_items[name]]=item_display
     setattr(tch,name,str(updated_items))
     tch.display=str(display)
@@ -554,20 +563,17 @@ def search():
     req=request.json
     display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
                     'program': 'prog', 'social': 'social', 'software': 'soft', 'honor': 'honor', 'monograph': 'mono'}
-    content=req['content']
-    item=req['item']
-    account=req['account']
+    content=req['content']# 搜索内容
+    item=req['item'] # 搜索种类
+    account=req['account'] # 账户
     page=int(req['page'])
     limit=int(req['limit'])
-    print("content:{}".format(content))
-    print('item:{}'.format(item))
-    print('account:{}'.format(account))
     session=DBSession()
     tch_info=session.query(Tch).filter(Tch.account==account).first()
-    items=eval(getattr(tch_info,item))
-    display=eval(tch_info.display)
-    type_items=display[display_items[item]]
-    print("items:{}".format(items))
+    items=eval(getattr(tch_info,item)) # 用户对应项目所收录的
+    display=eval(tch_info.display) # 用户全部展示项目
+    type_items=display[display_items[item]] # 用户对应项目所展示的
+    # print("items:{}".format(items))
     model_mp={'journal':Jn,'conference':Conf,'patent':Patent,'program':Prog,'monograph':Mono,'software':Soft,'competition':Comp,'honor':Honor,'course':Course,'social':Socialwork}
     res=[]
     if(item=='journal'):
@@ -575,27 +581,33 @@ def search():
         search_conference=session.query(Conf).filter(Conf.name.like('%'+content+'%')).all()
         for journal in search_journals:
             if 'j'+str(journal.id) in items:
-                display_item=preprocessing_data(Jn,journal)
-                ishide=1
+                display_item=preprocess_data(Jn,journal)
+                is_hide=True
                 if 'j'+str(journal.id) in type_items:
-                    ishide=0
-                res.append({'display': display_item, 'id': 'j'+str(journal.id), 'ishide': ishide})
+                    is_hide=False
+                display_item['is_hide']=is_hide
+                display_item['id']='j'+str(journal.id)
+                res.append(display_item)
         for conference in search_conference:
             if 'c'+str(conference.id) in items:
-                display_item=preprocessing_data(Conf,conference)
-                ishide=1
+                display_item=preprocess_data(Conf,conference)
+                is_hide=True
                 if 'c'+str(conference.id) in type_items:
-                    ishide=0
-                res.append({'display': display_item, 'id': 'c'+str(conference.id), 'ishide': ishide})
+                    is_hide=False
+                display_item['is_hide']=is_hide
+                display_item['id']='c'+str(conference.id)
+                res.append(display_item)
     else:
         search_items=session.query(model_mp[item]).filter(model_mp[item].name.like('%'+content+'%')).all()  
         for search_item in search_items:
             if str(search_item.id) in items:
-                display_item=preprocessing_data(model_mp[item],search_item)
-                ishide=1
-                if str(search_item) in type_items:
-                    ishide=0
-                res.append({'display': display_item, 'id': str(search_item.id), 'ishide': ishide})
+                display_item=preprocess_data(model_mp[item],search_item)
+                is_hide=True
+                if str(search_item.id) in type_items:
+                    is_hide=False
+                display_item['is_hide']=is_hide
+                res.append(display_item)
+
     start_index=(page-1)*limit
     end_index=start_index+limit
     total_items=len(res)
@@ -628,10 +640,11 @@ def add():
     up_data = eval(user[item])
     up_data_copy=None
     display = eval(user['display'])
-    # print("=================wj_debug================")
-    # print("up_data:{}".format(up_data))
-    # print("display:{}".format(display))
-    # print("=================wj_debug================")
+    print("=================wj_debug================")
+    print('data:{}'.format(data))
+    print("up_data:{}".format(up_data))
+    print("display:{}".format(display))
+    print("=================wj_debug================")
     if item == 'journal':
         up_data_copy={}
         if (str(id)) in up_data:
@@ -646,7 +659,7 @@ def add():
                 if list[i] == 1:
                     jn_list.append(arr[i])
 
-            up_data_copy[str(id)]=jn_list
+            up_data_copy[str(id)]=jn_list# 为了保证字典顺序，将新添加的项目放于头部
             for key,values in up_data.items():
                 up_data_copy[key]=values
             display[display_items[item]].append(str(id))
@@ -666,21 +679,6 @@ def add():
     session.query(Tch).filter(Tch.account == account).update(
         {item: str(up_data_copy), 'display': str(display)})
     session.commit()
-
-    # list = user[item]
-    # display = eval(user.display)
-    # prog_display = eval(user.display)['prog']
-    # prog_list = eval(prog_list)
-    # if str(id) in prog_list:
-    #     response['error'] = 1
-    #     response['message'] = "项目已存在!"
-    #     return json.dumps(response, ensure_ascii=False)
-    # prog_list.append(str(id))
-    # user.program = str(prog_list)
-    # prog_display.append(str(id))
-    # display['prog'] = prog_display
-    # user.display = str(display)
-    # session.commit()
     session.close()
     response['message'] = "添加成功"
     response['error'] = 0
@@ -814,20 +812,19 @@ def user_database():
     sessions = DBSession()
     data = request.get_json()
     print(data)
-    print(data)
     account = data['account']
-    id = data['id']
+    id = str(data['id'])
     item = data['item']
     user_info = dict(sessions.query(Tch).filter(Tch.account == account).first())
-    update_data = eval(user_info[item])
-    display = eval(user_info['display'])
-    hide = display[display_items[item]]
+    update_data = eval(user_info[item]) # 用户对应项目的已收录列表
+    display = eval(user_info['display']) # 用户全部显示项目
+    hide = display[display_items[item]] # 用户对应显示项目
     if item in dict_data:
         del update_data[id]
     else:
         update_data.remove(id)
     if str(id) in hide:
-        hide.remove(str(id))
+        hide.remove(id)
         display[display_items[item]] = hide
     sessions.query(Tch).filter(Tch.account == account).update({item: str(update_data), 'display': str(display)})
     sessions.commit()
