@@ -26,3 +26,8 @@ def getOne(id):
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers['Content-Range'] = 'posts 0-24/' + str(len(res['data']))
     return response
+
+def createInnerLog():
+    print("create inner log")
+    pass
+    

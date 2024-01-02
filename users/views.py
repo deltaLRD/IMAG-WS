@@ -7,9 +7,9 @@ from flask import *
 from flask import Blueprint, request, render_template
 from sqlalchemy.sql.elements import or_
 from libs.db import DBSession, Conf, Account, Tch, Stu, Jn, Patent, Prog, Comp, Mono, Soft, Gra, Honor, Course, People, \
-    Socialwork
+    Socialwork,LogRecord
 from login.views import save_avatar, login_required, save_resume
-
+from log.views import createInnerLog
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 users_bp = Blueprint('users', import_name='users')
 users_bp.template_folder = './templates'
@@ -313,6 +313,7 @@ def getJournal(display_jn, all_jn):
             ishide = 1
         journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
         if journal is None:
+            createInnerLog()
             continue
         journal = dict(journal)
         author = ""
@@ -333,6 +334,7 @@ def getOthers(display, all, db):
     for item in all:
         data_item = sessions.query(db).filter(db.id == int(item)).first()
         if data_item is None:
+            createInnerLog()
             continue
         ishide = 0
         if str(item) not in display:
@@ -365,7 +367,7 @@ def tch_page(account):
                            patent_info=patent_info, program=prog_info, mono_info=mono_info, soft_info=soft_info,
                            competition=comp_info, honor_info=honor_info, course_info=course_info, account_url=tch_info)
 
-##################### wj_add
+# 显示设置的Controller
 @users_bp.route('/tch_page/<account>/visible',methods=('GET','POST'))
 def tch_page_visisble(account):
     display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
@@ -385,7 +387,7 @@ def tch_page_visisble(account):
         model=model_mp[display_items[item_type]]
         res=get_others_by_page(display[display_items[item_type]],eval(getattr(tch_info,item_type)),page,limit,model)
     return res
-
+# 显示设置中的分页查询
 def get_journal_by_page(display,all,page,limit):
     db_dic = {'j': Jn, 'c': Conf} # model映射
     dis_name = {'j': 'jn_name', 'c': 'conf_name'}
@@ -397,6 +399,7 @@ def get_journal_by_page(display,all,page,limit):
             is_hide = 1
         journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
         if journal is None:
+            createInnerLog()
             # todo 找不到报错
             continue
         journal = dict(journal)
@@ -424,7 +427,7 @@ def get_journal_by_page(display,all,page,limit):
         "data":jn_info_dict_page
     }
     return res
-
+# 显示设置中的除论文之外的分页查询
 def get_others_by_page(display,all,page,limit,model):
     session=DBSession()
     data=[]
@@ -432,6 +435,7 @@ def get_others_by_page(display,all,page,limit,model):
         # print(id)
         data_item=session.query(model).filter(model.id==int(id)).first()
         if data_item is None:
+            createInnerLog()
             #Todo 添加报错
             continue
         is_hide=False
@@ -456,6 +460,7 @@ def get_others_by_page(display,all,page,limit,model):
     }
     return res
 
+# 统一处理前端显示层
 def preprocess_data(model,data_item):
     res=dict(data_item)
     if model == Patent:
@@ -495,7 +500,7 @@ def preprocess_data(model,data_item):
     return res
     
 
-
+# 改变某一条目的可见性
 @users_bp.route('/display',methods=('GET','POST'))
 def display():
     display_items = {'conference': 'jn', 'journal': 'jn', 'competition': 'comp', 'course': 'course', 'patent': 'patent',
@@ -558,6 +563,7 @@ def display():
     session.close()
     return {}
 
+# 显示设置页面的搜索功能
 @users_bp.route('/search',methods=(['POST']))
 def search():
     req=request.json
@@ -640,11 +646,6 @@ def add():
     up_data = eval(user[item])
     up_data_copy=None
     display = eval(user['display'])
-    print("=================wj_debug================")
-    print('data:{}'.format(data))
-    print("up_data:{}".format(up_data))
-    print("display:{}".format(display))
-    print("=================wj_debug================")
     if item == 'journal':
         up_data_copy={}
         if (str(id)) in up_data:
@@ -672,10 +673,14 @@ def add():
             return json.dumps(response, ensure_ascii=False)
         else:
             up_data_copy.append(str(id))
+            print("id:{}".format(str(id)))
             for id in up_data:
                 up_data_copy.append(id)
+            print("up_data_copy:{}".format(up_data_copy))
+            print("display_items[item]:{}".format(display_items[item]))
+            print("dispaly[display_items[item]]:{}".format(display[display_items[item]]))
             display[display_items[item]].append(str(id))
-            
+            print("dispaly[display_items[item]]:{}".format(display[display_items[item]]))
     session.query(Tch).filter(Tch.account == account).update(
         {item: str(up_data_copy), 'display': str(display)})
     session.commit()
