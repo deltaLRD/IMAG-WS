@@ -313,7 +313,12 @@ def getJournal(display_jn, all_jn):
             ishide = 1
         journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
         if journal is None:
-            createInnerLog()
+            error={
+                'resource_name': 'journal',
+                'username':'superuser',
+                'data':f'query: id:{str(id)} not found',
+            }
+            createInnerLog(error)
             continue
         journal = dict(journal)
         author = ""
@@ -334,7 +339,12 @@ def getOthers(display, all, db):
     for item in all:
         data_item = sessions.query(db).filter(db.id == int(item)).first()
         if data_item is None:
-            createInnerLog()
+            error={
+                'resource_name': db.__name__,
+                'username':'superuser',
+                'data':f'query: id:{str(item)} not found',
+            }
+            createInnerLog(error)
             continue
         ishide = 0
         if str(item) not in display:
@@ -399,8 +409,12 @@ def get_journal_by_page(display,all,page,limit):
             is_hide = 1
         journal = sessions.query(db_dic[id[0]]).filter(db_dic[id[0]].id == int(id[1:])).first()
         if journal is None:
-            createInnerLog()
-            # todo 找不到报错
+            error={
+                'resource_name': Jn.__name__,
+                'username':'superuser',
+                'data':f'query: id:{str(id)} not found',
+            }
+            createInnerLog(error)
             continue
         journal = dict(journal)
         author = ""
@@ -435,8 +449,12 @@ def get_others_by_page(display,all,page,limit,model):
         # print(id)
         data_item=session.query(model).filter(model.id==int(id)).first()
         if data_item is None:
-            createInnerLog()
-            #Todo 添加报错
+            error={
+                'resource_name': model.__name__,
+                'username':'superuser',
+                'data':f'query: id:{str(id)} not found',
+            }
+            createInnerLog(error)
             continue
         is_hide=False
         if str(id) not in display:
@@ -465,6 +483,7 @@ def preprocess_data(model,data_item):
     res=dict(data_item)
     if model == Patent:
         res['display']=str(res['name'])+','+str(res['patentee'])+','+str(res['patent_num'])+','+str(res['application_dat'])
+        res['effect_dat']=res['effect_dat']
     
     elif model == Prog:
         res['display']= str(res['pro_source'])+', \"'+str(res['name'])+'\",'+ str(res['start_time'])+' - '+str(res['deadline'])
