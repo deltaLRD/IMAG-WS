@@ -313,6 +313,8 @@ def table():
             patent['is_added']=True
         else:
             patent['is_added']=False
+            
+        patent['effect_dat']=patent['effect_dat'].strftime("%Y-%m-%d")
         response_items.append(patent)
         
     start_index=(page-1)*limit

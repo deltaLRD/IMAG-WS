@@ -167,7 +167,7 @@ li{
 <ul id="patent_id">
     {% for row in patent_info %}
     {% if row.is_hide==0 %}
-    <li class="patent_li" id="{{ row.id }}">
+    <li class="patent_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -198,7 +198,7 @@ li{
 <ul id="honor_id">
     {% for row in honor_info %}
     {% if row.is_hide==0 %}
-    <li class="honor_li" id="{{ row.id }}">
+    <li class="honor_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
 
         <div class="vis_button">
@@ -278,7 +278,7 @@ li{
 <ul id="social_id">
     {% for row in social_info %}
     {% if row.is_hide==0 %}
-    <li class="social_li" id="{{ row.id }}">
+    <li class="social_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -309,7 +309,7 @@ li{
 <ul id="course_id">
     {% for row in course_info %}
     {% if row.is_hide==0 %}
-    <li class="course_li" id="{{ row.id }}">
+    <li class="course_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -407,7 +407,7 @@ li{
 <ul id="soft_id">
     {% for row in soft_info %}
     {% if row.is_hide==0 %}
-    <li class="soft_li" id="{{ row.id }}">
+    <li class="soft_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
