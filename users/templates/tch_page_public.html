@@ -50,93 +50,123 @@
 
     <hr>
     <ul>
-        {% if journal|length >0 %}
+    {% if journal|length >0 %}
         <div class="atitle" id="title_jn">部分论文</div>
-    {% endif %}
             {% for row in journal %}
-             {% if row.ishide==0 %}
-            <li class="jn_li" id="{{ row.display.id }}" value="{{ row['author'] }}">
-                <div class="li_name">{{ row.display}}
+                {% if row.is_hide==0%}
+                <li class="jn_li" id="{{ row.display.id }}" value="{{ row['author'] }}">
+                    <div class="li_name">{{ row.display }}
 
-                </div>
-            </li>
-            {% endif %}
+                    </div>
+                </li>
+                {% endif%}
            {% endfor %}
+    {% endif %}
+
     {% if patent_info|length >0 %}
-    <div class="atitle" id="title_patent">专利</div>
-    {% endif %}
+        <div class="atitle" id="title_patent">专利</div>
         {% for row in patent_info %}
-            <li class="patent_li"  id="{{ row.id }}">
-                <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0%}
+
+                <li class="patent_li"  id="{{ row.id }}">
+                    <div class="li_name">{{  row.display }} </div>
+                </li>
+            {% endif %}
         {% endfor %}
+    {% endif %}
+
     {% if honor_info|length >0 %}
-<div class="atitle" id="title_honor">荣誉</div>
-    {% endif %}
+        <div class="atitle" id="title_honor">荣誉</div>
         {% for row in honor_info %}
-            <li class="honor_li"  id="{{ row.id }}">
-                 <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0%}
+                <li class="honor_li"  id="{{ row.id }}">
+                    <div class="li_name">{{  row.display }} </div>
+                </li>
+            {% endif %}
         {% endfor %}
-    {%  if program|length >0%}
-    <div class="atitle" id="title_pro">项目</div>
     {% endif %}
+
+    {% if program|length >0%}
+        <div class="atitle" id="title_pro">项目</div>
         {% for row in program %}
-            <li class="prog_li" id="{{ row.id }}">
-           <div class="li_name">{{ row.display.pro_source }}, "{{ row.display.name }}" , {{ row.display.start_time }} - {{ row.display.deadline }} ,
-               {% if row.display.cost !='None' and row.display.cost !='' %}
-                   {{ row.display.cost }}万
-               {% else %}
-                    {{ row.display.fund }}万（直接经费）
-               {% endif %}
-                {% if tch_info.name== row.display.principal %}
-                    {{  row.display.role }}
+            {% if row.is_hide==0%}
+                {# <li class="prog_li" id="{{ row.id }}">
+            <div class="li_name">{{ row.display.pro_source }}, "{{ row.display.name }}" , {{ row.display.start_time }} - {{ row.display.deadline }} ,
+                {% if row.display.cost !='None' and row.display.cost !='' %}
+                    {{ row.display.cost }}万
                 {% else %}
-                    参与
+                        {{ row.display.fund }}万（直接经费）
                 {% endif %}
-                 </div>
-            </li>
+                    {% if tch_info.name== row.display.principal %}
+                        {{  row.display.role }}
+                    {% else %}
+                        参与
+                    {% endif %}
+                    </div>
+                </li> #}
+                <li class="prog_li"  id="{{ row.id }}">
+                    <div class="li_name">{{  row.display }} </div>
+                </li>
+            {% endif %}
         {% endfor %}
+    {% endif %}
+
     {% if social_info|length >0%}
-    <div class="atitle" id="title_social">社会兼职</div>
-    {% endif %}
+        <div class="atitle" id="title_social">社会兼职</div>
         {% for row in social_info %}
-            <li class="social_li" id="{{ row.id }}" >
-           <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0 %}
+                <li class="social_li" id="{{ row.id }}" >
+            <div class="li_name">{{  row.display}} </div>
+                </li>
+            {% endif %}
         {% endfor %}
+    {% endif %}
+
     {% if course_info|length >0 %}
-<div class="atitle" id="title_course">课程</div>
-    {% endif %}
+        <div class="atitle" id="title_course">课程</div>
         {% for row in course_info %}
-            <li class="course_li"  id="{{ row.id }}">
-                 <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0%}
+                <li class="course_li"  id="{{ row.id }}">
+                    <div class="li_name">{{  row.display}} </div>
+                </li>
+            {% endif%}
         {% endfor %}
+    {% endif %}
+
     {% if competition|length >0 %}
-    <div class="atitle" id="title_comp">竞赛</div>
-    {% endif %}
+        <div class="atitle" id="title_comp">竞赛</div>
         {% for row in competition %}
-            <li class="comp_li" id="{{ row.display.id }}" >
-                 <div class="li_name">{{ row.display.participant  }}, {{ row.display.name }}  {{ row.display.ranking }} , 指导老师:  {{ row.display.teachers }}  </div>
-            </li>
+            {% if row.is_hide==0%}
+
+                <li class="comp_li" id="{{ row.id }}" >
+                    {# <div class="li_name">{{ row.display.participant  }}, {{ row.display.name }}  {{ row.display.ranking }} , 指导老师:  {{ row.display.teachers }}  </div> #}
+                    <div class="li_name">{{ row.display }}</div>
+                </li>
+            {% endif%}
         {% endfor %}
-    {% if mono_info |length >0 %}
-    <div class="atitle" id="title_mono">专著</div>
     {% endif %}
+
+    {% if mono_info |length >0 %}
+        <div class="atitle" id="title_mono">专著</div>
         {% for row in mono_info %}
-            <li class="mono_li"  id="{{ row.id }}">
-               <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0 %}
+                <li class="mono_li"  id="{{ row.id }}">
+                <div class="li_name">{{  row.display }} </div>
+                </li>
+            {% endif %}
         {% endfor %}
+    {% endif %}
+
     {% if soft_info|length >0 %}
-    <div class="atitle" id="title_soft">软著</div>
-    {%  endif %}
+        <div class="atitle" id="title_soft">软著</div>
         {% for row in soft_info %}
-            <li class="soft_li" id="{{ row.id }}">
-                <div class="li_name">{{  row.display}} </div>
-            </li>
+            {% if row.is_hide==0 %}
+                <li class="soft_li" id="{{ row.id }}">
+                    <div class="li_name">{{  row.display }} </div>
+                </li>
+            {% endif %}
         {% endfor %}
+    {%  endif %}
 
     {{ others_info }}
 

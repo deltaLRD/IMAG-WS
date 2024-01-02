@@ -133,7 +133,7 @@ li{
     {% for row in journal %}
     {% if row.is_hide==0 %}
     <li class="jn_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
-        <div class="li_name">{{ row.display_name}}</div>
+        <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
 
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -168,7 +168,7 @@ li{
     {% for row in patent_info %}
     {% if row.is_hide==0 %}
     <li class="patent_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}} </div>
+        <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
@@ -199,7 +199,7 @@ li{
     {% for row in honor_info %}
     {% if row.is_hide==0 %}
     <li class="honor_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}} </div>
+        <div class="li_name">{{ row.display}} </div>
 
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -247,7 +247,7 @@ li{
             {% endif %}
         </div> #}
         <div class="li_name">
-            {{ row.display_name }}
+            {{ row.display }}
         </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -279,7 +279,7 @@ li{
     {% for row in social_info %}
     {% if row.is_hide==0 %}
     <li class="social_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}} </div>
+        <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
@@ -310,7 +310,7 @@ li{
     {% for row in course_info %}
     {% if row.is_hide==0 %}
     <li class="course_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}} </div>
+        <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
@@ -345,7 +345,7 @@ li{
             {{ row.display.participant }}, {{ row.display.name }} {{ row.display.ranking }} , 指导老师: {{row.display.teachers }} 
         </div> #}
         <div class="li_name">
-            {{ row.display_name }}
+            {{ row.display }}
         </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -376,7 +376,7 @@ li{
     {% for row in mono_info %}
     {% if row.is_hide==0 %}
     <li class="mono_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}} </div>
+        <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
@@ -408,7 +408,7 @@ li{
     {% for row in soft_info %}
     {% if row.is_hide==0 %}
     <li class="soft_li" id="{{ row.id }}">
-        <div class="li_name">{{ row.display_name}}</div>
+        <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
@@ -546,11 +546,12 @@ li{
             success: function (data) {
             }
         })*/
+        console.log(ishide);
         $.ajax({
             type: 'POST',
             url: '/users/display',
             data: JSON.stringify({
-                'ishide': ishide,
+                'is_hide': ishide,
                 'id': id,
                 'name': api_url[class_name],
                 'account': {{ tch_info.account | tojson }}
@@ -560,7 +561,6 @@ li{
             success: function (data) {
             }
         });
-
     }
 
     const api_url = { 
@@ -609,7 +609,7 @@ li{
         'journal':[
             { fixed: 'left',type:'checkbox'},
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
-            { field: 'display_name',  title: '名称',align: 'center', width: '50%' },
+            { field: 'display',  title: '名称',align: 'center', width: '50%' },
             { field: 'author', title: '作者',align:'center', width:'25%' },
             { fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo' },
         ],
@@ -709,7 +709,7 @@ li{
     const visible_cols_mp={//表格显示配置，每个列表是一个表格，其中每个对象是一个列
         'journal':[
             { field: 'id', title: 'ID', align: 'center', width: '5%' },
-            { field: 'display_name',  title: '名称',align: 'center', width: '50%' },
+            { field: 'display',  title: '名称',align: 'center', width: '50%' },
             { field: 'author', title: '作者',align:'center', width:'25%' },
             { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
             { title: '操作',toolbar:'#display-toolbar',align:'center'}
@@ -808,7 +808,7 @@ li{
                 type: 'POST',
                 url: '/users/display',
                 data: JSON.stringify({
-                    'ishide': isHide,
+                    'is_hide': isHide,
                     'id': id,
                     'name': api_url[req_type],
                     'account': {{ tch_info.account | tojson }}
@@ -925,7 +925,7 @@ li{
                 const error = data['error']
                 if (error === 0) {
                     $("#" + add_id).append(
-                        '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + author_display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
+                        '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display + author_display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
                     )
 
                     layer.msg(
@@ -978,7 +978,7 @@ li{
                         const error = data['error']
                         if (error === 0) {
                             $("#" + add_id).append(
-                                '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
+                                '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
                             )
                             layer.msg(
                                 data['message'], 
@@ -1116,7 +1116,7 @@ li{
         home_page: {{ tch_info.home_page | tojson }}
     }
     function dele(e) {
-        layer.confirm('你确认要删除吗', function (index) {
+        layer.confirm('你确认要取消收录吗', function (index) {
             let id = $(e).parent().parent().attr('id');
             let class_name = $(e).parent().parent()[0].className;
             $(e).parent().parent().remove();

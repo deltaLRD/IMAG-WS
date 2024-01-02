@@ -322,7 +322,7 @@ def getJournal(display_jn, all_jn):
             author += ' '
         display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[
             dis_name[id[0]]] + ') ' + author.rstrip(' ')
-        jn_info_dict.append({'display_name': display_item, 'id': id, 'is_hide': ishide})
+        jn_info_dict.append({'display': display_item, 'id': id, 'is_hide': ishide})
     sessions.close()
     return jn_info_dict
 
@@ -408,7 +408,7 @@ def get_journal_by_page(display,all,page,limit):
             author += it
             author += ' '
         display_item = journal['name'] + ', ' + journal['author'] + ', ' + '(' + journal[dis_name[id[0]]] + ') ' + author.rstrip(' ')
-        journal['display_name']=display_item
+        journal['display']=display_item
         journal['is_hide']=is_hide
         journal['id']=id
         jn_info_dict.append(journal)
@@ -464,39 +464,39 @@ def get_others_by_page(display,all,page,limit,model):
 def preprocess_data(model,data_item):
     res=dict(data_item)
     if model == Patent:
-        res['display_name']=str(res['name'])+','+str(res['patentee'])+','+str(res['patent_num'])+','+str(res['application_dat'])
+        res['display']=str(res['name'])+','+str(res['patentee'])+','+str(res['patent_num'])+','+str(res['application_dat'])
     
     elif model == Prog:
-        res['display_name']= str(res['pro_source'])+', \"'+str(res['name'])+'\",'+ str(res['start_time'])+' - '+str(res['deadline'])
+        res['display']= str(res['pro_source'])+', \"'+str(res['name'])+'\",'+ str(res['start_time'])+' - '+str(res['deadline'])
         if data_item.cost is not None:
-            res['display_name']=res['display_name']+str(res['cost'])+'万,'
+            res['display']=res['display']+str(res['cost'])+'万,'
         else:
-            res['display_name']=res['display_name']+str(res['fund'])+'万 (直接经费),'
-        res['display_name']=res['display_name']+"主持("+str(res['principal'])+')'
+            res['display']=res['display']+str(res['fund'])+'万 (直接经费),'
+        res['display']=res['display']+"主持("+str(res['principal'])+')'
         
     elif model == Mono:
-        res['display_name']=str(res['name'])+','+str(res['employ'])+','+str(res['editor'])
+        res['display']=str(res['name'])+','+str(res['employ'])+','+str(res['editor'])
     
     elif model == Soft:
-        res['display_name']=str(res['name'])+','+str(res['author'])
+        res['display']=str(res['name'])+','+str(res['author'])
     
     elif model == Comp:
-        res['display_name']=str(res['participant'])+','+str(res['name'])+str(res['ranking'])+' , 指导老师：'+str(res['teachers'])
+        res['display']=str(res['participant'])+','+str(res['name'])+str(res['ranking'])+' , 指导老师：'+str(res['teachers'])
     
     elif model == Honor:
-        res['display_name']=str(res['name'])+','+str(res['title'])
+        res['display']=str(res['name'])+','+str(res['title'])
     
     elif model == Course:
-        res['display_name']=str(res['teacher'])+','+str(res['name'])
+        res['display']=str(res['teacher'])+','+str(res['name'])
     
     elif model == Socialwork:
-        res['display_name']=str(res['name'])+','+str(res['title'])
+        res['display']=str(res['name'])+','+str(res['title'])
     
     elif model==Jn:
-        res['display_name']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['jn_name']) + ')'
+        res['display']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['jn_name']) + ')'
     
     elif model==Conf:
-        res['display_name']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['conf_name']) + ')'
+        res['display']=str(res['name']) + ', ' + str(res['author']) + ', ' + '(' + str(res['conf_name']) + ')'
     return res
     
 
@@ -510,7 +510,7 @@ def display():
     account=req['account']
     name=req['name']
     id=req['id']
-    is_hide=req['ishide']
+    is_hide=req['is_hide']
     tch=session.query(Tch).filter(Tch.account==account).first()
     # print("===========wj_debug===========")
     display=eval(tch.display)# 用户的全部display预设
@@ -674,8 +674,8 @@ def add():
         else:
             up_data_copy.append(str(id))
             print("id:{}".format(str(id)))
-            for id in up_data:
-                up_data_copy.append(id)
+            for up_data_id in up_data:
+                up_data_copy.append(up_data_id)
             print("up_data_copy:{}".format(up_data_copy))
             print("display_items[item]:{}".format(display_items[item]))
             print("dispaly[display_items[item]]:{}".format(display[display_items[item]]))
