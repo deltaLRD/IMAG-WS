@@ -170,7 +170,7 @@ def table():
         else:
             conf['is_added']=False
         
-        conf['display_name']=str(conf['name'])+' ,('+str(conf['conf_name'])+')'
+        conf['display']=str(conf['name'])+' ,('+str(conf['conf_name'])+')'
         conf['id']='c'+str(conf['id'])
         response_items.append(conf)
         
@@ -180,7 +180,7 @@ def table():
         else:
             journal['is_added']=False
             
-        journal['display_name']=str(journal['name'])+' ,('+str(journal['jn_name'])+')'
+        journal['display']=str(journal['name'])+' ,('+str(journal['jn_name'])+')'
         journal['id']='j'+str(journal['id'])
         response_items.append(journal)
     
