@@ -46,27 +46,39 @@ def program():
     return render_template('program.html', prog=prog)
 
 
-# 期刊论文界面
+# 项目收录界面
 @program_bp.route('/table', methods=('GET', 'POST'))
-def prog_add_tch_back():
-    curpage = int(request.args.get('page'))
-    pagesize = int(request.args.get('limit'))
+def table():
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
     programs=Admin(Prog,'program').getAll()['data']
-    for item in programs:
-        item['display_name']=item['name']+', '+str(item['start_time'])+'-'+str(item['deadline'])+', '
-        if item['cost'] is not None and item['cost']!='':
-            item['display_name']+=item['cost']+'万, '
+    response_items = []
+    for program in programs:
+        if str(program['id']) in items:
+            program['is_added']=True
         else:
-            item['display_name'] += item['fund'] + ' 万( 直接经费 ), '
-        item['display_name']+='主持('+item['principal']+')'
-    lenth = len(programs)
-    response = dict()
-    response['code'] = 0
-    response['data'] = programs[
-                       min((curpage - 1), math.ceil(lenth / pagesize) - 1) * pagesize:min((curpage) * pagesize, lenth)]
-    response['msg'] = ""
-    response['count'] = lenth
-    return json.dumps(response, ensure_ascii=False)
+            program['is_added']=False
+        response_items.append(program)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 
 # @program_bp.route('/prog_add_tch_back', methods=('GET', 'POST'))
 # def prog_add_tch_back():

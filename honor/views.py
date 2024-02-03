@@ -7,6 +7,7 @@ from flask import Blueprint, request, render_template
 
 from conference.views import search_res
 from libs.db import DBSession, Tch, Stu, Account, Honor
+from admins.models import Admin
 
 honor_bp = Blueprint('honor', import_name='honor')
 honor_bp.template_folder = './templates'
@@ -190,3 +191,38 @@ def honor_modify_tch(honor_title_name, account):
         sessions.commit()
 
     return render_template('honor_modify_tch.html', honor_home=modify_honor, tch_info=tch_info, account_url=tch_info)
+
+# 荣誉收录界面
+@honor_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
+    honors=Admin(Honor,'honor').getAll()['data']
+    response_items = []
+    for honor in honors:
+        print(honor['id'])
+        if str(honor['id']) in items:
+            honor['is_added']=True
+        else:
+            honor['is_added']=False
+        response_items.append(honor)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res

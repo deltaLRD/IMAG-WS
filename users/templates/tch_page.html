@@ -67,13 +67,11 @@ li{
 }
 
 #add-circle{
-    background-color:#FFFFFFFF;
     border:none;
     visibility: hidden;
 }
 
 #option-btn{
-    background-color:#FFFFFFFF;
     border:none;
     visibility: hidden;
 }
@@ -122,19 +120,19 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_jn">部分论文</div>
     <div class="atitle_op" id="title_op_jn">
-        <button class="layui-icon" id="add-circle" name="jn_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="jn_li" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="jn_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="jn_op" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="jn_id">
     {% for row in journal %}
-    {% if row.ishide==0 %}
-    <li class="jn_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
+    {% if row.is_hide==0 %}
+    <li class="jn_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
 
@@ -155,11 +153,11 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_patent">专利</div>
     <div class="atitle_op" id="title_op_patent">
-        <button class="layui-icon" id="add-circle" name="patent_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="patent_li"  data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="patent_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="patent_op"  data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 
@@ -168,15 +166,17 @@ li{
 
 <ul id="patent_id">
     {% for row in patent_info %}
-    {% if row.ishide==0 %}
-    <li class="patent_li" id="{{ row.id }}">
+    {% if row.is_hide==0 %}
+    <li class="patent_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
             </button>
 
-            <button onclick="hide(this)">隐藏/显示</button>
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
+            </button>
         </div>
     </li>
     {% endif %}
@@ -186,19 +186,19 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_honor">荣誉</div>
     <div class="atitle_op" id="title_op_honor">
-        <button class="layui-icon" id="add-circle" name="honor_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="honor_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="honor_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="honor_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="honor_id">
     {% for row in honor_info %}
-    {% if row.ishide==0 %}
-    <li class="honor_li" id="{{ row.id }}">
+    {% if row.is_hide==0 %}
+    <li class="honor_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
 
         <div class="vis_button">
@@ -206,7 +206,9 @@ li{
                 <i class="layui-icon">&#xe640;</i>
             </button>
 
-            <button onclick="hide(this)">隐藏/显示</button> 
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
+            </button>
         </div>
     </li>
     {% endif %}
@@ -216,20 +218,20 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_pro">项目</div>
     <div class="atitle_op" id="title_op_prog">
-        <button class="layui-icon" id="add-circle" name="prog_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="prog_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="prog_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="prog_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="prog_id">
     {% for row in program %}
-    {% if row.ishide==0 %}
-    <li class="prog_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
-        <div class="li_name">
+    {% if row.is_hide==0 %}
+    <li class="prog_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
+        {# <div class="li_name">
             {{ row.display.pro_source }}, 
             "{{ row.display.name }}" , 
             {{ row.display.start_time }} - {{row.display.deadline }} ,
@@ -243,6 +245,9 @@ li{
             {% else %}
             参与
             {% endif %}
+        </div> #}
+        <div class="li_name">
+            {{ row.display }}
         </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
@@ -261,25 +266,28 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_honor">社会兼职</div>
     <div class="atitle_op" id="title_op_social">
-        <button class="layui-icon" id="add-circle" name="social_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="social_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="social_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="social_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="social_id">
     {% for row in social_info %}
-    {% if row.ishide==0 %}
-    <li class="social_li" id="{{ row.id }}">
+    {% if row.is_hide==0 %}
+    <li class="social_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
             </button>
-            <button onclick="hide(this)">隐藏/显示</button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
+            </button>
         </div>
     </li>
     {% endif %}
@@ -289,23 +297,27 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_course">课程</div>
     <div class="atitle_op" id="title_op_course">
-        <button class="layui-icon" id="add-circle" name="course_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="course_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="course_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="course_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="course_id">
     {% for row in course_info %}
-    {% if row.ishide==0 %}
-    <li class="course_li" id="{{ row.id }}">
+    {% if row.is_hide==0 %}
+    <li class="course_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
+            </button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
             </button>
         </div>
     </li>
@@ -316,23 +328,25 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_comp">竞赛</div>
     <div class="atitle_op" id="title_op_comp">
-        <button class="layui-icon" id="add-circle" name="comp_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="comp_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="comp_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="comp_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="comp_id">
     {% for row in competition %}
-    {% if row.ishide==0 %}
-    <li class="comp_li" id="{{ row.id }}" style="background-color: {{ row.ishide|ishide_bg }}">
-        <div class="li_name">
+    {% if row.is_hide==0 %}
+    <li class="comp_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
+        {# <div class="li_name">
             {{ row.display.participant }}, {{ row.display.name }} {{ row.display.ranking }} , 指导老师: {{row.display.teachers }} 
+        </div> #}
+        <div class="li_name">
+            {{ row.display }}
         </div>
-
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>  
@@ -349,25 +363,28 @@ li{
 <div class="add_title">
     <div class="atitle" id="title_mono">专著</div>
     <div class="atitle_op" id="title_op_mono">
-        <button class="layui-icon" id="add-circle" name="mono_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="mono_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="mono_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="mono_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="mono_id">
     {% for row in mono_info %}
-    {% if row.ishide==0 %}
+    {% if row.is_hide==0 %}
     <li class="mono_li" id="{{ row.id }}">
         <div class="li_name">{{ row.display}} </div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
             </button>
-            <button onclick="hide(this)">隐藏/显示</button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
+            </button>
         </div>
     </li>
     {% endif %}
@@ -378,25 +395,28 @@ li{
     <div class="atitle" id="title_soft">软著</div>
     <div onclick="firmadd()"></div>
     <div class="atitle_op" id="title_op_soft">
-        <button class="layui-icon" id="add-circle" name="soft_li" style="font-size: 30px;" data-toggle="modal" data-target="#modal" data-whatever="@mdo">
-            &#xe61f;
+        <button class="btn btn-info" id="add-circle" name="soft_li"   data-toggle="modal" data-target="#modal" data-whatever="@mdo">
+            去收录
         </button>
-        <button class="layui-icon" id="option-btn" name="soft_op" style="font-size: 30px;" data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
-            &#xe716;
+        <button class="btn btn-info" id="option-btn" name="soft_op"   data-toggle="modal" data-target="#visible_modal" data-whatever="@mdo" >
+            显示设置
         </button>
     </div>
 </div>
 
 <ul id="soft_id">
     {% for row in soft_info %}
-    {% if row.ishide==0 %}
-    <li class="soft_li" id="{{ row.id }}">
+    {% if row.is_hide==0 %}
+    <li class="soft_li" id="{{ row.id }}" style="background-color: {{ row.is_hide|ishide_bg }}">
         <div class="li_name">{{ row.display}}</div>
         <div class="vis_button">
             <button class="layui-btn layui-btn-sm" onclick="dele(this)">
                 <i class="layui-icon">&#xe640;</i>
             </button>
-            <button onclick="hide(this)">隐藏/显示</button>
+
+            <button class="layui-btn layui-btn-sm" onclick="hide(this)">
+                <i class="layui-icon">&#xe695;</i>
+            </button>
         </div>
     </li>
     {% endif %}
@@ -461,7 +481,7 @@ li{
                         </div>
                         <div class="layui-input-inline">
                             <button class="layui-btn" lay-submit lay-filter="visible_search_btn">搜索</button>
-                            <button type="reset" class="layui-btn layui-btn-primary" id="clear_btn">清空</button>
+                            <button type="reset" class="layui-btn layui-btn-primary" id="clear_btn">刷新</button>
                         </div>
                     </div>
                 </form>
@@ -474,11 +494,11 @@ li{
 {# 以下这块为显示栏选择 #}
 {% raw %}
 <script type="text/html" id="display-switch">
-  <input type="checkbox" name="display" value="{{= d.id }}" title="ON|OFF" lay-skin="switch" lay-filter="display-status" {{= d.ishide == 0 ? "checked" : "" }}>
+  <input type="checkbox" name="display" value="{{= d.id }}" title="ON|OFF" lay-skin="switch" lay-filter="display-status" {{= d.is_hide ? "" : "checked" }}>
 </script>
 {% endraw %}
 <script type="text/html" id="display-toolbar">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">取消收录</a>
 </script>
 
 {{ others_info }}
@@ -526,11 +546,12 @@ li{
             success: function (data) {
             }
         })*/
+        console.log(ishide);
         $.ajax({
             type: 'POST',
             url: '/users/display',
             data: JSON.stringify({
-                'ishide': ishide,
+                'is_hide': ishide,
                 'id': id,
                 'name': api_url[class_name],
                 'account': {{ tch_info.account | tojson }}
@@ -540,7 +561,6 @@ li{
             success: function (data) {
             }
         });
-
     }
 
     const api_url = { 
@@ -585,6 +605,75 @@ li{
     var delete_url;
     var data_url;
 
+    let add_cols_mp={//表格显示配置，每个列表是一个表格，其中每个对象是一个列,title是列名，field是值
+        'journal':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'display',  title: '名称',align: 'center', width: '50%' },
+            { field: 'author', title: '作者',align:'center', width:'25%' },
+            { fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo' },
+        ],
+        'patent':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '名称',align: 'center', width: '50%' },
+            { field: 'effect_dat',title:'生效日期',align:'center'},
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'honor':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'title',  title: '名称', align: 'center', width: '60%' },
+            { field: 'name',  title: '作者', align: 'center', width: '10%' },
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'program':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'pro_source',title:'资助',align:'center',width:'30%'},
+            { field: 'name',  title: '名称', align: 'center',width: '35%' },
+            { field: 'principal',  title: '主持',align: 'center', width: '10%' },
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'social':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'title',title: '名称', align: 'center', width: '60%' },
+            { field: 'name', title: '人物', align: 'center', width: '20%' },
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'course':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '课程名',align: 'center', width: '50%' },
+            { field: 'teacher',title:'教师',align:'center',width:'15'},
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'competition':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '比赛名',align: 'center', width: '30%' },
+            { field: 'ranking',  title: '奖项',align: 'center', width: '15%' },
+            { field: 'participant',title: '参赛者',align: 'center',width:'20%'},
+            { field: 'teachers',title: '指导教师',align: 'center',width:'10%'},
+            { fixed: 'right', title: '操作' ,align: 'center', toolbar: '#barDemo' },
+        ],
+        'monograph':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '名称',align: 'center', width: '70%' },
+            { field: 'editor', title: '作者', align:'center',width: '10%' },
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ],
+        'software':[
+            { fixed: 'left',type:'checkbox'},
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name', title: '名称', align: 'center', width: '50%' },
+            { field: 'author',title: '作者',align: 'center', width:'20%'},
+            { fixed: 'right', title: '操作' , align: 'center', toolbar: '#barDemo' },
+        ]
+    };
+
     //编辑个人主页中，圆圈加号的触发事件
     $('#modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
@@ -598,33 +687,93 @@ li{
             height: 600,
             width: 1500,
             url: data_url,
-            cols: [[ //标题栏
-                { type: 'checkbox', width: '5%' },
-                { field: 'id', title: 'ID', align: 'center', width: '5%' },
-                { field: 'display_name', align: 'center', title: '名称', width: '70%' },
-                { fixed: 'right', title: '操作' ,width: '20%', align: 'center', toolbar: '#barDemo' },
-            ]],
+            method:'POST',
+            where:{
+                type: api_url[add_li],
+                account: {{ tch_info.account | tojson }},
+            },
+            contentType: 'application/json; charset=UTF-8',
+            cols: [add_cols_mp[api_url[add_li]]],
             page: true,
             done: function (res, curr, count) {
                 //遍历集合
-                layui.each(
-                    res.data, 
-                    function (index, item) {
-                        let data = api_data[add_li]
-                        //数据中所有id组成的列表
-                        let id_arrays = data.map((item) => item.id)
-                        
-                        //array.indexOf 此方法判断数组中是否存在某个值，如果存在，则返回数组元素的下标，否则返回-1#}
-                        if (id_arrays.indexOf(String(item.id)) > -1) {
-                            $("div[lay-id='demo'] td .layui-form-checkbox").eq(index).click();
-                        }
+                layui.each(res.data, function (index, item) {
+                    if(item.is_added){
+                        $("div[lay-id='demo'] td .layui-form-checkbox").eq(index).click();
 
                     }
-                )
+                });
             }
         })
     });
-
+    const visible_cols_mp={//表格显示配置，每个列表是一个表格，其中每个对象是一个列
+        'journal':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'display',  title: '名称',align: 'center', width: '50%' },
+            { field: 'author', title: '作者',align:'center', width:'25%' },
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'patent':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '名称',align: 'center', width: '50%' },
+            { field: 'effect_dat',title:'生效日期',align:'center'},
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'honor':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'title',  title: '名称', align: 'center', width: '60%' },
+            { field: 'name',  title: '作者', align: 'center', width: '10%' },
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'program':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'pro_source',title:'资助',align:'center',width:'30%'},
+            { field: 'name',  title: '名称', align: 'center',width: '35%' },
+            { field: 'principal',  title: '主持',align: 'center', width: '10%' },
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'social':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'title',title: '名称', align: 'center', width: '60%' },
+            { field: 'name', title: '人物', align: 'center', width: '20%' },
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'course':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '课程名',align: 'center', width: '50%' },
+            { field: 'teacher',title:'教师',align:'center',width:'15'},
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'competition':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '比赛名',align: 'center', width: '30%' },
+            { field: 'ranking',  title: '奖项',align: 'center', width: '15%' },
+            { field: 'participant',title: '参赛者',align: 'center',width:'20%'},
+            { field: 'teachers',title: '指导教师',align: 'center',width:'10%'},
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'monograph':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name',  title: '名称',align: 'center', width: '70%' },
+            { field: 'editor', title: '作者', align:'center',width: '10%' },
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ],
+        'software':[
+            { field: 'id', title: 'ID', align: 'center', width: '5%' },
+            { field: 'name', title: '名称', align: 'center', width: '50%' },
+            { field: 'author',title: '作者',align: 'center', width:'20%'},
+            { title: '显示' , align: 'center', templet:"#display-switch",width:'10%'},
+            { title: '操作',toolbar:'#display-toolbar',align:'center'}
+        ]
+    };
     //编辑个人主页中，设置按钮触发事件
     $('#visible_modal').on('show.bs.modal',function(event){
         let button=$(event.relatedTarget);
@@ -634,6 +783,7 @@ li{
         data_url='visible';//相对路径
         let resp;
         req_type=button.attr('name');
+
         table.render({
             elem: '#visible_table',
             height: 600,
@@ -644,16 +794,11 @@ li{
                 type: api_url[req_type],
             },
             contentType: 'application/json; charset=UTF-8',
-            cols:[[
-                { field: 'id', title: 'ID', align: 'center', width: '10%' },
-                { field: 'display', align: 'center', title: '明细', width: '70%' },
-                { title: '显示' ,width: '10%', align: 'center', templet:"#display-switch" },
-                { title:'操作',toolbar:'#display-toolbar',align:'center'}
-            ]],
+            cols:[visible_cols_mp[api_url[req_type]]],
             page: true,
             done: function(res,curr,count){
-                resp=res;
-            }
+
+            },
         });
         //切换显示状态的事件
         form.on('switch(display-status)',function(obj){
@@ -663,7 +808,7 @@ li{
                 type: 'POST',
                 url: '/users/display',
                 data: JSON.stringify({
-                    'ishide': isHide,
+                    'is_hide': isHide,
                     'id': id,
                     'name': api_url[req_type],
                     'account': {{ tch_info.account | tojson }}
@@ -705,7 +850,7 @@ li{
                 })
             }
         });
-
+        //刷新按钮，刷新当前表格
         $('#clear_btn').on('click',function(){
             table.reloadData('visible_table',{
                 url:'visible',
@@ -780,7 +925,7 @@ li{
                 const error = data['error']
                 if (error === 0) {
                     $("#" + add_id).append(
-                        '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + author_display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
+                        '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display + author_display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
                     )
 
                     layer.msg(
@@ -833,7 +978,7 @@ li{
                         const error = data['error']
                         if (error === 0) {
                             $("#" + add_id).append(
-                                '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display_name + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
+                                '<li style="background-color:white" class=' + add_li + ' id=' + (pcur_data.id + "") + ' > <div class="li_name">' + pcur_data.display + '</div>  <div class="vis_button" style="visibility:visible"> <button class="layui-btn layui-btn-sm" onclick="dele(this)"><i class="layui-icon">&#xe640;</i></button><button class="layui-btn layui-btn-sm" onclick="hide(this)"><i class="layui-icon">&#xe685;</i></button> </div>  </li>'
                             )
                             layer.msg(
                                 data['message'], 
@@ -857,7 +1002,7 @@ li{
                 })
             } else if (layEvent === 'del') { //删除
                 layer.confirm(
-                    '你确认要删除吗', 
+                    '你确认要取消收录吗', 
                     function (index) {
                         obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
                         layer.close(index);
@@ -971,7 +1116,7 @@ li{
         home_page: {{ tch_info.home_page | tojson }}
     }
     function dele(e) {
-        layer.confirm('你确认要删除吗', function (index) {
+        layer.confirm('你确认要取消收录吗', function (index) {
             let id = $(e).parent().parent().attr('id');
             let class_name = $(e).parent().parent()[0].className;
             $(e).parent().parent().remove();

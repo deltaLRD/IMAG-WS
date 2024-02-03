@@ -8,6 +8,7 @@ from flask import Blueprint, request, render_template
 
 from conference.views import search_res
 from libs.db import DBSession, Tch, Stu, Account, Course
+from admins.models import Admin
 
 course_bp = Blueprint('course', import_name='course')
 course_bp.template_folder = './templates'
@@ -248,3 +249,37 @@ def course_delete():
     response = dict()
     response['message'] = "删除成功"
     return json.dumps(response, ensure_ascii=False)
+
+# 课程收录界面
+@course_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
+    courses=Admin(Course,'course').getAll()['data']
+    response_items = []
+    for course in courses:
+        if str(course['id']) in items:
+            course['is_added']=True
+        else:
+            course['is_added']=False
+        response_items.append(course)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res

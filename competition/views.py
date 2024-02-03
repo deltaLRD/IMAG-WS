@@ -87,26 +87,39 @@ def competition_add_page(account):
     response['count'] = count
     return json.dumps(response, ensure_ascii=False)
 
-
+# 比赛收录界面
 @competition_bp.route('/table', methods=('GET', 'POST'))
-def comp_add_tch_back():
-    competitions = Admin(Comp, 'competition').getAll()['data']
-    for item in competitions:
-        item['display_name'] = item['participant'] + ' , ' + item['name'] + '  ' + item['ranking'] + ' , 指导老师:  ' + \
-                               item['teachers']
-    curpage = int(request.args.get('page'))
-    pagesize = int(request.args.get('limit'))
-    item = request.args.get('item')
-    content = request.args.get('content', '')
-    res = [item for item in competitions if item['display_name'].find(content) != -1]
-    lenth = len(res)
-    response = dict()
-    response['code'] = 0
-    response['data'] = res[
-                       min((curpage - 1), math.ceil(lenth / pagesize) - 1) * pagesize:min((curpage) * pagesize, lenth)]
-    response['msg'] = ""
-    response['count'] = lenth
-    return json.dumps(response, ensure_ascii=False)
+def table():
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
+    competitions=Admin(Comp,'competition').getAll()['data']
+    response_items = []
+    for competition in competitions:
+        if str(competition['id']) in items:
+            competition['is_added']=True
+        else:
+            competition['is_added']=False
+        response_items.append(competition)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 
 
 # # 教师竞赛添加界面

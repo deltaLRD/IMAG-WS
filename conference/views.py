@@ -493,7 +493,7 @@ def author_name(name):
     name_list = []
     for i in range(5):
         x = request.form.get(name + str(i + 1), '').strip()
-        if x is not '':
+        if x != '':
             name_list.append(x)
     return name_list
 

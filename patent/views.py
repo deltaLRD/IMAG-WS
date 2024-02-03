@@ -295,4 +295,39 @@ def patent_modify_back():
     sessions.close()
     return json.dumps(response, ensure_ascii=False)
 
+# 专利收录界面
+@patent_bp.route('/table', methods=('GET', 'POST'))
+def table():
+    req=request.json
+    account=req['account']
+    page=int(req['page'])
+    limit=int(req['limit'])
+    item_type=req['type']
+    session=DBSession()
+    tch_info=session.query(Tch).filter(Tch.account==account).first()
+    items=eval(getattr(tch_info,item_type))
+    patents=Admin(Patent,'patent').getAll()['data']
+    response_items = []
+    for patent in patents:
+        if str(patent['id']) in items:
+            patent['is_added']=True
+        else:
+            patent['is_added']=False
+            
+        patent['effect_dat']=patent['effect_dat'].strftime("%Y-%m-%d")
+        response_items.append(patent)
+        
+    start_index=(page-1)*limit
+    end_index=start_index+limit
+    total_items=len(response_items)
+    start_index=min(start_index,total_items)
+    end_index=min(end_index,total_items)
+    res_page=response_items[start_index:end_index]
+    res={
+        "code":0,
+        "msg":"",
+        "count":total_items,
+        "data":res_page
+    }
+    return res
 
